@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
 
     Quaternion GetGroundRotation()
     {
+        // todo: currently this lets you climb anything as long as the ground is flat directly underneath you
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
         {
             return Quaternion.FromToRotation(transform.up, hit.normal);

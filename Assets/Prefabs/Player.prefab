@@ -161,13 +161,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   sprintMultiplier: 1.5
-  groundControl: 30
-  airControl: 10
+  groundControl: 60
+  airControl: 16
   jumpPower: 5
   gravity: 10
   maxSlopeAngle: 45
   cameraVelocityShift: 0.04
-  cameraBounceVelGravity: 25
+  cameraBounceVelGravity: 30
   cameraBounceGravity: 25
   sensitivity: 80
   invertMouseY: 0
