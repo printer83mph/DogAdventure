@@ -1763,6 +1763,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: shuttle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7cf40c7dfa023e941a62315a38b00dc0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cf40c7dfa023e941a62315a38b00dc0, type: 3}
 --- !u!1 &1942375033
