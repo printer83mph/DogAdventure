@@ -74,8 +74,11 @@ public class PlayerController : MonoBehaviour
         {
 
             print("Midair at " + Time.time);
-            _vel.x = Mathf.MoveTowards(_vel.x, globalDesiredMovement.x * actualSpeed, Time.fixedDeltaTime * airControl);
-            _vel.z = Mathf.MoveTowards(_vel.z, globalDesiredMovement.z * actualSpeed, Time.fixedDeltaTime * airControl);
+            Vector2 newVel = Vector2.MoveTowards(new Vector2(_vel.x, _vel.z),
+                new Vector2(globalDesiredMovement.x, globalDesiredMovement.z) * actualSpeed, Time.fixedDeltaTime * airControl);
+
+            _vel.x = newVel.x;
+            _vel.z = newVel.y;
             
             _vel.y -= gravity * Time.fixedDeltaTime;
         }
