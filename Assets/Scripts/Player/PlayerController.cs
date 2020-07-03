@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         
         Quaternion groundRotation = GetGroundRotation();
 
-        if (CheckGrounded() && Quaternion.Angle(groundRotation, Quaternion.identity) < maxSlopeAngle)
+        if (CheckGrounded())
         {
 
             // ground movement
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         else
         {
 
-            print("Midair at " + Time.time);
+            // print("Midair at " + Time.time);
             Vector2 newVel = Vector2.MoveTowards(new Vector2(_vel.x, _vel.z),
                 new Vector2(globalDesiredMovement.x, globalDesiredMovement.z) * actualSpeed, Time.fixedDeltaTime * airControl);
 
@@ -96,10 +96,12 @@ public class PlayerController : MonoBehaviour
 
     Quaternion GetGroundRotation()
     {
-        // todo: currently this lets you climb anything as long as the ground is flat directly underneath you
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit))
+        if (Physics.Raycast(new Vector3(transform.position.x, _collider.bounds.min.y, transform.position.z), Vector3.down, out RaycastHit hit, .2f))
         {
-            return Quaternion.FromToRotation(transform.up, hit.normal);
+            Quaternion angle = Quaternion.FromToRotation(transform.up, hit.normal);
+
+            // only return the angle if it's walkable
+            if (Quaternion.Angle(angle, Quaternion.identity) < maxSlopeAngle) return angle;
         }
 
         return Quaternion.identity;
@@ -145,7 +147,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 startSpot = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y + _collider.radius + .1f,
             _collider.bounds.center.z);
-        if (Physics.SphereCast(startSpot, _collider.radius, Vector3.down, out RaycastHit hit, .2f, ~(1 << 8)))
+        if (Physics.SphereCast(startSpot, _collider.radius / 2 + .1f, Vector3.down, out RaycastHit hit, _collider.radius / 2 + .05f, ~(1 << 8)))
         {
             // cancel downwards velocity
             if (_midAir)
