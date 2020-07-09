@@ -13,6 +13,7 @@
           <e p="Util" t="Include">
             <e p="CustomPhysicsTick.cs" t="Include" />
             <e p="LockCursor.cs" t="Include" />
+            <e p="PrintUtil.cs" t="Include" />
           </e>
         </e>
       </e>

@@ -123,15 +123,15 @@ public class PlayerController : MonoBehaviour
         
         // move camera ahead a bit if grounded
         if (!_midAir)
-            _cameraXZPos = Vector2.Lerp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShift, Time.deltaTime * 10f);
+            _cameraXZPos = PrintUtil.Damp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShift, 10f, Time.deltaTime);
         else // center if in air
             _cameraXZPos =
-                Vector3.Lerp(_cameraXZPos, Vector2.zero, Time.deltaTime * 10f);
+                PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
 
         // do ground hit bounce animation
         _cameraVel = Vector3.MoveTowards(_cameraVel, Vector3.zero, Time.deltaTime * cameraBounceVelGravity);
         _cameraBouncePos += _cameraVel * Time.deltaTime;
-        _cameraBouncePos = Vector3.Lerp(_cameraBouncePos, Vector3.zero, Time.deltaTime * cameraBounceGravity);
+        _cameraBouncePos = PrintUtil.Damp(_cameraBouncePos, Vector3.zero, cameraBounceGravity, Time.deltaTime);
         
         // todo: probably shouldn't just use the y value
         _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y) + new Vector3(0, _cameraBouncePos.y, 0);
