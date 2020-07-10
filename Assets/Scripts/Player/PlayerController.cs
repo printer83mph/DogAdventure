@@ -6,19 +6,24 @@ public class PlayerController : MonoBehaviour
 {
     // inspector vars
     [Header("Movement")]
-    public float speed = 2f;
-    public float sprintMultiplier = 1.3f;
-    public float groundControl = 30f;
-    public float airControl = 10f;
-    public float jumpPower = .4f;
-    public float gravity = 10f;
+    public float speed = 4f;
+    public float sprintMultiplier = 1.5f;
+    public float groundControl = 40f;
+    public float airControl = 16f;
+    public float jumpPower = 5f;
+    public float gravity = 13f;
     public float maxSlopeAngle = 45f;
 
     [Header("Camera Movement")]
-    public float cameraVelocityShift = .07f;
-    public float cameraBounceVelGravity = 4f;
-    public float cameraBounceGravity = 4f;
-    public float sensitivity = 50f;
+    public bool cameraVelocityShift = true;
+    public float cameraVelocityShiftScale = .04f;
+
+    public bool cameraBounce = true;
+    public float cameraBounceVelGravity = 30f;
+    public float cameraBounceGravity = 25f;
+    
+    [Header("Mouse Controls")]
+    public float sensitivity = 100f;
     public bool invertMouseY = false;
     
     // auto-assigned
@@ -120,15 +125,16 @@ public class PlayerController : MonoBehaviour
         _lookY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
         
         _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0);
-        
+
         // move camera ahead a bit if grounded
-        if (!_midAir)
-            _cameraXZPos = PrintUtil.Damp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShift, 10f, Time.deltaTime);
-        else // center if in air
-            _cameraXZPos =
-                PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
+        _cameraXZPos = !_midAir && cameraVelocityShift
+            ? PrintUtil.Damp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShiftScale, 10f,
+                Time.deltaTime)
+            : PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
+        
 
         // do ground hit bounce animation
+        // todo: maybe optimize if camera bounce is turned off?
         _cameraVel = Vector3.MoveTowards(_cameraVel, Vector3.zero, Time.deltaTime * cameraBounceVelGravity);
         _cameraBouncePos += _cameraVel * Time.deltaTime;
         _cameraBouncePos = PrintUtil.Damp(_cameraBouncePos, Vector3.zero, cameraBounceGravity, Time.deltaTime);
@@ -152,7 +158,7 @@ public class PlayerController : MonoBehaviour
             // cancel downwards velocity
             if (_midAir)
             {
-                _cameraVel = _vel;
+                _cameraVel = cameraBounce ? _vel : _cameraVel;
                 _midAir = false;
             }
             _vel -= Mathf.Min(Vector3.Dot(hit.normal, _vel), 0) * hit.normal;
