@@ -1,8 +1,14 @@
 fileFormatVersion: 2
-guid: 7332f3fffeeb5dc46a55ce4d9136f818
+guid: 2b441f5f1fc31be4ab78af1843fe9eae
 ModelImporter:
   serializedVersion: 19301
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: -2382901073426100173
+    second: Gruh|blink
+  - first:
+      74: -5010559398695189884
+    second: Gruh|walk
   externalObjects: {}
   materials:
     materialImportMode: 0
@@ -45,7 +51,7 @@ ModelImporter:
     importLights: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
@@ -69,7 +75,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
