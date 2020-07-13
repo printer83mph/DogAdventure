@@ -9,9 +9,24 @@ ModelImporter:
   - first:
       74: -5010559398695189884
     second: Gruh|walk
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EyeBrowse
+    second: {fileID: 2100000, guid: ab16fee3f9f833a46aecd1877411bdc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FuckingKong
+    second: {fileID: 2100000, guid: 2c44e2253f22eb94bb6364eb3b676de6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RealEyeBallse
+    second: {fileID: 2100000, guid: 2f89f7124f5595a418a76b554c5d6dd5, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

@@ -41,14 +41,17 @@ public class PlayerController : MonoBehaviour
     private Vector2 _cameraXZPos;
     private float _lookY;
     private float _lookX;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
         _camera = GetComponentInChildren<Camera>();
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         _initialCameraPos = _camera.transform.localPosition;
     }
 
@@ -167,5 +170,10 @@ public class PlayerController : MonoBehaviour
 
         _midAir = true;
         return false;
+    }
+
+    public void ParentToCamera(Transform newGuy)
+    {
+        newGuy.parent = _camera.transform;
     }
 }

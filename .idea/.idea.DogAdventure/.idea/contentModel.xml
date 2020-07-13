@@ -9,11 +9,16 @@
         <e p="Scripts" t="Include">
           <e p="Player" t="Include">
             <e p="PlayerController.cs" t="Include" />
+            <e p="PlayerInventory.cs" t="Include" />
           </e>
           <e p="Util" t="Include">
             <e p="CustomPhysicsTick.cs" t="Include" />
             <e p="LockCursor.cs" t="Include" />
             <e p="PrintUtil.cs" t="Include" />
+          </e>
+          <e p="Weapons" t="Include">
+            <e p="HitscanGun.cs" t="Include" />
+            <e p="Weapon.cs" t="Include" />
           </e>
         </e>
       </e>
