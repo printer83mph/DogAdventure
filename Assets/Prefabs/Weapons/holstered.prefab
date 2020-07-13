@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7498754369045027978}
   - component: {fileID: 4450726767317555102}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: holstered
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -33,6 +33,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: GunMetal
+    second: {fileID: 2100000, guid: f09876c12aeb7df41afbc85845932acf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Inside
     second: {fileID: 2100000, guid: f36682765c4d5ab4f83006edd15ec147, type: 2}
   - first:
@@ -72,7 +77,7 @@ ModelImporter:
       takeName: Gun|Fire
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -159,7 +164,7 @@ ModelImporter:
       takeName: Gun|Equip
       internalID: 0
       firstFrame: 0
-      lastFrame: 23
+      lastFrame: 46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -182,7 +187,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 23
+      additiveReferencePoseFrame: 46
     isReadable: 0
   meshes:
     lODScreenPercentages: []

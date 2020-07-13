@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1896159032487642582}
   - component: {fileID: 6794413555854013559}
   - component: {fileID: 2139015226171618679}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pistol
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -92,17 +92,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.319
+      value: 0.2003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.153
+      value: -0.1226
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.457
+      value: 0.4097
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
@@ -144,15 +144,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3430203457082000927, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -1578373571446707184, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -991103680737839614, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -242165637326713887, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 860258445868423394, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
         type: 3}
       propertyPath: m_Name
       value: pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 951011102456138778, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571892155746938821, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e90a825a0c72f4bbe6fcd610b0ef49, type: 3}
