@@ -18,6 +18,7 @@ public class ViewmodelBob : MonoBehaviour
 
     private float _distanceMoved;
     private float _speedJumpLerp;
+    private float _sprintLerp;
     private float _rotXShift;
     private float _rotYShift;
 
@@ -39,13 +40,15 @@ public class ViewmodelBob : MonoBehaviour
         float speedMagnitude = vel.magnitude;
 
         // bob logic
-        float desiredScale = midAir ? 0 : Mathf.Min(speedMagnitude , controller.speed);
+        float desiredScale = midAir ? 0 : Mathf.Min(speedMagnitude / controller.speed , 1);
         _speedJumpLerp = PrintUtil.Damp(_speedJumpLerp, desiredScale, transitionLambda, Time.deltaTime);
+        float desiredSprintScale = midAir ? 0 : Mathf.Clamp(speedMagnitude / controller.speed - 1, 0, 1);
+        _sprintLerp = PrintUtil.Damp(_sprintLerp, desiredSprintScale, transitionLambda, Time.deltaTime);
         
         _distanceMoved += speedMagnitude * Time.deltaTime;
 
         float bounce = (Mathf.Abs(Mathf.Sin(_distanceMoved * bobSpeed)) * bobHeight - _halfBobHeight) * _speedJumpLerp;
-        float shift = (Mathf.Cos(_distanceMoved * bobSpeed) * shiftWidth - _halfShiftWidth) * _speedJumpLerp;
+        float shift = (Mathf.Cos(_distanceMoved * bobSpeed) * shiftWidth - _halfShiftWidth) * _sprintLerp;
 
         _rotXShift = PrintUtil.Damp(_rotXShift, - dRotY * sway / Time.deltaTime, swayDelta, Time.deltaTime);
         _rotYShift = PrintUtil.Damp(_rotYShift, dRotX * sway / Time.deltaTime, swayDelta, Time.deltaTime);

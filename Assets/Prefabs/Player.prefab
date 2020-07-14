@@ -159,9 +159,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5728176cee599fa4986de2bf2e0cac72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobHeight: 0.005
+  bobHeight: 0.015
   bobSpeed: 1.4
-  shiftWidth: 0.0025
+  shiftWidth: 0.04
   transitionLambda: 10
   sway: 0.0002
   swayDelta: 8
