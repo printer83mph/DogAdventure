@@ -63,6 +63,9 @@ MonoBehaviour:
   animator: {fileID: 8779261369853659042}
   fireDelay: 0.2
   automatic: 0
+  hitPrefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
+    type: 3}
+  kineticPower: 400
 --- !u!95 &8779261369853659042
 Animator:
   serializedVersion: 3
