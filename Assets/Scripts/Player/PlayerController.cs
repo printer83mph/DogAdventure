@@ -43,6 +43,13 @@ public class PlayerController : MonoBehaviour
     private Vector2 _cameraXZPos;
     private float _lookY;
     private float _lookX;
+    private float _dRotY;
+    private float _dRotX;
+
+    public float DRotX => _dRotX;
+    public float DRotY => _dRotY;
+    public bool MidAir => _midAir;
+    public Vector3 Vel => _vel;
 
     private void Awake()
     {
@@ -125,12 +132,12 @@ public class PlayerController : MonoBehaviour
 
     void CameraMovement()
     {
-        float dRotX = (invertMouseY ? 1 : -1) * Input.GetAxis("Mouse Y") * sensitivity;
-        _lookX += dRotX;
+        _dRotX = (invertMouseY ? 1 : -1) * Input.GetAxis("Mouse Y") * sensitivity;
+        _lookX += _dRotX;
         _lookX = Mathf.Clamp(_lookX, -90, 90);
         
-        float dRotY = Input.GetAxis("Mouse X") * sensitivity;
-        _lookY += dRotY;
+        _dRotY = Input.GetAxis("Mouse X") * sensitivity;
+        _lookY += _dRotY;
         
         _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0);
 
@@ -150,8 +157,7 @@ public class PlayerController : MonoBehaviour
         // todo: probably shouldn't just use the y value
         // todo: camera bobbing maybe
         _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y) + new Vector3(0, _cameraBouncePos.y, 0);
-
-        viewmodelBob.Bob(_vel, _midAir, dRotX, dRotY);
+        
     }
 
     Vector3 InputAxisTransform(float hor, float vert)

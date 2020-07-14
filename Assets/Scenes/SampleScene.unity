@@ -652,20 +652,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!115 &260939760
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 5
-  m_Script: 
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_ExecutionOrder: 0
-  m_ClassName: SceneObjectIDMapSceneAsset
-  m_Namespace: UnityEngine.Rendering.HighDefinition
 --- !u!1001 &263435523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -850,7 +836,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 22.498001, y: -56.395004, z: 0}
 --- !u!1001 &425541490
 PrefabInstance:
@@ -1563,8 +1549,8 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 19.309444, y: 4.7782803, z: 16.664284}
-  m_BoxOffset: {x: -0.53640854, y: -0.20441067, z: -2.1382215}
+  m_BoxSize: {x: 19.309444, y: 7.604123, z: 16.664284}
+  m_BoxOffset: {x: -0.5364084, y: 1.2085109, z: -2.1382217}
   m_NearClip: 0.3
   m_FarClip: 1000
   m_ShadowDistance: 100
@@ -2224,7 +2210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1863739622 stripped
 GameObject:
@@ -2603,7 +2589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb2bc52e73be9a41a9f7d9142e124e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRate: 60
+  frameRate: 30
 --- !u!1 &2053996664
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,11 +2866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RendererIndex
       value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7186984234008654020, guid: 32f69c2035c685c4e9d92bd68f0f1f0c,
-        type: 3}
-      propertyPath: transitionLambda
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}

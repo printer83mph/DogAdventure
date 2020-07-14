@@ -160,11 +160,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bobHeight: 0.015
-  bobSpeed: 1.4
+  bobSpeed: 5
   shiftWidth: 0.04
-  transitionLambda: 10
+  transitionLambda: 5
   sway: 0.0002
-  swayDelta: 8
+  swayLambda: 8
+  verticalVelocityInfluence: -0.02
+  verticalInfluenceClamp: 0.1
   controller: {fileID: 0}
 --- !u!1 &5371100157787185663
 GameObject:

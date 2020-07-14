@@ -3,12 +3,14 @@
 public class ViewmodelBob : MonoBehaviour
 {
 
-    public float bobHeight = .005f;
-    public float bobSpeed = 3f;
-    public float shiftWidth = .003f;
-    public float transitionLambda = 10f;
+    public float bobHeight = .015f;
+    public float bobSpeed = 5f;
+    public float shiftWidth = .04f;
+    public float transitionLambda = 5f;
     public float sway = 0.0002f;
-    public float swayDelta = 8f;
+    public float swayLambda = 8f;
+    public float verticalVelocityInfluence = -.02f;
+    public float verticalInfluenceClamp = .1f;
 
     [HideInInspector]
     public PlayerController controller;
@@ -19,6 +21,7 @@ public class ViewmodelBob : MonoBehaviour
     private float _distanceMoved;
     private float _speedJumpLerp;
     private float _sprintLerp;
+    private float _verticalVelocityShift;
     private float _rotXShift;
     private float _rotYShift;
 
@@ -32,27 +35,27 @@ public class ViewmodelBob : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void Bob(Vector3 vel, bool midAir, float dRotX, float dRotY)
-    {
-        float speedMagnitude = vel.magnitude;
+        float speedMagnitude = controller.Vel.magnitude;
 
         // bob logic
-        float desiredScale = midAir ? 0 : Mathf.Min(speedMagnitude / controller.speed , 1);
+        float desiredScale = controller.MidAir ? 0 : Mathf.Min(speedMagnitude / controller.speed , 1);
         _speedJumpLerp = PrintUtil.Damp(_speedJumpLerp, desiredScale, transitionLambda, Time.deltaTime);
-        float desiredSprintScale = midAir ? 0 : Mathf.Clamp(speedMagnitude / controller.speed - 1, 0, 1);
+        float desiredSprintScale = controller.MidAir ? 0 : Mathf.Clamp(speedMagnitude / controller.speed - 1, 0, 1);
         _sprintLerp = PrintUtil.Damp(_sprintLerp, desiredSprintScale, transitionLambda, Time.deltaTime);
         
         _distanceMoved += speedMagnitude * Time.deltaTime;
 
-        float bounce = (Mathf.Abs(Mathf.Sin(_distanceMoved * bobSpeed)) * bobHeight - _halfBobHeight) * _speedJumpLerp;
-        float shift = (Mathf.Cos(_distanceMoved * bobSpeed) * shiftWidth - _halfShiftWidth) * _sprintLerp;
+        float bounce = (Mathf.Abs(Mathf.Sin(_distanceMoved * bobSpeed / controller.speed)) * bobHeight - _halfBobHeight) * _speedJumpLerp;
+        float shift = (Mathf.Cos(_distanceMoved * bobSpeed / controller.speed) * shiftWidth - _halfShiftWidth) * _sprintLerp;
 
-        _rotXShift = PrintUtil.Damp(_rotXShift, - dRotY * sway / Time.deltaTime, swayDelta, Time.deltaTime);
-        _rotYShift = PrintUtil.Damp(_rotYShift, dRotX * sway / Time.deltaTime, swayDelta, Time.deltaTime);
+        _rotXShift = PrintUtil.Damp(_rotXShift, - controller.DRotY * sway / Time.deltaTime, swayLambda, Time.deltaTime);
+        _rotYShift = PrintUtil.Damp(_rotYShift, controller.DRotX * sway / Time.deltaTime, swayLambda, Time.deltaTime);
+
+        float desiredVerticalShift = controller.MidAir ? Mathf.Clamp(controller.Vel.y * verticalVelocityInfluence,
+            -verticalInfluenceClamp, verticalInfluenceClamp) : 0;
+        _verticalVelocityShift = PrintUtil.Damp(_verticalVelocityShift, desiredVerticalShift, transitionLambda, Time.deltaTime);
         
-        transform.localPosition = new Vector3(shift + _rotXShift, bounce + _rotYShift, 0);
+        transform.localPosition = new Vector3(shift + _rotXShift, bounce + _rotYShift + _verticalVelocityShift, 0);
     }
+
 }
