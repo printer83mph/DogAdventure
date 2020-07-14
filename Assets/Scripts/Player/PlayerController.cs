@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public bool cameraBounce = true;
     public float cameraBounceVelGravity = 30f;
     public float cameraBounceGravity = 25f;
+
+    public ViewmodelBob viewmodelBob;
     
     [Header("Mouse Controls")]
     public float sensitivity = 100f;
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _initialCameraPos = _camera.transform.localPosition;
+        viewmodelBob.controller = this;
     }
 
     // Update is called once per frame
@@ -122,10 +125,12 @@ public class PlayerController : MonoBehaviour
 
     void CameraMovement()
     {
-        _lookX += (invertMouseY ? 1 : -1) * Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        float dRotX = (invertMouseY ? 1 : -1) * Input.GetAxis("Mouse Y") * sensitivity;
+        _lookX += dRotX;
         _lookX = Mathf.Clamp(_lookX, -90, 90);
         
-        _lookY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        float dRotY = Input.GetAxis("Mouse X") * sensitivity;
+        _lookY += dRotY;
         
         _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0);
 
@@ -143,8 +148,10 @@ public class PlayerController : MonoBehaviour
         _cameraBouncePos = PrintUtil.Damp(_cameraBouncePos, Vector3.zero, cameraBounceGravity, Time.deltaTime);
         
         // todo: probably shouldn't just use the y value
+        // todo: camera bobbing maybe
         _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y) + new Vector3(0, _cameraBouncePos.y, 0);
 
+        viewmodelBob.Bob(_vel, _midAir, dRotX, dRotY);
     }
 
     Vector3 InputAxisTransform(float hor, float vert)
@@ -172,8 +179,8 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void ParentToCamera(Transform newGuy)
+    public void AddToViewmodel(Transform newGuy)
     {
-        newGuy.parent = _camera.transform;
+        newGuy.parent = viewmodelBob.transform;
     }
 }

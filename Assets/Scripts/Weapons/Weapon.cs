@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
         playerController = controller;
         playerInventory = inventory;
         
-        playerController.ParentToCamera(transform);
+        playerController.AddToViewmodel(transform);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
     }
