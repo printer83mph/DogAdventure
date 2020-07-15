@@ -18,6 +18,7 @@ public class WeaponSlot
 public class PlayerInventory : MonoBehaviour
 {
 
+    [SerializeField]
     public List<WeaponSlot> weapons;
     public bool holstered = true;
 

@@ -17,6 +17,7 @@
             <e p="CustomFramerate.cs" t="Include" />
             <e p="CustomPhysicsTick.cs" t="Include" />
             <e p="Despawner.cs" t="Include" />
+            <e p="EffectSpawner.cs" t="Include" />
             <e p="LockCursor.cs" t="Include" />
             <e p="PrintUtil.cs" t="Include" />
           </e>

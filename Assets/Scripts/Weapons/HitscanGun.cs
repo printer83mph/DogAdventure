@@ -39,7 +39,7 @@ public class HitscanGun : MonoBehaviour
 
     void Update()
     {
-        if (_weapon.CanFire())
+        if (_weapon.CanFire() && Time.time - _lastShot > fireDelay)
         {
             if (_reloading) return;
             if ((Input.GetAxis("Reload") > 0 && bullets < clipSize) || bullets == 0)
@@ -52,7 +52,7 @@ public class HitscanGun : MonoBehaviour
             bool firing = trigger;
             if (!automatic) firing = Input.GetMouseButtonDown(0);
             animator.SetBool("trigger", trigger);
-            if (Time.time - _lastShot > fireDelay && firing)
+            if (firing)
             {
                 Fire();
             }
@@ -66,6 +66,7 @@ public class HitscanGun : MonoBehaviour
 
     void Reload()
     {
+        animator.SetBool("trigger", false);
         StartCoroutine(ReloadCoroutine());
         animator.SetTrigger("reload");
     }
@@ -90,7 +91,7 @@ public class HitscanGun : MonoBehaviour
         _weapon.SetFloat("bullets", bullets);
         
         Ray shotRay = new Ray(_camera.transform.position, _camera.transform.rotation * Vector3.forward);
-        if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity))
+        if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, ~(1 >> 8)))
         {
             // we hit something???
             Transform hitObject = hit.transform;
