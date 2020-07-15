@@ -2877,25 +2877,15 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1851843836, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}
-      propertyPath: weapons.Array.data[1]
-      value: 
-      objectReference: {fileID: 4461596093159781327, guid: c45112bc422e9214caf1120576fccd0f,
-        type: 3}
-    - target: {fileID: 1851843836, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}
       propertyPath: weapons.Array.data[0]
       value: 
       objectReference: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3,
         type: 3}
     - target: {fileID: 1851843836, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}
-      propertyPath: weapons.Array.data[2]
+      propertyPath: weapons.Array.data[1]
       value: 
-      objectReference: {fileID: 4461596093159781327, guid: 60fe5aa903765ff439b3f76f36fdaaad,
+      objectReference: {fileID: 4461596093159781327, guid: c45112bc422e9214caf1120576fccd0f,
         type: 3}
-    - target: {fileID: 3131214214449730643, guid: 32f69c2035c685c4e9d92bd68f0f1f0c,
-        type: 3}
-      propertyPath: m_TagString
-      value: MainCamera
-      objectReference: {fileID: 0}
     - target: {fileID: 5371100157787185633, guid: 32f69c2035c685c4e9d92bd68f0f1f0c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2955,11 +2945,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6869111248930204376, guid: 32f69c2035c685c4e9d92bd68f0f1f0c,
-        type: 3}
-      propertyPath: m_RendererIndex
-      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6869111248930204376}
   m_Layer: 8
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 5371100157787185661}
   - component: {fileID: 5371100157787185660}
   - component: {fileID: 1851843836}
+  - component: {fileID: 2007013324}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -254,10 +255,9 @@ MonoBehaviour:
   maxSlopeAngle: 45
   cameraVelocityShift: 1
   cameraVelocityShiftScale: 0.04
-  cameraBounce: 1
-  cameraBounceVelGravity: 30
-  cameraBounceGravity: 25
+  landingBounce: 1
   viewmodelBob: {fileID: 7186984234008654020}
+  kickController: {fileID: 2007013324}
   sensitivity: 1
   invertMouseY: 0
 --- !u!114 &1851843836
@@ -275,3 +275,19 @@ MonoBehaviour:
   weapons: []
   holstered: 1
   lastSwitch: 0
+--- !u!114 &2007013324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5371100157787185663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b41a39db60f9862438786009f608f239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounceVelLambda: 15
+  bounceLambda: 15
+  kickVelLambda: 10
+  kickLambda: 10

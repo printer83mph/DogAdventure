@@ -43,19 +43,23 @@ public class ViewmodelBob : MonoBehaviour
         float desiredSprintScale = controller.MidAir ? 0 : Mathf.Clamp(speedMagnitude / controller.speed - 1, 0, 1);
         _sprintLerp = PrintUtil.Damp(_sprintLerp, desiredSprintScale, transitionLambda, Time.deltaTime);
         
+        // update distance moved
         _distanceMoved += speedMagnitude * Time.deltaTime;
 
+        // walking animation
         float bounce = (Mathf.Abs(Mathf.Sin(_distanceMoved * bobSpeed / controller.speed)) * bobHeight - _halfBobHeight) * _speedJumpLerp;
         float shift = (Mathf.Cos(_distanceMoved * bobSpeed / controller.speed) * shiftWidth - _halfShiftWidth) * _sprintLerp;
 
         _rotXShift = PrintUtil.Damp(_rotXShift, - controller.DRotY * sway / Time.deltaTime, swayLambda, Time.deltaTime);
         _rotYShift = PrintUtil.Damp(_rotYShift, controller.DRotX * sway / Time.deltaTime, swayLambda, Time.deltaTime);
 
+        // vert velocity shift
         float desiredVerticalShift = controller.MidAir ? Mathf.Clamp(controller.Vel.y * verticalVelocityInfluence,
             -verticalInfluenceClamp, verticalInfluenceClamp) : 0;
         _verticalVelocityShift = PrintUtil.Damp(_verticalVelocityShift, desiredVerticalShift, transitionLambda, Time.deltaTime);
         
-        transform.localPosition = new Vector3(shift + _rotXShift, bounce + _rotYShift + _verticalVelocityShift, 0);
+        transform.localPosition = new Vector3(shift + _rotXShift, bounce + _rotYShift, 0);
+        transform.position += new Vector3(0, _verticalVelocityShift, 0);
     }
 
 }

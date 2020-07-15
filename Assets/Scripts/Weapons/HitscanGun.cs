@@ -8,12 +8,16 @@ public class HitscanGun : MonoBehaviour
     public float fireDelay = .4f;
     public bool automatic = true;
 
+    public float kickBack = 3;
+    public float kickRotation = 2;
+
     public GameObject hitPrefab;
     public float kineticPower = 1000f;
 
     // auto-assigned
     private Weapon _weapon;
     private Camera _camera;
+    private CameraKickController _kickController;
 
     // math
     private float _lastShot;
@@ -22,6 +26,7 @@ public class HitscanGun : MonoBehaviour
     {
         _weapon = GetComponent<Weapon>();
         _camera = Camera.main;
+        _kickController = _weapon.playerController.kickController;
     }
 
     void Update()
@@ -63,6 +68,9 @@ public class HitscanGun : MonoBehaviour
             // todo: destroy object after a bit
 
         }
+        
+        _kickController.AddVel(new Vector3(0, 0, -kickBack));
+        _kickController.AddKick(Quaternion.Euler(-kickRotation, 0, 0));
         
         _lastShot = Time.time;
         animator.SetTrigger("fire");

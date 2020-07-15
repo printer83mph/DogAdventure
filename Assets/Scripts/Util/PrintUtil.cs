@@ -20,4 +20,9 @@ public class PrintUtil : MonoBehaviour
         return Vector2.Lerp(a, b, 1 - Mathf.Exp(-lambda * dt));
     }
     
+    public static Quaternion Damp(Quaternion a, Quaternion b, float lambda, float dt)
+    {
+        return Quaternion.Slerp(a, b, 1 - Mathf.Exp(-lambda * dt));
+    }
+    
 }

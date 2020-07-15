@@ -18,11 +18,11 @@ public class PlayerController : MonoBehaviour
     public bool cameraVelocityShift = true;
     public float cameraVelocityShiftScale = .04f;
 
-    public bool cameraBounce = true;
-    public float cameraBounceVelGravity = 30f;
-    public float cameraBounceGravity = 25f;
+    public bool landingBounce = true;
+    public float landingBounceScale = 1f;
 
     public ViewmodelBob viewmodelBob;
+    public CameraKickController kickController;
     
     [Header("Mouse Controls")]
     public float sensitivity = 100f;
@@ -38,8 +38,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _vel;
     private bool _midAir;
-    private Vector3 _cameraVel;
-    private Vector3 _cameraBouncePos;
     private Vector2 _cameraXZPos;
     private float _lookY;
     private float _lookX;
@@ -138,25 +136,19 @@ public class PlayerController : MonoBehaviour
         
         _dRotY = Input.GetAxis("Mouse X") * sensitivity;
         _lookY += _dRotY;
-        
-        _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0);
+
+        _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0) * kickController.CameraKickRot;
 
         // move camera ahead a bit if grounded
         _cameraXZPos = !_midAir && cameraVelocityShift
             ? PrintUtil.Damp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShiftScale, 10f,
                 Time.deltaTime)
             : PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
-        
 
-        // do ground hit bounce animation
-        // todo: maybe optimize if camera bounce is turned off?
-        _cameraVel = Vector3.MoveTowards(_cameraVel, Vector3.zero, Time.deltaTime * cameraBounceVelGravity);
-        _cameraBouncePos += _cameraVel * Time.deltaTime;
-        _cameraBouncePos = PrintUtil.Damp(_cameraBouncePos, Vector3.zero, cameraBounceGravity, Time.deltaTime);
-        
         // todo: probably shouldn't just use the y value
         // todo: camera bobbing maybe
-        _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y) + new Vector3(0, _cameraBouncePos.y, 0);
+        _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
+        _camera.transform.Translate(kickController.CameraBouncePos);
         
     }
 
@@ -174,7 +166,7 @@ public class PlayerController : MonoBehaviour
             // cancel downwards velocity
             if (_midAir)
             {
-                _cameraVel = cameraBounce ? _vel : _cameraVel;
+                if (landingBounce) kickController.AddVel(new Vector3(0, _vel.y * landingBounceScale, 0));
                 _midAir = false;
             }
             _vel -= Mathf.Min(Vector3.Dot(hit.normal, _vel), 0) * hit.normal;
