@@ -60,12 +60,19 @@ public class PlayerInventory : MonoBehaviour
             if (Input.GetMouseButtonDown(0) || scrollMeaning != 0)
             {
                 SwitchToWeapon(_currentWeaponIndex);
-            }
+            } 
         }
-        else
+        else if (Input.GetAxis("Holster") > 0)
+        {
+            // holster the weapon
+            holstered = true;
+            if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
+            _currentWeaponIndex = 0;
+        } else if (scrollMeaning != 0)
         {
             SwitchWeapons( scrollMeaning );
         }
+        
     }
 
     // shift weapon slot
