@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,9 @@ public class Weapon : MonoBehaviour
     public PlayerController playerController;
     public PlayerInventory playerInventory;
 
-    public void Equip(PlayerController controller, PlayerInventory inventory)
+    public WeaponFloatData floats;
+
+    public void Equip(PlayerController controller, PlayerInventory inventory, WeaponFloatData inFloats)
     {
         playerController = controller;
         playerInventory = inventory;
@@ -17,11 +19,18 @@ public class Weapon : MonoBehaviour
         playerController.AddToViewmodel(transform);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+
+        floats = inFloats;
     }
 
     // has it been long enough since a switch?
     public bool CanFire()
     {
         return Time.time - playerInventory.lastSwitch > switchTime;
+    }
+
+    public void SetFloat(String key, float val)
+    {
+        floats[key] = val;
     }
 }

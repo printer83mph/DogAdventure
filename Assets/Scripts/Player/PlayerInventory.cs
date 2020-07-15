@@ -1,11 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+
+// todo: this still isn't serializable
+[Serializable]
+public class WeaponFloatData : Dictionary<String, float> { }
+
+[Serializable]
+public class WeaponSlot
+{
+    public GameObject Weapon;
+    [SerializeField]
+    public WeaponFloatData Floats;
+}
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInventory : MonoBehaviour
 {
 
-    public List<GameObject> weapons;
+    public List<WeaponSlot> weapons;
     public bool holstered = true;
 
     private PlayerController _playerController;
@@ -14,7 +27,19 @@ public class PlayerInventory : MonoBehaviour
     private Weapon _currentWeapon;
     [HideInInspector]
     public float lastSwitch;
-    
+
+    private void Awake()
+    {
+        // initialize each weaponslot floats dict if not already
+        foreach (WeaponSlot weaponSlot in weapons)
+        {
+            if (weaponSlot.Floats == null)
+            {
+                weaponSlot.Floats = new WeaponFloatData();
+            }
+        }
+    }
+
     void Start()
     {
         _playerController = GetComponent<PlayerController>();
@@ -57,8 +82,8 @@ public class PlayerInventory : MonoBehaviour
         
         // destroy current weapon gameobject and create new one
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
-        _currentWeapon = Instantiate(weapons[weaponIndex]).GetComponent<Weapon>();
-        _currentWeapon.Equip(_playerController, this);
+        _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
+        _currentWeapon.Equip(_playerController, this, weapons[weaponIndex].Floats);
         lastSwitch = Time.time;
 
         holstered = false;
