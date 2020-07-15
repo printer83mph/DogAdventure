@@ -64,7 +64,7 @@ MonoBehaviour:
   fireDelay: 0.2
   automatic: 0
   kickBack: 1
-  kickRotation: 3
+  kickRotation: 1
   hitPrefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
     type: 3}
   kineticPower: 400
