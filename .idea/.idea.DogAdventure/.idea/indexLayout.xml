@@ -24,7 +24,6 @@
       <Path>Library</Path>
       <Path>LocalPackages</Path>
       <Path>Logs</Path>
-      <Path>Temp</Path>
       <Path>obj</Path>
     </explicitExcludes>
   </component>
