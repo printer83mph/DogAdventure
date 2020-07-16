@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 5371100157787185660}
   - component: {fileID: 1851843836}
   - component: {fileID: 2007013324}
+  - component: {fileID: 1087356102}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -279,6 +280,7 @@ MonoBehaviour:
   - Weapon: {fileID: 4461596093159781327, guid: c45112bc422e9214caf1120576fccd0f,
       type: 3}
   holstered: 1
+  maxUseAngle: 30
   lastSwitch: 0
 --- !u!114 &2007013324
 MonoBehaviour:
@@ -296,3 +298,16 @@ MonoBehaviour:
   bounceLambda: 10
   kickVelLambda: 10
   kickLambda: 10
+--- !u!135 &1087356102
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5371100157787185663}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.7
+  m_Center: {x: 0, y: 0.54, z: 0}

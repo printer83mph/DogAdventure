@@ -13,6 +13,7 @@
             <e p="PlayerInventory.cs" t="Include" />
             <e p="ViewmodelBob.cs" t="Include" />
           </e>
+          <e p="Useable.cs" t="Include" />
           <e p="Util" t="Include">
             <e p="CustomFramerate.cs" t="Include" />
             <e p="CustomPhysicsTick.cs" t="Include" />
@@ -24,6 +25,7 @@
           <e p="Weapons" t="Include">
             <e p="HitscanGun.cs" t="Include" />
             <e p="Weapon.cs" t="Include" />
+            <e p="WeaponPickup.cs" t="Include" />
           </e>
         </e>
       </e>

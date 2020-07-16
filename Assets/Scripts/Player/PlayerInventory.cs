@@ -23,14 +23,22 @@ public class PlayerInventory : MonoBehaviour
     public bool holstered = true;
 
     private PlayerController _playerController;
+    private Camera _camera;
+
+    public float maxUseAngle = 30f;
     
     private int _currentWeaponIndex;
     private Weapon _currentWeapon;
     [HideInInspector]
     public float lastSwitch;
+    
+    private List<Useable> _useables;
+    private Useable _thingToUse;
+    private bool _using;
 
     private void Awake()
     {
+        _useables = new List<Useable>();
         // initialize each weaponslot floats dict if not already
         foreach (WeaponSlot weaponSlot in weapons)
         {
@@ -44,6 +52,7 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         _playerController = GetComponent<PlayerController>();
+        _camera = Camera.main;
         lastSwitch = Time.time;
         if (!holstered)
         {
@@ -72,7 +81,73 @@ public class PlayerInventory : MonoBehaviour
         {
             SwitchWeapons( scrollMeaning );
         }
+
+        // highlight useable element
+        CheckUseables();
+        if (Input.GetAxis("Use") > 0)
+        {
+            if (_thingToUse && !_using)
+            {
+                _thingToUse.Use(this);
+                _using = true;
+            }
+        }
+        else
+        {
+            _using = false;
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Useable useable = other.transform.GetComponent<Useable>();
+        if (useable)
+        {
+            _useables.Add(useable);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Useable useable = other.transform.GetComponent<Useable>();
+        if (_useables.Contains(useable))
+        {
+            _useables.Remove(useable);
+            useable.highlighted = false;
+        }
+    }
+
+    void CheckUseables()
+    {
+        _thingToUse = null;
+        // break if list is empty
+        if (_useables.Count == 0)
+        {
+            return;
+        }
+        // limit use angle? idk
+        float closestAngle = maxUseAngle;
+        foreach (Useable useable in _useables)
+        {
+            // does it exist anymore??
+            if (!useable)
+            {
+                _useables.Remove(useable);
+                return;
+            }
+            useable.highlighted = false;
+            Quaternion rotFromCamera =
+                Quaternion.FromToRotation(useable.transform.position - _camera.transform.position, _camera.transform.forward);
+            float useableAngle = Quaternion.Angle(rotFromCamera, Quaternion.identity);
+            if (useableAngle < closestAngle)
+            {
+                _thingToUse = useable;
+                closestAngle = useableAngle;
+            }
+        }
         
+        if (_thingToUse) _thingToUse.highlighted = true;
     }
 
     // shift weapon slot
@@ -86,6 +161,7 @@ public class PlayerInventory : MonoBehaviour
     // actually do the switch
     void SwitchToWeapon(int weaponIndex)
     {
+        if (weaponIndex == _currentWeaponIndex && !holstered) return;
         _currentWeaponIndex = weaponIndex;
         
         // destroy current weapon gameobject and create new one
@@ -95,5 +171,11 @@ public class PlayerInventory : MonoBehaviour
         lastSwitch = Time.time;
 
         holstered = false;
+    }
+
+    public void AddWeapon(WeaponSlot weaponSlot)
+    {
+        weapons.Add(weaponSlot);
+        SwitchToWeapon(weapons.Count - 1);
     }
 }
