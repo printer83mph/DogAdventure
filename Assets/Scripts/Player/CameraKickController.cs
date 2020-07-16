@@ -24,13 +24,13 @@ public class CameraKickController : MonoBehaviour
     void Update()
     {
         // rotation
-        _cameraKickVel = PrintUtil.Damp(_cameraKickVel, Quaternion.identity, kickVelLambda, Time.deltaTime);
         _cameraKickRot *= (Quaternion.SlerpUnclamped(Quaternion.identity, _cameraKickVel, Time.deltaTime));
+        _cameraKickVel = PrintUtil.Damp(_cameraKickVel, Quaternion.identity, kickVelLambda, Time.deltaTime);
         _cameraKickRot = PrintUtil.Damp(_cameraKickRot, Quaternion.identity, kickLambda, Time.deltaTime);
         
         // position
-        _cameraBounceVel = PrintUtil.Damp(_cameraBounceVel, Vector3.zero, bounceVelLambda, Time.deltaTime);
         _cameraBouncePos += _cameraBounceVel * Time.deltaTime;
+        _cameraBounceVel = PrintUtil.Damp(_cameraBounceVel, Vector3.zero, bounceVelLambda, Time.deltaTime);
         _cameraBouncePos = PrintUtil.Damp(_cameraBouncePos, Vector3.zero, bounceLambda, Time.deltaTime);
     }
     
@@ -43,5 +43,5 @@ public class CameraKickController : MonoBehaviour
     {
         _cameraKickRot *= kick;
     }
-    
+
 }

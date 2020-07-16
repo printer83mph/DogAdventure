@@ -108,7 +108,7 @@ public class HitscanGun : MonoBehaviour
 
         }
         
-        _kickController.AddVel(new Vector3(0, 0, -kickBack));
+        _kickController.AddVel(_camera.transform.TransformVector(Vector3.forward * (-kickBack)));
         _kickController.AddKick(Quaternion.Euler(-kickRotation, 0, 0));
         
         _lastShot = Time.time;

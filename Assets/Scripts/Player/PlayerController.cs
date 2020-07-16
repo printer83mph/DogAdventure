@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         // todo: probably shouldn't just use the y value
         // todo: camera bobbing maybe
         _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
-        _camera.transform.Translate(kickController.CameraBouncePos);
+        _camera.transform.position += kickController.CameraBouncePos;
         
     }
 
@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
             // cancel downwards velocity
             if (_midAir)
             {
-                if (landingBounce) kickController.AddVel(_camera.transform.InverseTransformVector(Vector3.up * (_vel.y * landingBounceScale)));
+                if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
                 _midAir = false;
             }
             _vel -= Mathf.Min(Vector3.Dot(hit.normal, _vel), 0) * hit.normal;
