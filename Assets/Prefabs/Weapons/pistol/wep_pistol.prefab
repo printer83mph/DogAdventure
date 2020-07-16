@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6794413555854013559}
   - component: {fileID: 2139015226171618679}
   m_Layer: 8
-  m_Name: pistol
+  m_Name: wep_pistol
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
     type: 3}
   fireDelay: 0.1
   automatic: 0
-  kineticPower: 400
+  kineticPower: 600
   clipSize: 7
   reloadTime: 0.8
   kickBack: 1
