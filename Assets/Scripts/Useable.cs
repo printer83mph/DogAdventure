@@ -6,8 +6,7 @@ public class Useable : MonoBehaviour
 
     public OnUseDelegate onUseDelegate;
 
-    [SerializeField]
-    private Renderer[] _renderers;
+    public Renderer[] renderers;
     public float useDelay = .5f;
     public bool highlighted;
     
@@ -35,7 +34,7 @@ public class Useable : MonoBehaviour
 
     void Highlight()
     {
-        foreach (Renderer renderer in _renderers)
+        foreach (Renderer renderer in renderers)
         {
             foreach (Material material in renderer.materials)
             {
@@ -48,7 +47,7 @@ public class Useable : MonoBehaviour
 
     void UnHighlight()
     {
-        foreach (Renderer renderer in _renderers)
+        foreach (Renderer renderer in renderers)
         {
             foreach (Material material in renderer.materials)
             {

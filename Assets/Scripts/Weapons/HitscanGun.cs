@@ -11,6 +11,7 @@ public class HitscanGun : MonoBehaviour
     [Header("Gun Mechanics")]
     public float fireDelay = .4f;
     public bool automatic = true;
+    public float damage = 5f;
     public float kineticPower = 1000f;
     public int clipSize = 7;
     public float reloadTime = .8f;
@@ -21,7 +22,6 @@ public class HitscanGun : MonoBehaviour
 
     // auto-assigned
     private Weapon _weapon;
-    private Camera _camera;
     private CameraKickController _kickController;
 
     // math
@@ -32,7 +32,6 @@ public class HitscanGun : MonoBehaviour
     void Start()
     {
         _weapon = GetComponent<Weapon>();
-        _camera = Camera.main;
         _kickController = _weapon.playerController.kickController;
         bullets = _weapon.floats.ContainsKey("bullets") ? Mathf.FloorToInt(_weapon.floats["bullets"]) : clipSize;
     }
@@ -90,7 +89,7 @@ public class HitscanGun : MonoBehaviour
         bullets--;
         _weapon.SetFloat("bullets", bullets);
         
-        Ray shotRay = new Ray(_camera.transform.position, _camera.transform.rotation * Vector3.forward);
+        Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
         if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, ~(1 >> 8)))
         {
             // we hit something???
@@ -101,6 +100,13 @@ public class HitscanGun : MonoBehaviour
                 hitRB.AddForceAtPosition(shotRay.direction * kineticPower, hit.point);
             }
 
+            Shootable shootable = hitObject.GetComponent<Shootable>();
+            if (shootable)
+            {
+                shootable.Shoot(_weapon.playerInventory, _weapon, damage, hit);
+            }
+
+            // spawn fx
             Transform fxObject = Instantiate(hitPrefab).transform;
             fxObject.transform.position = hit.point;
             fxObject.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
@@ -108,7 +114,7 @@ public class HitscanGun : MonoBehaviour
 
         }
         
-        _kickController.AddVel(_camera.transform.TransformVector(Vector3.forward * (-kickBack)));
+        _kickController.AddVel(_weapon.cam.transform.TransformVector(Vector3.forward * (-kickBack)));
         _kickController.AddKick(Quaternion.Euler(-kickRotation, 0, 0));
         
         _lastShot = Time.time;

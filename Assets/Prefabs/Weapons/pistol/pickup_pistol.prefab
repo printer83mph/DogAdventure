@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21ae67957ad77a4dbe685b34f96879b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderers:
+  renderers:
   - {fileID: 119692795972832493}
   - {fileID: 1867837326716719833}
   useDelay: 0.5

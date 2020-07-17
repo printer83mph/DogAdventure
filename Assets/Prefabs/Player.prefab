@@ -254,6 +254,7 @@ MonoBehaviour:
   jumpPower: 5
   gravity: 13
   maxSlopeAngle: 45
+  cam: {fileID: 7776562891412486941}
   cameraVelocityShift: 1
   cameraVelocityShiftScale: 0.04
   landingBounce: 1

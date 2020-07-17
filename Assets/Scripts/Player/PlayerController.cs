@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float maxSlopeAngle = 45f;
 
     [Header("Camera Movement")]
+    public Camera cam;
     public bool cameraVelocityShift = true;
     public float cameraVelocityShiftScale = .04f;
 
@@ -29,7 +30,6 @@ public class PlayerController : MonoBehaviour
     public bool invertMouseY = false;
     
     // auto-assigned
-    private Camera _camera;
     private Rigidbody _rb;
     private CapsuleCollider _collider;
     
@@ -50,8 +50,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 Vel => _vel;
 
     private void Awake()
-    {
-        _camera = GetComponentInChildren<Camera>();
+    { 
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
     }
@@ -59,7 +58,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _initialCameraPos = _camera.transform.localPosition;
+        _initialCameraPos = cam.transform.localPosition;
         viewmodelBob.controller = this;
     }
 
@@ -137,7 +136,7 @@ public class PlayerController : MonoBehaviour
         _dRotY = Input.GetAxis("Mouse X") * sensitivity;
         _lookY += _dRotY;
 
-        _camera.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0) * kickController.CameraKickRot;
+        cam.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0) * kickController.CameraKickRot;
 
         // move camera ahead a bit if grounded
         _cameraXZPos = !_midAir && cameraVelocityShift
@@ -147,8 +146,8 @@ public class PlayerController : MonoBehaviour
 
         // todo: probably shouldn't just use the y value
         // todo: camera bobbing maybe
-        _camera.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
-        _camera.transform.position += kickController.CameraBouncePos;
+        cam.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
+        cam.transform.position += kickController.CameraBouncePos;
         
     }
 

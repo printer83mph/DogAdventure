@@ -40,6 +40,10 @@ public class PlayerInventory : MonoBehaviour
     {
         _useables = new List<Useable>();
         // initialize each weaponslot floats dict if not already
+        if (weapons == null)
+        {
+            weapons = new List<WeaponSlot>();
+        }
         foreach (WeaponSlot weaponSlot in weapons)
         {
             if (weaponSlot.Floats == null)
@@ -167,7 +171,7 @@ public class PlayerInventory : MonoBehaviour
         // destroy current weapon gameobject and create new one
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
-        _currentWeapon.Equip(_playerController, this, weapons[weaponIndex].Floats);
+        _currentWeapon.Equip(_playerController, this, _camera, weapons[weaponIndex].Floats);
         lastSwitch = Time.time;
 
         holstered = false;
