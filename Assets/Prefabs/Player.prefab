@@ -216,7 +216,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.4
-  m_Height: 2
+  m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5371100157787185661
@@ -274,11 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 028736b0436abef418999436d11e58e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons:
-  - Weapon: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3,
-      type: 3}
-  - Weapon: {fileID: 4461596093159781327, guid: c45112bc422e9214caf1120576fccd0f,
-      type: 3}
+  weapons: []
   holstered: 1
   maxUseAngle: 30
   lastSwitch: 0
