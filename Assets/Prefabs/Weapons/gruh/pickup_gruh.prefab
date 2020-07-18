@@ -134,6 +134,7 @@ MonoBehaviour:
   weapon:
     Weapon: {fileID: 4461596093159781327, guid: c45112bc422e9214caf1120576fccd0f,
       type: 3}
+    Data: []
 --- !u!64 &1503222564
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -147,7 +148,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 5625885674726844626, guid: 2b441f5f1fc31be4ab78af1843fe9eae, type: 3}
+  m_Mesh: {fileID: -3608975212190783528, guid: 9c3d6520c3373214ca582bf5303eee31, type: 3}
 --- !u!1 &6971382682545805050
 GameObject:
   m_ObjectHideFlags: 0
