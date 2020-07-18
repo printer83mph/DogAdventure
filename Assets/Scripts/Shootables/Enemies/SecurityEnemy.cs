@@ -46,7 +46,6 @@ public class SecurityEnemy : MonoBehaviour
         if (_los != newLos)
         {
             animator.SetBool("lineOfSight", newLos);
-            Debug.Log("Locked/unlocked to player");
         }
         
         if (info.IsName("Base"))
@@ -63,10 +62,6 @@ public class SecurityEnemy : MonoBehaviour
                 RotateTowardsPlayer();
             }
             _agent.isStopped = true;
-            if (info.IsName("Shooting"))
-            {
-                Debug.Log("You got shot you fuckin idiot");
-            }
         }
         _los = newLos;
     }
@@ -81,6 +76,7 @@ public class SecurityEnemy : MonoBehaviour
             Time.deltaTime);
     }
 
+    // returns true if close enough and has LOS to player
     bool GetLOS()
     {
         Ray toPly = new Ray(eyeTransform.position, _player.position - eyeTransform.position);
@@ -94,6 +90,7 @@ public class SecurityEnemy : MonoBehaviour
     void ShootPlayer()
     {
         _health.Damage(.5f, _player.position - eyeTransform.position);
+        Debug.Log("You got shot you fuckin idiot");
     }
     
     void OnShoot(PlayerInventory inventory, Weapon weapon, float damage, RaycastHit hit)

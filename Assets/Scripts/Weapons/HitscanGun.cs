@@ -27,17 +27,18 @@ public class HitscanGun : MonoBehaviour
     // math
     private float _lastShot;
     private bool _reloading;
-    public int bullets;
+
+    private const int BulletsIndex = 0;
 
     void Start()
     {
         _weapon = GetComponent<Weapon>();
         _kickController = _weapon.playerController.kickController;
-        bullets = _weapon.floats.ContainsKey("bullets") ? Mathf.FloorToInt(_weapon.floats["bullets"]) : clipSize;
     }
 
     void Update()
     {
+        int bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
         if (_weapon.CanFire() && Time.time - _lastShot > fireDelay)
         {
             if (_reloading) return;
@@ -53,7 +54,7 @@ public class HitscanGun : MonoBehaviour
             animator.SetBool("trigger", trigger);
             if (firing)
             {
-                Fire();
+                Fire(bullets);
             }
         }
     }
@@ -75,19 +76,17 @@ public class HitscanGun : MonoBehaviour
         _reloading = true;
         yield return new WaitForSeconds(reloadTime);
         _reloading = false;
-        bullets = clipSize;
-        _weapon.SetFloat("bullets", bullets);
+        _weapon.SetFloat(HitscanGun.BulletsIndex, clipSize);
     }
 
-    void Fire()
+    void Fire(int bullets)
     {
         if (bullets == 0)
         {
             // play clicking noise?
             return;
         }
-        bullets--;
-        _weapon.SetFloat("bullets", bullets);
+        _weapon.SetFloat(HitscanGun.BulletsIndex, bullets - 1);
         
         Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
         if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, ~(1 >> 8)))

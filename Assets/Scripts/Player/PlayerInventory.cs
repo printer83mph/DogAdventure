@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: this still isn't serializable
-[Serializable]
-public class WeaponFloatData : Dictionary<String, float> { }
-
 [Serializable]
 public class WeaponSlot
 {
     public GameObject Weapon;
-    [SerializeField]
-    public WeaponFloatData Floats;
+    public float[] Data;
 }
 
 [RequireComponent(typeof(PlayerController))]
@@ -42,13 +37,6 @@ public class PlayerInventory : MonoBehaviour
         if (weapons == null)
         {
             weapons = new List<WeaponSlot>();
-        }
-        foreach (WeaponSlot weaponSlot in weapons)
-        {
-            if (weaponSlot.Floats == null)
-            {
-                weaponSlot.Floats = new WeaponFloatData();
-            }
         }
     }
 
@@ -147,7 +135,7 @@ public class PlayerInventory : MonoBehaviour
         // destroy current weapon gameobject and create new one
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
-        _currentWeapon.Equip(_playerController, this, _camera, weapons[weaponIndex].Floats);
+        _currentWeapon.Equip(_playerController, this, _camera, weapons[weaponIndex]);
         lastSwitch = Time.time;
 
         holstered = false;

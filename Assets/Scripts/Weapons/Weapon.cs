@@ -11,9 +11,12 @@ public class Weapon : MonoBehaviour
     public PlayerInventory playerInventory;
     public Camera cam;
 
-    public WeaponFloatData floats;
+    private WeaponSlot _slot;
 
-    public void Equip(PlayerController controller, PlayerInventory inventory, Camera plyCam, WeaponFloatData inFloats)
+    [SerializeField]
+    public float[] defaultFloatData;
+
+    public void Equip(PlayerController controller, PlayerInventory inventory, Camera plyCam, WeaponSlot weaponSlot)
     {
         playerController = controller;
         playerInventory = inventory;
@@ -23,7 +26,8 @@ public class Weapon : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
-        floats = inFloats;
+        _slot = weaponSlot;
+        if (weaponSlot.Data.Length == 0) weaponSlot.Data = defaultFloatData;
     }
 
     // has it been long enough since a switch?
@@ -32,8 +36,11 @@ public class Weapon : MonoBehaviour
         return Time.time - playerInventory.lastSwitch > switchTime;
     }
 
-    public void SetFloat(String key, float val)
+    public void SetFloat(int index, float val)
     {
-        floats[key] = val;
+        _slot.Data[index] = val;
     }
+
+    public float GetFloat(int index) => _slot.Data[index];
+
 }

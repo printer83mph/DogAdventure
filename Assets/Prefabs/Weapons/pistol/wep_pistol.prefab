@@ -80,6 +80,9 @@ MonoBehaviour:
   switchTime: 0.4
   playerController: {fileID: 0}
   playerInventory: {fileID: 0}
+  cam: {fileID: 0}
+  defaultFloatData:
+  - 7
 --- !u!114 &2139015226171618679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,12 +100,12 @@ MonoBehaviour:
     type: 3}
   fireDelay: 0.1
   automatic: 0
+  damage: 5
   kineticPower: 600
   clipSize: 7
   reloadTime: 0.8
   kickBack: 1
   kickRotation: 1
-  bullets: 0
 --- !u!1 &1751183808732523243
 GameObject:
   m_ObjectHideFlags: 0
