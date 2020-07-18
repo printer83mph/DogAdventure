@@ -59,7 +59,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: lineOfSight
+    m_ConditionEvent: canShoot
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3657596151002332104}
@@ -208,7 +208,7 @@ AnimatorController:
   m_Name: SecurityEnemyController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: lineOfSight
+  - m_Name: canShoot
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -260,7 +260,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: lineOfSight
+    m_ConditionEvent: canShoot
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3657596151002332104}
@@ -285,7 +285,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: lineOfSight
+    m_ConditionEvent: canShoot
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3657596151002332104}
@@ -310,7 +310,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: lineOfSight
+    m_ConditionEvent: canShoot
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3522057987189658257}
@@ -515,7 +515,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: lineOfSight
+    m_ConditionEvent: canShoot
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3522057987189658257}
@@ -561,7 +561,7 @@ BlendTree:
     m_Motion: {fileID: 535405959576967065, guid: 1928ffd6683b3974986a03ef3d0b8e77,
       type: 3}
     m_Threshold: 0
-    m_Position: {x: 0, y: -0.5}
+    m_Position: {x: 0, y: -1}
     m_TimeScale: -1
     m_CycleOffset: 0
     m_DirectBlendParameter: walkRunBlend
@@ -570,7 +570,7 @@ BlendTree:
     m_Motion: {fileID: -8509604957287463728, guid: 1928ffd6683b3974986a03ef3d0b8e77,
       type: 3}
     m_Threshold: 0
-    m_Position: {x: 0.5, y: 0}
+    m_Position: {x: 1, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: walkRunBlend
@@ -579,7 +579,7 @@ BlendTree:
     m_Motion: {fileID: -8509604957287463728, guid: 1928ffd6683b3974986a03ef3d0b8e77,
       type: 3}
     m_Threshold: 0
-    m_Position: {x: -0.5, y: 0}
+    m_Position: {x: -1, y: 0}
     m_TimeScale: -1
     m_CycleOffset: 0
     m_DirectBlendParameter: walkRunBlend

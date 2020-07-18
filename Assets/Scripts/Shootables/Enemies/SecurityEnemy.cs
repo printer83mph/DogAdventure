@@ -27,6 +27,9 @@ public class SecurityEnemy : MonoBehaviour
     private bool _hasLos;
     private bool _inShootingRange;
     private bool _dead;
+    private bool _engaging;
+
+    static int numEngagingPlayer;
     
     // Start is called before the first frame update
     void Start()
@@ -47,6 +50,7 @@ public class SecurityEnemy : MonoBehaviour
         
         _agent.SetDestination(_chadistAI.lastKnownPos);
         
+        // update line of sight and spotting data
         bool newInShootingRange = GetWithinShootDistance();
 
         // update chadist AI if player is spotted
@@ -54,30 +58,45 @@ public class SecurityEnemy : MonoBehaviour
             _chadistAI.SpotPlayer(_player.transform.position);
         }
 
-        // update animator if we have to
-        if (_inShootingRange != newInShootingRange)
-        {
-            animator.SetBool("lineOfSight", newInShootingRange);
+        if (newInShootingRange) {
+            // we are able to shoot the player, but do we?
+            if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
+                //engage
+                _engaging = true;
+                numEngagingPlayer ++;
+                animator.SetBool("canShoot", true);
+            }
+            _agent.isStopped = true;
+        } else {
+            // we're not in range so we need to get there
+            // disengage if we were engaged
+            if (_engaging) {
+                _engaging = false;
+                numEngagingPlayer --;
+                animator.SetBool("canShoot", false);
+            }
+            // dont move if we already have max engaging
+            _agent.isStopped = numEngagingPlayer == _chadistAI.maxSecurityEngaging;
+            _engaging = false;
         }
         
         if (info.IsName("Base"))
         {
             // we're running around until we are in shooting distance
-            _agent.isStopped = _chadistAI.alertStatus == 0;
+            if (_chadistAI.alertStatus == 0)
+            {
+                _agent.isStopped = true;
+            }
             // TODO: wander around if on alert but position not known
             // TODO: limit the number of security enemies confronting player
             Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
             animator.SetFloat("xVel", vel.x);
             animator.SetFloat("zVel", vel.z);
         }
-        else
+        // if not flinched rotate towards player
+        if (!info.IsName("Flinch") && _agent.isStopped)
         {
-            // if not flinched rotate towards player
-            if (!info.IsName("Flinch"))
-            {
-                RotateTowardsPlayer();
-            }
-            _agent.isStopped = true;
+            RotateTowardsPlayer();
         }
         _inShootingRange = newInShootingRange;
     }
@@ -112,6 +131,7 @@ public class SecurityEnemy : MonoBehaviour
     void ShootPlayer()
     {
         _health.Damage(.5f, _player.position - eyeTransform.position);
+        _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
         Debug.Log("You got shot you fuckin idiot");
     }
     
@@ -123,6 +143,9 @@ public class SecurityEnemy : MonoBehaviour
         if (health <= 0)
         {
             _dead = true;
+            if (_engaging) {
+                numEngagingPlayer --;
+            }
             GetComponent<Collider>().enabled = false;
             animator.SetTrigger("death");
             Destroy(gameObject);

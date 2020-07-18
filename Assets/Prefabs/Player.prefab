@@ -314,5 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb3feffbfc46264b8ea988917dd333a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 5371100157787185660}
   health: 1
   maxHealth: 1

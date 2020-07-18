@@ -7,6 +7,7 @@ public class ChadistAI : MonoBehaviour
     
     [Header("Config")]
     public float alertLength = 15;
+    public int maxSecurityEngaging = 2;
 
     [Header("For enemy scripts")]
     public Vector3 lastKnownPos;

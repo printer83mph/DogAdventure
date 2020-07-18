@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlayerController))]
 public class PlayerHealth : MonoBehaviour
 {
 
+    [HideInInspector]
+    public PlayerController _controller;
     public float health = 1;
 
     public float maxHealth = 1;
+
+    void Awake() {
+        _controller = GetComponent<PlayerController>();
+    }
 
     public void Damage(float amt, Vector3 direction)
     {
