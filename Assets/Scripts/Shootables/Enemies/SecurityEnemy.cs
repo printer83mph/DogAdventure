@@ -11,7 +11,7 @@ public class SecurityEnemy : MonoBehaviour
 
     public float maxShootDistance = 7f;
     public float maxVisionDistance = 20f;
-    public float walkSpeedAnimScale = .2f;
+    public float walkRunScaler = .2f;
 
     public float health = 10;
 
@@ -66,7 +66,9 @@ public class SecurityEnemy : MonoBehaviour
             _agent.isStopped = _chadistAI.alertStatus == 0;
             // TODO: wander around if on alert but position not known
             // TODO: limit the number of security enemies confronting player
-            animator.SetFloat("walkSpeed", _agent.velocity.magnitude * walkSpeedAnimScale);
+            Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
+            animator.SetFloat("xVel", vel.x);
+            animator.SetFloat("zVel", vel.z);
         }
         else
         {
