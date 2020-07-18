@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3131214214449730643}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.59, z: 0}
+  m_LocalPosition: {x: 0, y: 0.572, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2778404886368998129}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 5371100157787185660}
   - component: {fileID: 1851843836}
   - component: {fileID: 2007013324}
-  - component: {fileID: 1087356102}
+  - component: {fileID: 2015314402}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -216,7 +216,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.4
-  m_Height: 1.7
+  m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5371100157787185661
@@ -254,6 +254,9 @@ MonoBehaviour:
   jumpPower: 5
   gravity: 13
   maxSlopeAngle: 45
+  standable:
+    serializedVersion: 2
+    m_Bits: 1
   cam: {fileID: 7776562891412486941}
   cameraVelocityShift: 1
   cameraVelocityShiftScale: 0.04
@@ -295,16 +298,17 @@ MonoBehaviour:
   bounceLambda: 10
   kickVelLambda: 10
   kickLambda: 10
---- !u!135 &1087356102
-SphereCollider:
+--- !u!114 &2015314402
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5371100157787185663}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.7
-  m_Center: {x: 0, y: 0.54, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb3feffbfc46264b8ea988917dd333a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  maxHealth: 1

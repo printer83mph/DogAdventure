@@ -21,6 +21,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField]
     public List<WeaponSlot> weapons;
     public bool holstered = true;
+    public float interactDistance = 2f;
 
     private PlayerController _playerController;
     private Camera _camera;
@@ -32,13 +33,11 @@ public class PlayerInventory : MonoBehaviour
     [HideInInspector]
     public float lastSwitch;
     
-    private List<Useable> _useables;
     private Useable _thingToUse;
     private bool _using;
 
     private void Awake()
     {
-        _useables = new List<Useable>();
         // initialize each weaponslot floats dict if not already
         if (weapons == null)
         {
@@ -103,48 +102,25 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Useable useable = other.transform.GetComponent<Useable>();
-        if (useable)
-        {
-            _useables.Add(useable);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Useable useable = other.transform.GetComponent<Useable>();
-        if (_useables.Contains(useable))
-        {
-            _useables.Remove(useable);
-            useable.highlighted = false;
-        }
-    }
-
     void CheckUseables()
     {
         _thingToUse = null;
         // break if list is empty
-        if (_useables.Count == 0)
+        if (Useable.useables.Count == 0)
         {
             return;
         }
         // limit use angle? idk
         float closestAngle = maxUseAngle;
-        foreach (Useable useable in _useables)
+        foreach (Useable useable in Useable.useables)
         {
-            // does it exist anymore??
-            if (!useable)
-            {
-                _useables.Remove(useable);
-                return;
-            }
             useable.highlighted = false;
+            Vector3 vToCam = useable.transform.position - _camera.transform.position;
+            // todo: require LOS
             Quaternion rotFromCamera =
-                Quaternion.FromToRotation(useable.transform.position - _camera.transform.position, _camera.transform.forward);
+                Quaternion.FromToRotation(vToCam, _camera.transform.forward);
             float useableAngle = Quaternion.Angle(rotFromCamera, Quaternion.identity);
-            if (useableAngle < closestAngle)
+            if (useableAngle < closestAngle && vToCam.sqrMagnitude < Math.Pow(interactDistance, 2))
             {
                 _thingToUse = useable;
                 closestAngle = useableAngle;

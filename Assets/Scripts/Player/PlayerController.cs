@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
     public float gravity = 13f;
     public float maxSlopeAngle = 45f;
+    public LayerMask standable;
 
     [Header("Camera Movement")]
     public Camera cam;
@@ -160,7 +161,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 startSpot = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y + _collider.radius + .1f,
             _collider.bounds.center.z);
-        if (Physics.SphereCast(startSpot, _collider.radius / 2 + .1f, Vector3.down, out RaycastHit hit, _collider.radius / 2 + .05f, ~(1 << 8)))
+        if (Physics.SphereCast(startSpot, _collider.radius / 2 + .1f, Vector3.down, out RaycastHit hit, _collider.radius / 2 + .05f, standable))
         {
             // cancel downwards velocity
             if (_midAir)

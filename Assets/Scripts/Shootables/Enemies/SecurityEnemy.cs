@@ -23,8 +23,8 @@ public class SecurityEnemy : MonoBehaviour
     private bool _los;
     private bool _dead;
 
-    private static List<SecurityEnemy> _securityEnemies = new List<SecurityEnemy>();
-
+    // todo: last known player position
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -32,12 +32,6 @@ public class SecurityEnemy : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player").transform;
         _health = _player.GetComponent<PlayerHealth>();
-        _securityEnemies.Add(this);
-    }
-
-    private void OnDestroy()
-    {
-        _securityEnemies.Remove(this);
     }
 
     private void Update()

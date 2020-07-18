@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Useable : MonoBehaviour
 {
@@ -13,9 +14,17 @@ public class Useable : MonoBehaviour
     private bool _highlighted;
     private float _lastUse;
 
+    public static List<Useable> useables = new List<Useable>();
+
     private void Start()
     {
         onUseDelegate += OnUse;
+        useables.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        useables.Remove(this);
     }
 
     private void Update()
