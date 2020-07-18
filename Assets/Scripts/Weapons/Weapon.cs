@@ -27,6 +27,7 @@ public class Weapon : MonoBehaviour
         transform.localRotation = Quaternion.identity;
 
         _slot = weaponSlot;
+        // if no data provided then update with defaults
         if (weaponSlot.Data.Length == 0) weaponSlot.Data = defaultFloatData;
     }
 

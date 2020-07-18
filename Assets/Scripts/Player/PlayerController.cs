@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpPower = 5f;
     public float gravity = 13f;
     public float maxSlopeAngle = 45f;
-    public LayerMask standable;
+    public LayerMask standable = 0;
 
     [Header("Camera Movement")]
     public Camera cam;
@@ -145,8 +145,6 @@ public class PlayerController : MonoBehaviour
                 Time.deltaTime)
             : PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
 
-        // TODO: probably shouldn't just use the y value
-        // TODO: camera bobbing maybe
         cam.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
         cam.transform.position += kickController.CameraBouncePos;
         

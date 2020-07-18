@@ -280,6 +280,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons: []
   holstered: 1
+  interactDistance: 2
+  interactMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   maxUseAngle: 30
   lastSwitch: 0
 --- !u!114 &2007013324

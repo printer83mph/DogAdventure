@@ -17,6 +17,7 @@ public class PlayerInventory : MonoBehaviour
     public List<WeaponSlot> weapons;
     public bool holstered = true;
     public float interactDistance = 2f;
+    public LayerMask interactMask = ~0;
 
     private PlayerController _playerController;
     private Camera _camera;
@@ -103,15 +104,19 @@ public class PlayerInventory : MonoBehaviour
         foreach (Useable useable in Useable.useables)
         {
             useable.highlighted = false;
-            Vector3 vToCam = useable.transform.position - _camera.transform.position;
-            // TODO: require LOS
+            Vector3 vFromCam = useable.transform.position - _camera.transform.position;
             Quaternion rotFromCamera =
-                Quaternion.FromToRotation(vToCam, _camera.transform.forward);
+                Quaternion.FromToRotation(vFromCam, _camera.transform.forward);
             float useableAngle = Quaternion.Angle(rotFromCamera, Quaternion.identity);
-            if (useableAngle < closestAngle && vToCam.sqrMagnitude < Math.Pow(interactDistance, 2))
+            if (useableAngle < closestAngle)
             {
-                _thingToUse = useable;
-                closestAngle = useableAngle;
+                // make sure we have los
+                if (Physics.Raycast(_camera.transform.position, vFromCam, out RaycastHit hit, interactDistance, interactMask)) {
+                    if (hit.transform == useable.transform) {
+                        _thingToUse = useable;
+                        closestAngle = useableAngle;
+                    }
+                }
             }
         }
         

@@ -9,20 +9,24 @@ public class SecurityEnemy : MonoBehaviour
     public Animator animator;
     public Transform eyeTransform;
 
-    public float maxShootDistance = 20f;
+    public float maxShootDistance = 7f;
+    public float maxVisionDistance = 20f;
     public float walkSpeedAnimScale = .2f;
 
     public float health = 10;
 
     public LayerMask layerMask;
     
+    // auto-assigned
     private NavMeshAgent _agent;
     private Transform _player;
     private PlayerHealth _health;
-    private bool _los;
-    private bool _dead;
+    private ChadistAI _chadistAI;
 
-    // TODO: last known player position
+    // math stuff
+    private bool _hasLos;
+    private bool _inShootingRange;
+    private bool _dead;
     
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,7 @@ public class SecurityEnemy : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player").transform;
         _health = _player.GetComponent<PlayerHealth>();
+        _chadistAI = GameObject.FindWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     private void Update()
@@ -40,18 +45,25 @@ public class SecurityEnemy : MonoBehaviour
         // base layer info
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
         
-        _agent.SetDestination(_player.position);
+        _agent.SetDestination(_chadistAI.lastKnownPos);
         
-        bool newLos = GetLOS();
-        if (_los != newLos)
+        bool newInShootingRange = GetWithinShootDistance();
+
+        // update chadist AI if player is spotted
+        if (_hasLos) {
+            _chadistAI.SpotPlayer(_player.transform.position);
+        }
+
+        // update animator if we have to
+        if (_inShootingRange != newInShootingRange)
         {
-            animator.SetBool("lineOfSight", newLos);
+            animator.SetBool("lineOfSight", newInShootingRange);
         }
         
         if (info.IsName("Base"))
         {
-            // we're running around until we get line of sight
-            _agent.isStopped = false;
+            // we're running around until we are in shooting distance
+            _agent.isStopped = _chadistAI.alertStatus == 0;
             animator.SetFloat("walkSpeed", _agent.velocity.magnitude * walkSpeedAnimScale);
         }
         else
@@ -63,7 +75,7 @@ public class SecurityEnemy : MonoBehaviour
             }
             _agent.isStopped = true;
         }
-        _los = newLos;
+        _inShootingRange = newInShootingRange;
     }
 
     void RotateTowardsPlayer()
@@ -76,13 +88,19 @@ public class SecurityEnemy : MonoBehaviour
             Time.deltaTime);
     }
 
-    // returns true if close enough and has LOS to player
-    bool GetLOS()
+    bool GetWithinShootDistance()
     {
         Ray toPly = new Ray(eyeTransform.position, _player.position - eyeTransform.position);
-        if (Physics.Raycast(toPly, out RaycastHit hit, maxShootDistance, layerMask))
+        if (Physics.Raycast(toPly, out RaycastHit hit, maxVisionDistance, layerMask))
         {
-            if (hit.transform == _player) return true;
+            if (hit.transform == _player) {
+                _hasLos = true;
+                if (hit.distance < maxShootDistance) {
+                    return true;
+                } else return false;
+            } else {
+                _hasLos = false;
+            }
         }
         return false;
     }
