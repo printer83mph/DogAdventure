@@ -21,6 +21,7 @@ public class PlayerInventory : MonoBehaviour
 
     private PlayerController _playerController;
     private Camera _camera;
+    private PlayerHealth _health;
 
     public float maxUseAngle = 30f;
     
@@ -44,7 +45,9 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         _playerController = GetComponent<PlayerController>();
-        _camera = Camera.main;
+        _health = GetComponent<PlayerHealth>();
+        _health.onDeathDelegate += OnDeath;
+        _camera = _playerController.cam;
         lastSwitch = Time.time;
         if (!holstered)
         {
@@ -54,6 +57,9 @@ public class PlayerInventory : MonoBehaviour
 
     void Update()
     {
+
+        if (_health.Dead) return;
+
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         int scrollMeaning = scrollInput == 0 ? 0 : Mathf.RoundToInt(Mathf.Sign(scrollInput));
         if (holstered && weapons.Count != 0)
@@ -151,5 +157,12 @@ public class PlayerInventory : MonoBehaviour
     {
         weapons.Add(weaponSlot);
         SwitchToWeapon(weapons.Count - 1);
+    }
+
+    private void OnDeath() {
+        // delete all children
+        foreach (Transform trans in _camera.transform) {
+            Destroy(trans.gameObject);
+        }
     }
 }

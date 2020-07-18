@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     // auto-assigned
     private Rigidbody _rb;
     private CapsuleCollider _collider;
+    private PlayerHealth _health;
     
     // math stuff
     private Vector3 _initialCameraPos;
@@ -61,11 +62,16 @@ public class PlayerController : MonoBehaviour
     {
         _initialCameraPos = cam.transform.localPosition;
         viewmodelBob.controller = this;
+        _health = GetComponent<PlayerHealth>();
+        _health.onDeathDelegate += OnDeath;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        // dont do movement if dead
+        if (_health.Dead) return;
 
         // get desired movement
         Vector3 desiredMovement = InputAxisTransform(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -179,4 +185,14 @@ public class PlayerController : MonoBehaviour
     {
         newGuy.parent = viewmodelBob.transform;
     }
+
+    private void OnDeath() {
+        CapsuleCollider col = GetComponent<CapsuleCollider>();
+        col.height = .2f;
+        col.center = col.center + Vector3.up * .4f;
+
+        _rb.useGravity = true;
+        _rb.velocity = _vel;
+    }
+
 }
