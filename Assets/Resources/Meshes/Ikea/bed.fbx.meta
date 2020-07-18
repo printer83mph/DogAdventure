@@ -3,7 +3,12 @@ guid: 2c99f71a24abd04409be99c5946c9d8b
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IkeaDiffuse
+    second: {fileID: 2100000, guid: 81dbda13937365a4abf6d30880ab1463, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
