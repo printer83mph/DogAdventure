@@ -50,8 +50,11 @@ public class SecurityEnemy : MonoBehaviour
         _agent.SetDestination(_player.position);
         
         bool newLos = GetLOS();
-        if (newLos != _los) animator.SetBool("lineOfSight", newLos);
-        _los = newLos;
+        if (_los != newLos)
+        {
+            animator.SetBool("lineOfSight", newLos);
+            Debug.Log("Locked/unlocked to player");
+        }
         
         if (info.IsName("Base"))
         {
@@ -61,6 +64,7 @@ public class SecurityEnemy : MonoBehaviour
         }
         else
         {
+            // if not flinched rotate towards player
             if (!info.IsName("Flinch"))
             {
                 RotateTowardsPlayer();
@@ -71,6 +75,7 @@ public class SecurityEnemy : MonoBehaviour
                 Debug.Log("You got shot you fuckin idiot");
             }
         }
+        _los = newLos;
     }
 
     void RotateTowardsPlayer()
