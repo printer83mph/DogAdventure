@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// todo: this still isn't serializable
+// TODO: this still isn't serializable
 [Serializable]
 public class WeaponFloatData : Dictionary<String, float> { }
 
@@ -116,7 +116,7 @@ public class PlayerInventory : MonoBehaviour
         {
             useable.highlighted = false;
             Vector3 vToCam = useable.transform.position - _camera.transform.position;
-            // todo: require LOS
+            // TODO: require LOS
             Quaternion rotFromCamera =
                 Quaternion.FromToRotation(vToCam, _camera.transform.forward);
             float useableAngle = Quaternion.Angle(rotFromCamera, Quaternion.identity);

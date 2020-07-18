@@ -145,8 +145,8 @@ public class PlayerController : MonoBehaviour
                 Time.deltaTime)
             : PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
 
-        // todo: probably shouldn't just use the y value
-        // todo: camera bobbing maybe
+        // TODO: probably shouldn't just use the y value
+        // TODO: camera bobbing maybe
         cam.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
         cam.transform.position += kickController.CameraBouncePos;
         

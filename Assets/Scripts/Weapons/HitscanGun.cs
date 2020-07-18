@@ -110,7 +110,7 @@ public class HitscanGun : MonoBehaviour
             Transform fxObject = Instantiate(hitPrefab).transform;
             fxObject.transform.position = hit.point;
             fxObject.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
-            // todo: destroy object after a bit
+            // TODO: destroy object after a bit
 
         }
         

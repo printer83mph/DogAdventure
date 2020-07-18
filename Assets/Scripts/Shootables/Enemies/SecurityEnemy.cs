@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Shootable))]
@@ -23,7 +22,7 @@ public class SecurityEnemy : MonoBehaviour
     private bool _los;
     private bool _dead;
 
-    // todo: last known player position
+    // TODO: last known player position
     
     // Start is called before the first frame update
     void Start()
