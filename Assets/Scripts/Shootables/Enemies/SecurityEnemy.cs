@@ -64,6 +64,8 @@ public class SecurityEnemy : MonoBehaviour
         {
             // we're running around until we are in shooting distance
             _agent.isStopped = _chadistAI.alertStatus == 0;
+            // TODO: wander around if on alert but position not known
+            // TODO: limit the number of security enemies confronting player
             animator.SetFloat("walkSpeed", _agent.velocity.magnitude * walkSpeedAnimScale);
         }
         else
