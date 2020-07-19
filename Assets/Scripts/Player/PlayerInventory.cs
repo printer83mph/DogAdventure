@@ -17,6 +17,7 @@ public class PlayerInventory : MonoBehaviour
     public List<WeaponSlot> weapons;
     public bool holstered = true;
     public float interactDistance = 2f;
+    public float scrollScale = 10f;
     public LayerMask interactMask = ~0;
 
     private PlayerController _playerController;
@@ -100,8 +101,8 @@ public class PlayerInventory : MonoBehaviour
         if (Mathf.Sign(deltaScroll * _scrollBuildup) < 0) {
             _scrollBuildup = 0;
         }
-        _scrollBuildup = Mathf.MoveTowards(_scrollBuildup, 0, Time.deltaTime * 1f);
-        _scrollBuildup += deltaScroll;
+        _scrollBuildup = Mathf.MoveTowards(_scrollBuildup, 0, Time.deltaTime * 3f);
+        _scrollBuildup += deltaScroll * scrollScale;
         if (Mathf.Abs(_scrollBuildup) >= 1) {
             int scrollAmt = (int)Mathf.Sign(_scrollBuildup);
             _scrollBuildup = 0;
