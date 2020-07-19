@@ -101,15 +101,11 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     void AimSpineBone() {
-        Debug.Log("Aiming bone");
         aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up), animator.GetFloat("AimAccuracy"));
     }
 
     private void LateUpdate() {
-        if (_info.IsName("Aiming") || _info.IsName("Firing"))
-        {
-            AimSpineBone();
-        }
+        AimSpineBone();
     }
 
     void RotateTowardsPlayer()

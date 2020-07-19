@@ -205,6 +205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b2d7f29449b8f469747d67742667ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fxPrefab: {fileID: 2198771929463619118, guid: b8736118f7b938046b31b486def279a9,
+    type: 3}
 --- !u!136 &919132147582485607
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -249,7 +251,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 769
   maxDistance: 25
-  maxAngle: 70
+  maxAngle: 90
 --- !u!1 &822369700498334130
 GameObject:
   m_ObjectHideFlags: 0

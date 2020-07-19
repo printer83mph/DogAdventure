@@ -6,7 +6,7 @@ public class HitscanGun : MonoBehaviour
 {
 
     public Animator animator;
-    public GameObject hitPrefab;
+    public GameObject defaultHitPrefab;
     
     [Header("Gun Mechanics")]
     public float fireDelay = .4f;
@@ -110,12 +110,17 @@ public class HitscanGun : MonoBehaviour
             if (shootable)
             {
                 shootable.Shoot(_weapon.playerInventory, _weapon, damage, hit);
+                if (shootable.fxPrefab) {
+                    Debug.Log("spawned custom guy");
+                    SpawnHitFX(shootable.fxPrefab, hit);
+                } else {
+                    SpawnHitFX(defaultHitPrefab, hit);
+                }
+            } else {
+                // spawn fx
+                SpawnHitFX(defaultHitPrefab, hit);
             }
 
-            // spawn fx
-            Transform fxObject = Instantiate(hitPrefab).transform;
-            fxObject.transform.position = hit.point;
-            fxObject.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
 
         }
         
@@ -124,6 +129,12 @@ public class HitscanGun : MonoBehaviour
         
         _lastShot = Time.time;
         animator.SetTrigger("fire");
+    }
+
+    void SpawnHitFX(GameObject fxObject, RaycastHit hit) {
+        Transform fxTransform = Instantiate(fxObject).transform;
+        fxTransform.transform.position = hit.point;
+        fxTransform.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
     }
 
 }

@@ -6,6 +6,8 @@ public class Shootable : MonoBehaviour
     public delegate void OnShootDelegate(PlayerInventory inventory, Weapon weapon, float damage, RaycastHit hit);
 
     public OnShootDelegate onShootDelegate;
+    
+    public GameObject fxPrefab;
 
     void Start()
     {
