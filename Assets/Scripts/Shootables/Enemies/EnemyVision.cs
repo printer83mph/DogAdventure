@@ -26,7 +26,7 @@ public class EnemyVision : MonoBehaviour {
 
         _playerLOSDistance = -1;
         Ray toPly = new Ray(eyeTransform.position, _playerCam.transform.position - eyeTransform.position);
-        if (Vector3.Angle(toPly.direction, transform.forward) > maxAngle) return;
+        if (Vector3.Angle(toPly.direction, eyeTransform.forward) > maxAngle) return;
         if (Physics.Raycast(toPly, out RaycastHit hit, maxDistance, layerMask))
         {
             if (hit.transform == _player.transform) {

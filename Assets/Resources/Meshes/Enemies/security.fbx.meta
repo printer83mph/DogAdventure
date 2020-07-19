@@ -87,7 +87,7 @@ ModelImporter:
       takeName: SecurityRig|Idle
       internalID: 0
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -285,10 +285,10 @@ ModelImporter:
             value: 1
             inSlope: 0
             outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
+            tangentMode: 1
+            weightedMode: 2
             inWeight: 0
-            outWeight: 0
+            outWeight: 0.7479092
           - serializedVersion: 3
             time: 1
             value: 0
