@@ -26,12 +26,12 @@ public class PlayerInventory : MonoBehaviour
     public float maxUseAngle = 30f;
     
     private int _currentWeaponIndex;
+    private float _scrollBuildup;
     private Weapon _currentWeapon;
     [HideInInspector]
     public float lastSwitch;
     
     private Useable _thingToUse;
-    private bool _using;
 
     private void Awake()
     {
@@ -60,11 +60,14 @@ public class PlayerInventory : MonoBehaviour
 
         if (_health.Dead) return;
 
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        int scrollMeaning = scrollInput == 0 ? 0 : Mathf.RoundToInt(Mathf.Sign(scrollInput));
+        int newSlot = KeySwitchWeaponSlot();
+        if (newSlot > -1) {
+            SwitchToWeapon( newSlot );
+        }
+        int scrollMeaning = ScrollMeaning();
         if (holstered && weapons.Count != 0)
         {
-            if (Input.GetMouseButtonDown(0) || scrollMeaning != 0)
+            if (Input.GetButton("Fire1") || scrollMeaning != 0)
             {
                 SwitchToWeapon(_currentWeaponIndex);
             } 
@@ -83,19 +86,30 @@ public class PlayerInventory : MonoBehaviour
 
         // highlight useable element
         CheckUseables();
-        if (Input.GetAxis("Use") > 0)
+        if (Input.GetButtonDown("Use"))
         {
-            if (_thingToUse && !_using)
+            if (_thingToUse)
             {
                 _thingToUse.Use(this);
-                _using = true;
             }
         }
-        else
-        {
-            _using = false;
-        }
 
+    }
+
+    private int ScrollMeaning() {
+        float deltaScroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Sign(deltaScroll * _scrollBuildup) < 0) {
+            _scrollBuildup = 0;
+        }
+        _scrollBuildup = Mathf.MoveTowards(_scrollBuildup, 0, Time.deltaTime * 1f);
+        _scrollBuildup += deltaScroll;
+        if (Mathf.Abs(_scrollBuildup) >= 1) {
+            int scrollAmt = (int)Mathf.Sign(_scrollBuildup);
+            _scrollBuildup = 0;
+            return scrollAmt;
+        } else {
+            return 0;
+        }
     }
 
     void CheckUseables()
@@ -128,6 +142,17 @@ public class PlayerInventory : MonoBehaviour
         }
         
         if (_thingToUse) _thingToUse.highlighted = true;
+    }
+
+    // returns whatever weapon we've switched to with the keyboard
+    public int KeySwitchWeaponSlot() {
+        int outVal = -1;
+        for (int i = 0; i < weapons.Count && i < 4; i++) {
+            if (Input.GetButton("Weapon Slot " + (i + 1))) {
+                outVal = i;
+            }
+        }
+        return outVal;
     }
 
     // shift weapon slot

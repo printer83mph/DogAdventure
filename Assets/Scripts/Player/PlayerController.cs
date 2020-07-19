@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
             _vel = Vector3.MoveTowards(_vel, groundRotation * (globalDesiredMovement * actualSpeed), Time.fixedDeltaTime * groundControl);
 
             // detect jump
-            if (Input.GetAxis("Jump") > 0)
+            if (Input.GetButtonDown("Jump"))
             {
                 _vel.y = jumpPower;
             }

@@ -42,15 +42,15 @@ public class HitscanGun : MonoBehaviour
         if (_weapon.CanFire() && Time.time - _lastShot > fireDelay)
         {
             if (_reloading) return;
-            if ((Input.GetAxis("Reload") > 0 && bullets < clipSize) || bullets == 0)
+            if ((Input.GetButton("Reload") && bullets < clipSize) || bullets == 0)
             {
                 Reload();
                 return;
             }
             
-            bool trigger = Input.GetMouseButton(0);
+            bool trigger = Input.GetButton("Fire1");
             bool firing = trigger;
-            if (!automatic) firing = Input.GetMouseButtonDown(0);
+            if (!automatic) firing = Input.GetButtonDown("Fire1");
             animator.SetBool("trigger", trigger);
             if (firing)
             {
