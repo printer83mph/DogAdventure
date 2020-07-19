@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(Shootable))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(EnemyVision))]
 public class SecurityEnemy : MonoBehaviour
 {
 
@@ -51,7 +52,7 @@ public class SecurityEnemy : MonoBehaviour
         _agent.SetDestination(_chadistAI.lastKnownPos);
         
         // update line of sight and spotting data
-        bool newInShootingRange = GetWithinShootDistance();
+        float playerLOSDistance = _vision.GetPlayerLOS();
 
         // update chadist AI if player is spotted
         if (_hasLos) {
@@ -108,23 +109,6 @@ public class SecurityEnemy : MonoBehaviour
             Quaternion.Euler(0,
                 Quaternion.LookRotation(_player.position - transform.position, Vector3.up).eulerAngles.y, 0), 10f,
             Time.deltaTime);
-    }
-
-    bool GetWithinShootDistance()
-    {
-        Ray toPly = new Ray(eyeTransform.position, _player.position - eyeTransform.position);
-        if (Physics.Raycast(toPly, out RaycastHit hit, maxVisionDistance, layerMask))
-        {
-            if (hit.transform == _player) {
-                _hasLos = true;
-                if (hit.distance < maxShootDistance) {
-                    return true;
-                } else return false;
-            } else {
-                _hasLos = false;
-            }
-        }
-        return false;
     }
 
     void ShootPlayer()
