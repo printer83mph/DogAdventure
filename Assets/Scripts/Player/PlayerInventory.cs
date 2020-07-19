@@ -79,7 +79,6 @@ public class PlayerInventory : MonoBehaviour
             if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
             _currentWeaponIndex = 0;
         } else if (scrollMeaning != 0)
-        // TODO: use numbers to switch weapons
         {
             SwitchWeapons( scrollMeaning );
         }

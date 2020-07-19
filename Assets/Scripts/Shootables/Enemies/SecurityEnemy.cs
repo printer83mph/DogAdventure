@@ -88,7 +88,6 @@ public class SecurityEnemy : MonoBehaviour
                 _agent.isStopped = true;
             }
             // TODO: wander around if on alert but position not known
-            // TODO: limit the number of security enemies confronting player
             Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
             animator.SetFloat("xVel", vel.x);
             animator.SetFloat("zVel", vel.z);
