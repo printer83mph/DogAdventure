@@ -15,6 +15,7 @@ public class HitscanGun : MonoBehaviour
     public float kineticPower = 1000f;
     public int clipSize = 7;
     public float reloadTime = .8f;
+    public bool silenced;
 
     [Header("Feedback")]
     public float kickBack = 3;
@@ -23,6 +24,7 @@ public class HitscanGun : MonoBehaviour
     // auto-assigned
     private Weapon _weapon;
     private CameraKickController _kickController;
+    private ChadistAI _chadistAI;
 
     // math
     private float _lastShot;
@@ -34,6 +36,7 @@ public class HitscanGun : MonoBehaviour
     {
         _weapon = GetComponent<Weapon>();
         _kickController = _weapon.playerController.kickController;
+        _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     void Update()
@@ -87,6 +90,10 @@ public class HitscanGun : MonoBehaviour
             return;
         }
         _weapon.SetFloat(HitscanGun.BulletsIndex, bullets - 1);
+
+        if (!silenced) {
+            _chadistAI.SpotPlayer(transform.position);
+        }
         
         Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
         if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, ~(1 >> 8)))

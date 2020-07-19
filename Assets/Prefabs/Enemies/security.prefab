@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 770465045131024044}
   - component: {fileID: 919132147582485607}
   - component: {fileID: 2056050807}
+  - component: {fileID: 2097991825}
   m_Layer: 9
   m_Name: security
   m_TagString: Untagged
@@ -167,12 +168,8 @@ MonoBehaviour:
   animator: {fileID: 770465045131024016}
   eyeTransform: {fileID: 9056160615948956586}
   maxShootDistance: 7
-  maxVisionDistance: 20
-  walkRunScaler: 0.2
+  walkRunScaler: 0.5
   health: 15
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 769
 --- !u!195 &770465045131024019
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -234,6 +231,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzle: {fileID: 1052511545}
+--- !u!114 &2097991825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463963334036732138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05f8575539fa0c4898359f25d8ceb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 9056160615948956586}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 769
+  maxDistance: 25
+  maxAngle: 70
 --- !u!1 &822369700498334130
 GameObject:
   m_ObjectHideFlags: 0

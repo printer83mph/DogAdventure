@@ -11,22 +11,18 @@ public class SecurityEnemy : MonoBehaviour
     public Transform eyeTransform;
 
     public float maxShootDistance = 7f;
-    public float maxVisionDistance = 20f;
     public float walkRunScaler = .2f;
 
     public float health = 10;
-
-    public LayerMask layerMask;
     
     // auto-assigned
+    private EnemyVision _vision;
     private NavMeshAgent _agent;
     private Transform _player;
     private PlayerHealth _health;
     private ChadistAI _chadistAI;
 
     // math stuff
-    private bool _hasLos;
-    private bool _inShootingRange;
     private bool _dead;
     private bool _engaging;
 
@@ -36,6 +32,7 @@ public class SecurityEnemy : MonoBehaviour
     void Start()
     {
         GetComponent<Shootable>().onShootDelegate += OnShoot;
+        _vision = GetComponent<EnemyVision>();
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player").transform;
         _health = _player.GetComponent<PlayerHealth>();
@@ -49,28 +46,29 @@ public class SecurityEnemy : MonoBehaviour
         // base layer info
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
         
-        _agent.SetDestination(_chadistAI.lastKnownPos);
-        
         // update line of sight and spotting data
-        float playerLOSDistance = _vision.GetPlayerLOS();
+        bool canSeePlayer = _vision.CanSeePlayer;
+        float playerDistance = _vision.PlayerLOSDistance;
 
-        // update chadist AI if player is spotted
-        if (_hasLos) {
+        _agent.SetDestination(_chadistAI.lastKnownPos);
+
+        if (canSeePlayer) {
+            
+            // update chadist AI if player is spotted
             _chadistAI.SpotPlayer(_player.transform.position);
-        }
 
-        if (newInShootingRange) {
-            // we are able to shoot the player, but do we?
-            if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
-                //engage
-                _engaging = true;
-                numEngagingPlayer ++;
-                animator.SetBool("canShoot", true);
+            if (playerDistance < maxShootDistance) {
+                // we are able to shoot the player, but do we?
+                if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
+                    //engage
+                    _engaging = true;
+                    numEngagingPlayer ++;
+                    animator.SetBool("canShoot", true);
+                }
+                _agent.isStopped = true;
             }
-            _agent.isStopped = true;
         } else {
-            // we're not in range so we need to get there
-            // disengage if we were engaged
+            // cannot see player - 
             if (_engaging) {
                 _engaging = false;
                 numEngagingPlayer --;
@@ -81,24 +79,22 @@ public class SecurityEnemy : MonoBehaviour
             _engaging = false;
         }
         
+        if (_chadistAI.alertStatus == 0)
+        {
+            _agent.isStopped = true;
+        } else {
+            if (!info.IsName("Flinch") && _agent.isStopped) {
+                RotateTowardsPlayer();
+            }
+        }
+
         if (info.IsName("Base"))
         {
-            // we're running around until we are in shooting distance
-            if (_chadistAI.alertStatus == 0)
-            {
-                _agent.isStopped = true;
-            }
             // TODO: wander around if on alert but position not known
             Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
             animator.SetFloat("xVel", vel.x);
             animator.SetFloat("zVel", vel.z);
         }
-        // if not flinched rotate towards player
-        if (!info.IsName("Flinch") && _agent.isStopped)
-        {
-            RotateTowardsPlayer();
-        }
-        _inShootingRange = newInShootingRange;
     }
 
     void RotateTowardsPlayer()
