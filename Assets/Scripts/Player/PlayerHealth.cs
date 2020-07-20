@@ -10,6 +10,7 @@ public class PlayerHealth : MonoBehaviour
     [HideInInspector]
     public PlayerController _controller;
     public float health = 1;
+    public bool god;
 
     public float maxHealth = 1;
 
@@ -22,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Damage(float amt, Vector3 direction)
     {
-        if (Dead) return;
+        if (Dead || god) return;
         health -= amt;
         health = Mathf.Max(0, health);
         if (health == 0) onDeathDelegate();

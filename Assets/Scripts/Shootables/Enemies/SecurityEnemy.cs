@@ -46,62 +46,73 @@ public class SecurityEnemy : MonoBehaviour
     {
         if (_dead) return;
         
-        // base layer info
-        _info = animator.GetCurrentAnimatorStateInfo(0);
+        // flinch layer info
+        _info = animator.GetCurrentAnimatorStateInfo(1);
         
         // update line of sight and spotting data
         bool canSeePlayer = _vision.CanSeePlayer;
+        animator.SetBool("searching", !canSeePlayer);
         float playerDistance = _vision.PlayerLOSDistance;
 
         _agent.SetDestination(_chadistAI.lastKnownPos);
+
+        // block moving if we have max engaging or we're flinching
+        bool blockedFromMoving = numEngagingPlayer == _chadistAI.maxSecurityEngaging || _info.IsName("Flinch");
 
         if (canSeePlayer) {
 
             // update chadist AI if player is spotted
             _chadistAI.SpotPlayer(_player.transform.position);
-
+            
             if (playerDistance < maxShootDistance) {
                 // we are able to shoot the player, but do we?
                 if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
                     //engage
                     _engaging = true;
                     numEngagingPlayer ++;
+                    Debug.Log(numEngagingPlayer + " engaging");
                     animator.SetBool("canShoot", true);
                 }
-                _agent.isStopped = true;
+            } else {
+                // we can see them but can't shoot - disengage
+                if (_engaging) {
+                    _engaging = false;
+                    numEngagingPlayer --;
+                    Debug.Log(numEngagingPlayer + " engaging");
+                    animator.SetBool("canShoot", false);
+                }
             }
         } else {
-            // cannot see player - 
+            // cannot see player - disengage
             if (_engaging) {
                 _engaging = false;
                 numEngagingPlayer --;
-                animator.SetBool("canShoot", false);
+                Debug.Log(numEngagingPlayer + " engaging");
             }
             // dont move if we already have max engaging
-            _agent.isStopped = numEngagingPlayer == _chadistAI.maxSecurityEngaging;
-            _engaging = false;
+            animator.SetBool("canShoot", false);
         }
+
+        _agent.isStopped = _engaging || blockedFromMoving;
         
         if (_chadistAI.alertStatus == 0)
         {
             _agent.isStopped = true;
         } else {
+            animator.SetBool("idle", false);
             if (!_info.IsName("Flinch") && _agent.isStopped) {
                 RotateTowardsPlayer();
             }
         }
 
-        if (_info.IsName("Base"))
-        {
-            // TODO: wander around if on alert but position not known
-            Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
-            animator.SetFloat("xVel", vel.x);
-            animator.SetFloat("zVel", vel.z);
-        }
+        Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
+        animator.SetFloat("xVel", vel.x);
+        animator.SetFloat("zVel", vel.z);
     }
 
     void AimSpineBone() {
-        aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up), animator.GetFloat("AimAccuracy"));
+        Quaternion requiredRotation = Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up);
+        aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, requiredRotation, animator.GetFloat("AimAccuracy"));
     }
 
     private void LateUpdate() {
@@ -115,7 +126,7 @@ public class SecurityEnemy : MonoBehaviour
         Vector2 plyxzPos = new Vector2(plyPos.x, plyPos.z);
         transform.rotation = PrintUtil.Damp(transform.rotation,
             Quaternion.Euler(0,
-                Quaternion.LookRotation(plyPos - transform.position, Vector3.up).eulerAngles.y, 0), 10f,
+                Quaternion.LookRotation(plyPos - transform.position, Vector3.up).eulerAngles.y, 0), 4f,
             Time.deltaTime);
     }
 
