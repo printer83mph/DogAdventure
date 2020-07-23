@@ -42,6 +42,24 @@ public class SecurityEnemy : MonoBehaviour
         _chadistAI = GameObject.FindWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
+    private void TryEngage() {
+        if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
+            _engaging = true;
+            numEngagingPlayer ++;
+            animator.SetBool("canShoot", true);
+            Debug.Log(numEngagingPlayer + " engaging");
+        }
+    }
+
+    private void TryDisengage() {
+        if (_engaging) {
+            _engaging = false;
+            numEngagingPlayer --;
+            animator.SetBool("canShoot", false);
+            Debug.Log(numEngagingPlayer + " engaging");
+        }
+    }
+
     private void Update()
     {
         if (_dead) return;
@@ -66,28 +84,16 @@ public class SecurityEnemy : MonoBehaviour
             
             if (playerDistance < maxShootDistance) {
                 // we are able to shoot the player, but do we?
-                if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
-                    //engage
-                    _engaging = true;
-                    numEngagingPlayer ++;
-                    animator.SetBool("canShoot", true);
-                }
+                TryEngage();
             } else {
                 // we can see them but can't shoot - disengage
-                if (_engaging) {
-                    _engaging = false;
-                    numEngagingPlayer --;
-                    animator.SetBool("canShoot", false);
-                }
+                TryDisengage();
             }
         } else {
+
             // cannot see player - disengage
-            if (_engaging) {
-                _engaging = false;
-                numEngagingPlayer --;
-            }
-            // dont move if we already have max engaging
-            animator.SetBool("canShoot", false);
+            TryDisengage();
+
         }
 
         _agent.isStopped = _engaging || blockedFromMoving;
@@ -138,9 +144,7 @@ public class SecurityEnemy : MonoBehaviour
         if (health <= 0)
         {
             _dead = true;
-            if (_engaging) {
-                numEngagingPlayer --;
-            }
+            TryDisengage();
             GetComponent<Collider>().enabled = false;
             animator.SetTrigger("death");
             Destroy(gameObject);
