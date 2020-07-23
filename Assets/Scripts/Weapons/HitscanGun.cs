@@ -45,7 +45,7 @@ public class HitscanGun : MonoBehaviour
     public void OnFire1(InputValue val) {
         float amt = val.Get<float>();
         animator.SetBool("trigger", amt > 0);
-        if (amt > 0) _firing = true;
+        _firing = (amt > 0);
     }
 
     public void OnReload(InputValue val) {
