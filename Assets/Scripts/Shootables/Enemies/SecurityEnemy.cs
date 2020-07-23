@@ -47,7 +47,7 @@ public class SecurityEnemy : MonoBehaviour
             _engaging = true;
             numEngagingPlayer ++;
             animator.SetBool("canShoot", true);
-            Debug.Log(numEngagingPlayer + " engaging");
+            // Debug.Log(numEngagingPlayer + " engaging");
         }
     }
 
@@ -56,7 +56,7 @@ public class SecurityEnemy : MonoBehaviour
             _engaging = false;
             numEngagingPlayer --;
             animator.SetBool("canShoot", false);
-            Debug.Log(numEngagingPlayer + " engaging");
+            // Debug.Log(numEngagingPlayer + " engaging");
         }
     }
 
