@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class WeaponSlot
@@ -13,19 +14,23 @@ public class WeaponSlot
 public class PlayerInventory : MonoBehaviour
 {
 
+    // inspector stuff
     [SerializeField]
     public List<WeaponSlot> weapons;
     public bool holstered = true;
     public float interactDistance = 2f;
     public float scrollScale = 10f;
     public LayerMask interactMask = ~0;
+    public float maxUseAngle = 30f;
 
+    // auto-assigned
     private PlayerController _playerController;
     private Camera _camera;
     private PlayerHealth _health;
-
-    public float maxUseAngle = 30f;
+    private PlayerInput _input;
+    private InputAction m_Fire1;
     
+    // math things
     private int _currentWeaponIndex;
     private float _scrollBuildup;
     private Weapon _currentWeapon;
@@ -36,17 +41,20 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
+        _playerController = GetComponent<PlayerController>();
+        _health = GetComponent<PlayerHealth>();
         // initialize each weaponslot floats dict if not already
         if (weapons == null)
         {
             weapons = new List<WeaponSlot>();
         }
+
+        _input = GetComponent<PlayerInput>();
+        m_Fire1 = _input.actions["Fire1"];
     }
 
     void Start()
     {
-        _playerController = GetComponent<PlayerController>();
-        _health = GetComponent<PlayerHealth>();
         _health.onDeathDelegate += OnDeath;
         _camera = _playerController.cam;
         lastSwitch = Time.time;
@@ -56,60 +64,44 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void OnWeaponSwitch(InputValue val) {
+        if (weapons.Count == 0) return;
+        float scrollInput = val.Get<float>();
+        if (scrollInput == 0) return;
+        if (holstered) {
+            SwitchToWeapon(_currentWeaponIndex);
+        } else {
+            SwitchWeapons( (int)Mathf.Sign(scrollInput) );
+        }
+    }
+
+    public void OnWeaponSlot(InputValue val) {
+        float num = val.Get<float>();
+        if (num == 0) return;
+        SwitchToWeapon( (int)num - 1 );
+    }
+
+    public void OnFire1(InputValue val) {
+        if (holstered && weapons.Count > 0) {
+            SwitchToWeapon(_currentWeaponIndex);
+        }
+    }
+
+    public void OnUse() {
+        if (_thingToUse)
+        {
+            _thingToUse.Use(this);
+        }
+    }
+
     void Update()
     {
 
         if (_health.Dead) return;
 
-        int newSlot = KeySwitchWeaponSlot();
-        if (newSlot > -1) {
-            SwitchToWeapon( newSlot );
-        }
-        int scrollMeaning = ScrollMeaning();
-        if (holstered && weapons.Count != 0)
-        {
-            if (Input.GetButton("Fire1") || scrollMeaning != 0)
-            {
-                SwitchToWeapon(_currentWeaponIndex);
-            } 
-        }
-        else if (Input.GetAxis("Holster") > 0)
-        {
-            // holster the weapon
-            holstered = true;
-            if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
-            _currentWeaponIndex = 0;
-        } else if (scrollMeaning != 0)
-        {
-            SwitchWeapons( scrollMeaning );
-        }
-
         // highlight useable element
         CheckUseables();
-        if (Input.GetButtonDown("Use"))
-        {
-            if (_thingToUse)
-            {
-                _thingToUse.Use(this);
-            }
-        }
 
-    }
-
-    private int ScrollMeaning() {
-        float deltaScroll = Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Sign(deltaScroll * _scrollBuildup) < 0) {
-            _scrollBuildup = 0;
-        }
-        _scrollBuildup = Mathf.MoveTowards(_scrollBuildup, 0, Time.deltaTime * 3f);
-        _scrollBuildup += deltaScroll * scrollScale;
-        if (Mathf.Abs(_scrollBuildup) >= 1) {
-            int scrollAmt = (int)Mathf.Sign(_scrollBuildup);
-            _scrollBuildup = 0;
-            return scrollAmt;
-        } else {
-            return 0;
-        }
     }
 
     void CheckUseables()
@@ -144,17 +136,6 @@ public class PlayerInventory : MonoBehaviour
         if (_thingToUse) _thingToUse.highlighted = true;
     }
 
-    // returns whatever weapon we've switched to with the keyboard
-    public int KeySwitchWeaponSlot() {
-        int outVal = -1;
-        for (int i = 0; i < weapons.Count && i < 4; i++) {
-            if (Input.GetButton("Weapon Slot " + (i + 1))) {
-                outVal = i;
-            }
-        }
-        return outVal;
-    }
-
     // shift weapon slot
     void SwitchWeapons(int amt)
     {
@@ -166,7 +147,9 @@ public class PlayerInventory : MonoBehaviour
     // actually do the switch
     void SwitchToWeapon(int weaponIndex)
     {
+        // don't do anything if we're switching to the same weapon
         if (weaponIndex == _currentWeaponIndex && !holstered) return;
+        if (weaponIndex >= weapons.Count) return;
         _currentWeaponIndex = weaponIndex;
         
         // destroy current weapon gameobject and create new one

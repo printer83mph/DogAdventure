@@ -70,7 +70,6 @@ public class SecurityEnemy : MonoBehaviour
                     //engage
                     _engaging = true;
                     numEngagingPlayer ++;
-                    Debug.Log(numEngagingPlayer + " engaging");
                     animator.SetBool("canShoot", true);
                 }
             } else {
@@ -78,7 +77,6 @@ public class SecurityEnemy : MonoBehaviour
                 if (_engaging) {
                     _engaging = false;
                     numEngagingPlayer --;
-                    Debug.Log(numEngagingPlayer + " engaging");
                     animator.SetBool("canShoot", false);
                 }
             }
@@ -87,7 +85,6 @@ public class SecurityEnemy : MonoBehaviour
             if (_engaging) {
                 _engaging = false;
                 numEngagingPlayer --;
-                Debug.Log(numEngagingPlayer + " engaging");
             }
             // dont move if we already have max engaging
             animator.SetBool("canShoot", false);
@@ -98,11 +95,8 @@ public class SecurityEnemy : MonoBehaviour
         if (_chadistAI.alertStatus == 0)
         {
             _agent.isStopped = true;
-        } else {
-            animator.SetBool("idle", false);
-            if (!_info.IsName("Flinch") && _agent.isStopped) {
-                RotateTowardsPlayer();
-            }
+        } else if (!_info.IsName("Flinch") && _agent.isStopped) {
+            RotateTowardsPlayer();
         }
 
         Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
@@ -134,7 +128,6 @@ public class SecurityEnemy : MonoBehaviour
     {
         _health.Damage(gunDamage, _player.transform.position - eyeTransform.position);
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
-        Debug.Log("You got shot you fuckin idiot");
     }
     
     void OnShoot(PlayerInventory inventory, Weapon weapon, float damage, RaycastHit hit)

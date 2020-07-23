@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
+
     // inspector vars
     [Header("Movement")]
     public float speed = 4f;
@@ -34,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rb;
     private CapsuleCollider _collider;
     private PlayerHealth _health;
+    private PlayerInput _input;
     
     // math stuff
     private Vector3 _initialCameraPos;
@@ -45,6 +49,10 @@ public class PlayerController : MonoBehaviour
     private float _lookX;
     private float _dRotY;
     private float _dRotX;
+    private InputAction m_Move;
+    private InputAction m_Jump;
+    private InputAction m_Sprint;
+    private InputAction m_Aim;
 
     public float DRotX => _dRotX;
     public float DRotY => _dRotY;
@@ -55,6 +63,13 @@ public class PlayerController : MonoBehaviour
     { 
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+
+        // setup input stuff
+        _input = GetComponent<PlayerInput>();
+        m_Move = _input.actions["Move"];
+        m_Jump = _input.actions["Jump"];
+        m_Sprint = _input.actions["Sprint"];
+        m_Aim = _input.actions["Aim"];
     }
 
     // Start is called before the first frame update
@@ -74,9 +89,10 @@ public class PlayerController : MonoBehaviour
         if (_health.Dead) return;
 
         // get desired movement
-        Vector3 desiredMovement = InputAxisTransform(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 moveInput = m_Move.ReadValue<Vector2>();
+        Vector3 desiredMovement = new Vector3(moveInput.x, 0, moveInput.y);
         Vector3 globalDesiredMovement = PlayerRotation() * desiredMovement;
-        float actualSpeed = speed * (Input.GetAxis("Sprint") > 0 ? sprintMultiplier : 1);
+        float actualSpeed = speed * (m_Sprint.ReadValue<float>() > 0 ? sprintMultiplier : 1);
         
         Quaternion groundRotation = GetGroundRotation();
 
@@ -87,7 +103,7 @@ public class PlayerController : MonoBehaviour
             _vel = Vector3.MoveTowards(_vel, groundRotation * (globalDesiredMovement * actualSpeed), Time.fixedDeltaTime * groundControl);
 
             // detect jump
-            if (Input.GetButtonDown("Jump"))
+            if (m_Jump.triggered)
             {
                 _vel.y = jumpPower;
             }
@@ -136,11 +152,12 @@ public class PlayerController : MonoBehaviour
 
     void CameraMovement()
     {
-        _dRotX = (invertMouseY ? 1 : -1) * Input.GetAxis("Mouse Y") * sensitivity;
+        Vector2 deltaAim = m_Aim.ReadValue<Vector2>();
+        _dRotX = (invertMouseY ? 1 : -1) * deltaAim.y * sensitivity;
         _lookX += _dRotX;
         _lookX = Mathf.Clamp(_lookX, -90, 90);
         
-        _dRotY = Input.GetAxis("Mouse X") * sensitivity;
+        _dRotY = deltaAim.x * sensitivity;
         _lookY += _dRotY;
 
         cam.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0) * kickController.CameraKickRot;
@@ -154,11 +171,6 @@ public class PlayerController : MonoBehaviour
         cam.transform.localPosition = _initialCameraPos + new Vector3(_cameraXZPos.x, 0, _cameraXZPos.y);
         cam.transform.position += kickController.CameraBouncePos;
         
-    }
-
-    Vector3 InputAxisTransform(float hor, float vert)
-    {
-        return new Vector3(hor * (float)Mathf.Sqrt(1 - Mathf.Pow(vert, 2) / 2), 0, vert * (float)Mathf.Sqrt(1 - Mathf.Pow(hor, 2) / 2));
     }
 
     bool CheckGrounded()

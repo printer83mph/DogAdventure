@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Weapon))]
 public class HitscanGun : MonoBehaviour
@@ -27,6 +28,8 @@ public class HitscanGun : MonoBehaviour
     private ChadistAI _chadistAI;
 
     // math
+    private int _bullets;
+    private bool _firing;
     private float _lastShot;
     private bool _reloading;
 
@@ -39,28 +42,34 @@ public class HitscanGun : MonoBehaviour
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
+    public void OnFire1(InputValue val) {
+        float amt = val.Get<float>();
+        animator.SetBool("trigger", amt > 0);
+        if (amt > 0) _firing = true;
+    }
+
+    public void OnReload(InputValue val) {
+        if (!CanFire()) return;
+        if (_bullets < clipSize) {
+            Reload();
+        }
+    }
+
     void Update()
     {
-        int bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
-        if (_weapon.CanFire() && Time.time - _lastShot > fireDelay)
+        _bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
+        if (CanFire())
         {
-            if (_reloading) return;
-            if ((Input.GetButton("Reload") && bullets < clipSize) || bullets == 0)
-            {
+            if (_firing) {
+                Fire();
+                if (!automatic || _bullets == 0) _firing = false;
+            } else if (_bullets == 0 && CanFire()) {
                 Reload();
-                return;
-            }
-            
-            bool trigger = Input.GetButton("Fire1");
-            bool firing = trigger;
-            if (!automatic) firing = Input.GetButtonDown("Fire1");
-            animator.SetBool("trigger", trigger);
-            if (firing)
-            {
-                Fire(bullets);
             }
         }
     }
+
+    private bool CanFire() => _weapon.CanFire() && Time.time - _lastShot > fireDelay && !_reloading;
 
     public void SetFireRate(float fireRate)
     {
@@ -69,6 +78,7 @@ public class HitscanGun : MonoBehaviour
 
     void Reload()
     {
+        _firing = false;
         animator.SetBool("trigger", false);
         StartCoroutine(ReloadCoroutine());
         animator.SetTrigger("reload");
@@ -82,14 +92,14 @@ public class HitscanGun : MonoBehaviour
         _weapon.SetFloat(HitscanGun.BulletsIndex, clipSize);
     }
 
-    void Fire(int bullets)
+    void Fire()
     {
-        if (bullets == 0)
+        if (_bullets == 0)
         {
             // play clicking noise?
             return;
         }
-        _weapon.SetFloat(HitscanGun.BulletsIndex, bullets - 1);
+        _weapon.SetFloat(HitscanGun.BulletsIndex, _bullets - 1);
 
         if (!silenced) {
             _chadistAI.SpotPlayer(transform.position);
@@ -111,7 +121,6 @@ public class HitscanGun : MonoBehaviour
             {
                 shootable.Shoot(_weapon.playerInventory, _weapon, damage, hit);
                 if (shootable.fxPrefab) {
-                    Debug.Log("spawned custom guy");
                     SpawnHitFX(shootable.fxPrefab, hit);
                 } else {
                     SpawnHitFX(defaultHitPrefab, hit);
