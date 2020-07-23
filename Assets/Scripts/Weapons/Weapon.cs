@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
         playerInventory = inventory;
         cam = plyCam;
         
-        playerController.AddToViewmodel(transform);
+        playerInventory.AddToViewmodel(transform);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 

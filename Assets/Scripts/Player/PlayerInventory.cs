@@ -25,6 +25,7 @@ public class PlayerInventory : MonoBehaviour
 
     // auto-assigned
     private PlayerController _playerController;
+    private ViewmodelBob _viewmodelBob;
     private Camera _camera;
     private PlayerHealth _health;
     private PlayerInput _input;
@@ -57,6 +58,7 @@ public class PlayerInventory : MonoBehaviour
     {
         _health.onDeathDelegate += OnDeath;
         _camera = _playerController.cam;
+        _viewmodelBob = _playerController.viewmodelBob;
         lastSwitch = Time.time;
         if (!holstered)
         {
@@ -102,6 +104,11 @@ public class PlayerInventory : MonoBehaviour
         // highlight useable element
         CheckUseables();
 
+    }
+
+    public void AddToViewmodel(Transform newGuy)
+    {
+        newGuy.parent = _viewmodelBob.transform;
     }
 
     void CheckUseables()

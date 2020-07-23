@@ -251,7 +251,7 @@ MonoBehaviour:
   speed: 4
   sprintMultiplier: 1.5
   groundControl: 40
-  airControl: 16
+  airControl: 0.02
   jumpPower: 5
   gravity: 13
   maxSlopeAngle: 45

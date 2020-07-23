@@ -111,12 +111,16 @@ public class PlayerController : MonoBehaviour
         else
         {
 
-            // print("Midair at " + Time.time);
-            Vector2 newVel = Vector2.MoveTowards(new Vector2(_vel.x, _vel.z),
-                new Vector2(globalDesiredMovement.x, globalDesiredMovement.z) * actualSpeed, Time.fixedDeltaTime * airControl);
+            // stop in midair but dont gain vel
+            Vector2 xzVel = new Vector2(_vel.x, _vel.z);
+            Vector2 desiredXZVel = new Vector2(globalDesiredMovement.x, globalDesiredMovement.z);
 
-            _vel.x = newVel.x;
-            _vel.z = newVel.y;
+            float velDot = Vector2.Dot(xzVel, desiredXZVel);
+            // Vector2 newXZVel = xzVel - desiredXZVel * Mathf.Min(velDot * airControl, 0);
+            // _vel.x = newXZVel.x;
+            // _vel.z = newXZVel.y;
+
+            _vel += globalDesiredMovement * (airControl * Mathf.Max(speed - velDot, 0) * Time.fixedDeltaTime);
             
             _vel.y -= gravity * Time.fixedDeltaTime;
         }
@@ -125,6 +129,11 @@ public class PlayerController : MonoBehaviour
         _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
         _rb.velocity = Vector3.zero;
 
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        ContactPoint point = other.GetContact(0);
+        _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
     }
     
     void LateUpdate()
@@ -191,11 +200,6 @@ public class PlayerController : MonoBehaviour
 
         _midAir = true;
         return false;
-    }
-
-    public void AddToViewmodel(Transform newGuy)
-    {
-        newGuy.parent = viewmodelBob.transform;
     }
 
     private void OnDeath() {
