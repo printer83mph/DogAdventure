@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rb;
     private CapsuleCollider _collider;
     private PlayerHealth _health;
-    private PlayerInput _input;
+    [HideInInspector]
+    public PlayerInput input;
     
     // math stuff
     private Vector3 _initialCameraPos;
@@ -50,7 +51,6 @@ public class PlayerController : MonoBehaviour
     private float _dRotY;
     private float _dRotX;
     private InputAction m_Move;
-    private InputAction m_Jump;
     private InputAction m_Sprint;
     private InputAction m_Aim;
 
@@ -65,11 +65,11 @@ public class PlayerController : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
 
         // setup input stuff
-        _input = GetComponent<PlayerInput>();
-        m_Move = _input.actions["Move"];
-        m_Jump = _input.actions["Jump"];
-        m_Sprint = _input.actions["Sprint"];
-        m_Aim = _input.actions["Aim"];
+        input = GetComponent<PlayerInput>();
+        m_Move = input.actions["Move"];
+        m_Sprint = input.actions["Sprint"];
+        m_Aim = input.actions["Aim"];
+        input.actions["Jump"].performed += _ => Jump();
     }
 
     // Start is called before the first frame update
@@ -102,11 +102,6 @@ public class PlayerController : MonoBehaviour
             // ground movement
             _vel = Vector3.MoveTowards(_vel, groundRotation * (globalDesiredMovement * actualSpeed), Time.fixedDeltaTime * groundControl);
 
-            // detect jump
-            if (m_Jump.triggered)
-            {
-                _vel.y = jumpPower;
-            }
         }
         else
         {
@@ -129,6 +124,11 @@ public class PlayerController : MonoBehaviour
         _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
         _rb.velocity = Vector3.zero;
 
+    }
+
+    void Jump() {
+        if (_midAir) return;
+        _vel.y = jumpPower;
     }
 
     private void OnCollisionEnter(Collision other) {

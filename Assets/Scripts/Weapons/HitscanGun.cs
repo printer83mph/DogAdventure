@@ -26,6 +26,8 @@ public class HitscanGun : MonoBehaviour
     private Weapon _weapon;
     private CameraKickController _kickController;
     private ChadistAI _chadistAI;
+    private PlayerInput _input;
+    private InputAction m_Fire;
 
     // math
     private int _bullets;
@@ -40,15 +42,18 @@ public class HitscanGun : MonoBehaviour
         _weapon = GetComponent<Weapon>();
         _kickController = _weapon.playerController.kickController;
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
+        // setup callbacks
+        _input = _weapon.playerController.input;
+        m_Fire = _input.actions["Fire1"];
+        _input.actions["Reload"].performed += ReloadInput;
     }
 
-    public void OnFire1(InputValue val) {
-        float amt = val.Get<float>();
-        animator.SetBool("trigger", amt > 0);
-        _firing = (amt > 0);
+    void OnDestroy() {
+        // remove callbacks
+        _input.actions["Reload"].performed -= ReloadInput;
     }
 
-    public void OnReload(InputValue val) {
+    public void ReloadInput(InputAction.CallbackContext ctx) {
         if (!CanFire()) return;
         if (_bullets < clipSize) {
             Reload();
@@ -60,11 +65,20 @@ public class HitscanGun : MonoBehaviour
         _bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
         if (CanFire())
         {
-            if (_firing) {
-                Fire();
-                if (!automatic || _bullets == 0) _firing = false;
-            } else if (_bullets == 0 && CanFire()) {
+            if (_bullets == 0) {
                 Reload();
+            } else {
+                float pressure = m_Fire.ReadValue<float>();
+                bool held = pressure > .5f;
+                animator.SetBool("trigger", held);
+                if (held) {
+                    // return if we're holding fire on semi
+                    if (_firing && !automatic) return;
+                    Fire();
+                    _firing = true;
+                    return;
+                }
+                _firing = false;
             }
         }
     }

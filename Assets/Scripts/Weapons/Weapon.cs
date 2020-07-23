@@ -16,11 +16,11 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     public float[] defaultFloatData;
 
-    public void Equip(PlayerController controller, PlayerInventory inventory, Camera plyCam, WeaponSlot weaponSlot)
+    public void Equip(PlayerController controller, PlayerInventory inventory, WeaponSlot weaponSlot)
     {
         playerController = controller;
         playerInventory = inventory;
-        cam = plyCam;
+        cam = controller.cam;
         
         playerInventory.AddToViewmodel(transform);
         transform.localPosition = Vector3.zero;
@@ -29,6 +29,10 @@ public class Weapon : MonoBehaviour
         _slot = weaponSlot;
         // if no data provided then update with defaults
         if (weaponSlot.Data.Length == 0) weaponSlot.Data = defaultFloatData;
+    }
+
+    public void OnEquip() {
+        
     }
 
     // has it been long enough since a switch?

@@ -29,7 +29,6 @@ public class PlayerInventory : MonoBehaviour
     private Camera _camera;
     private PlayerHealth _health;
     private PlayerInput _input;
-    private InputAction m_Fire1;
     
     // math things
     private int _currentWeaponIndex;
@@ -51,7 +50,10 @@ public class PlayerInventory : MonoBehaviour
         }
 
         _input = GetComponent<PlayerInput>();
-        m_Fire1 = _input.actions["Fire1"];
+        _input.actions["Fire1"].performed += ctx => OnFire(ctx.ReadValue<float>());
+        _input.actions["WeaponSwitch"].performed += ctx => OnWeaponSwitch(ctx.ReadValue<float>());
+        _input.actions["WeaponSlot"].performed += ctx => OnSlotSelect(ctx.ReadValue<float>());
+        _input.actions["Use"].performed += _ => OnUse();
     }
 
     void Start()
@@ -66,26 +68,24 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void OnWeaponSwitch(InputValue val) {
-        if (weapons.Count == 0) return;
-        float scrollInput = val.Get<float>();
-        if (scrollInput == 0) return;
+    public void OnWeaponSwitch(float amt) {
+        if (weapons.Count == 0 || amt == 0) return;
         if (holstered) {
             SwitchToWeapon(_currentWeaponIndex);
         } else {
-            SwitchWeapons( (int)Mathf.Sign(scrollInput) );
+            SwitchWeapons( (int)Mathf.Sign(amt) );
         }
     }
 
-    public void OnWeaponSlot(InputValue val) {
-        float num = val.Get<float>();
-        if (num == 0) return;
-        SwitchToWeapon( (int)num - 1 );
+    public void OnSlotSelect(float newSlot) {
+        if (newSlot == 0) return;
+        SwitchToWeapon( (int)newSlot - 1 );
     }
 
-    public void OnFire1(InputValue val) {
+    public void OnFire(float amt) {
         if (holstered && weapons.Count > 0) {
             SwitchToWeapon(_currentWeaponIndex);
+            return;
         }
     }
 
@@ -162,7 +162,7 @@ public class PlayerInventory : MonoBehaviour
         // destroy current weapon gameobject and create new one
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
-        _currentWeapon.Equip(_playerController, this, _camera, weapons[weaponIndex]);
+        _currentWeapon.Equip(_playerController, this, weapons[weaponIndex]);
         lastSwitch = Time.time;
 
         holstered = false;
