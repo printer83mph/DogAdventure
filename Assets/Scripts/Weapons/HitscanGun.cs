@@ -8,6 +8,7 @@ public class HitscanGun : MonoBehaviour
 
     public Animator animator;
     public GameObject defaultHitPrefab;
+    public LayerMask layerMask = (1 << 9) | (1 << 0);
     
     [Header("Gun Mechanics")]
     public float fireDelay = .4f;
@@ -120,7 +121,7 @@ public class HitscanGun : MonoBehaviour
         }
         
         Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
-        if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, ~(1 >> 8)))
+        if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, layerMask))
         {
             // we hit something???
             Transform hitObject = hit.transform;
@@ -133,7 +134,7 @@ public class HitscanGun : MonoBehaviour
             Shootable shootable = hitObject.GetComponent<Shootable>();
             if (shootable)
             {
-                shootable.Shoot(_weapon.playerInventory, _weapon, damage, hit);
+                shootable.Shoot(new PlayerShotInfo(_weapon.playerInventory, _weapon, damage, hit, shotRay.direction));
                 if (shootable.fxPrefab) {
                     SpawnHitFX(shootable.fxPrefab, hit);
                 } else {

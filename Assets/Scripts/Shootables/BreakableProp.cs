@@ -12,9 +12,9 @@ public class BreakableProp : MonoBehaviour
         GetComponent<Shootable>().onShootDelegate += OnShoot;
     }
     
-    public void OnShoot(PlayerInventory inventory, Weapon weapon, float damage, RaycastHit hit)
+    public void OnShoot(PlayerShotInfo info)
     {
-        health -= damage;
+        health -= info.damage;
         if (health <= 0)
         {
             Break();

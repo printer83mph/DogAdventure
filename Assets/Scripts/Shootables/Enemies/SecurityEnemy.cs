@@ -116,6 +116,7 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     private void LateUpdate() {
+        if (_dead) return;
         AimSpineBone();
     }
 
@@ -136,18 +137,20 @@ public class SecurityEnemy : MonoBehaviour
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
     }
     
-    void OnShoot(PlayerInventory inventory, Weapon weapon, float damage, RaycastHit hit)
+    void OnShoot(PlayerShotInfo info)
     {
         // flinch and shit
-        animator.SetTrigger("flinch");
-        health -= damage;
+        health -= info.damage;
         if (health <= 0)
         {
             _dead = true;
             TryDisengage();
-            GetComponent<Collider>().enabled = false;
             animator.SetTrigger("death");
-            Destroy(gameObject);
+            GetComponent<EnemyRagdoll>().HitDeath(info);
+            _agent.enabled = false;
+            // Destroy(gameObject);
+        } else {
+            animator.SetTrigger("flinch");
         }
     }
 }

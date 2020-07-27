@@ -98,6 +98,9 @@ MonoBehaviour:
   animator: {fileID: 7638105109414828988}
   defaultHitPrefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
     type: 3}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 513
   fireDelay: 0.1
   automatic: 0
   damage: 5
