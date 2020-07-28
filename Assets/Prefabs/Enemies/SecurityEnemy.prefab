@@ -205,7 +205,7 @@ MonoBehaviour:
   eyeTransform: {fileID: 9056160615948956586}
   layerMask:
     serializedVersion: 2
-    m_Bits: 769
+    m_Bits: 513
   maxDistance: 25
   maxAngle: 90
 --- !u!114 &770465045131024018
@@ -240,8 +240,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitRB: {fileID: 5646271489306842610}
-  deathForceScale: 70
-  invSquareDistanceScale: 3
+  deathForceScale: 80
+  invSquareDistanceScale: 4
   _startEnabled: 0
 --- !u!114 &2056050807
 MonoBehaviour:

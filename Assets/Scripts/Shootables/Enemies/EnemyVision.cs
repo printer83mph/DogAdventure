@@ -4,10 +4,10 @@ public class EnemyVision : MonoBehaviour {
 
     public Transform eyeTransform;
 
-    public LayerMask layerMask;
+    public LayerMask layerMask = (1 << 0) | (1 << 9);
 
     public float maxDistance = 25;
-    public float maxAngle = 70;
+    public float maxAngle = 85;
 
     private float _playerLOSDistance;
     public float PlayerLOSDistance => _playerLOSDistance;
