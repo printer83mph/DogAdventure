@@ -145,14 +145,19 @@ public class SecurityEnemy : MonoBehaviour
         health -= info.damage;
         if (health <= 0)
         {
-            _dead = true;
-            TryDisengage();
-            animator.SetTrigger("death");
-            GetComponent<EnemyRagdoll>().HitDeath(info);
-            _agent.enabled = false;
-            // Destroy(gameObject);
+            Die(info);
         } else {
             animator.SetTrigger("flinch");
         }
+    }
+
+    private void Die(PlayerShotInfo info) {
+        _dead = true;
+        TryDisengage();
+        animator.SetTrigger("death");
+        GetComponent<EnemyRagdoll>().HitDeath(info);
+        _vision.enabled = false;
+        _agent.enabled = false;
+        // Destroy(gameObject);
     }
 }
