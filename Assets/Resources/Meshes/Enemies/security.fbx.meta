@@ -481,13 +481,13 @@ ModelImporter:
       takeName: SecurityRig|LookAround
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 90
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      hasAdditiveReferencePose: 0
+      hasAdditiveReferencePose: 1
       loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
@@ -504,7 +504,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 30
+      additiveReferencePoseFrame: 22.5
     - serializedVersion: 16
       name: SecurityRig|BasePose
       takeName: SecurityRig|BasePose
