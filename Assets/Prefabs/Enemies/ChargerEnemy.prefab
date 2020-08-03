@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 1937772319890075955}
   - component: {fileID: 1937772319890075953}
   - component: {fileID: 1937772319890075956}
+  - component: {fileID: 229650632}
   m_Layer: 9
   m_Name: ChargerEnemy
   m_TagString: Untagged
@@ -300,7 +301,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e8945aafb1e173c4cb0662bab3fefc71, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -318,7 +319,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -354,7 +355,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 4721613406568953159}
   maxChargeDistance: 10
-  chargeAccel: 1
+  chargeDistanceBuffer: 1
+  chargeAccel: 10000
+  turnSpeed: 200
 --- !u!136 &1937772319890075956
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -362,13 +365,35 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030408854991156615}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1854c24025fc5b748b4f0b8cc65d086c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.33845735
   m_Height: 1.6499907
   m_Direction: 1
   m_Center: {x: 0, y: 0.822967, z: 0}
+--- !u!195 &229650632
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3250676107665926923
 GameObject:
   m_ObjectHideFlags: 0

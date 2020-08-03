@@ -9,9 +9,10 @@ public class EnemyVision : MonoBehaviour {
     public float maxDistance = 25;
     public float maxAngle = 85;
 
-    private float _playerLOSDistance = -1;
-    public float PlayerLOSDistance => _playerLOSDistance;
-    public bool CanSeePlayer => _playerLOSDistance != -1;
+    private float _playerDistance;
+    private bool _canSeePlayer;
+    public float PlayerDistance => _playerDistance;
+    public bool CanSeePlayer => _canSeePlayer;
 
     // auto-assigned
     private PlayerController _player;
@@ -25,15 +26,13 @@ public class EnemyVision : MonoBehaviour {
 
     void Update() {
 
-        _playerLOSDistance = -1;
+        _playerDistance = -1;
         _vecToPlayer = _playerCam.transform.position - eyeTransform.position;
-        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _vecToPlayer.sqrMagnitude > Mathf.Pow(maxDistance, 2)) return;
+        _playerDistance = _vecToPlayer.magnitude;
+        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) return;
         Debug.DrawRay(eyeTransform.position, _vecToPlayer);
-        if (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _vecToPlayer.magnitude, layerMask))
-        {
-            _playerLOSDistance = hit.distance;
-            Debug.Log("Can see player");
-        }
+        // this is so cool
+        _canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
     }
 
 }

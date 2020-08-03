@@ -70,7 +70,7 @@ public class SecurityEnemy : MonoBehaviour
         // update line of sight and spotting data
         bool canSeePlayer = _vision.CanSeePlayer;
         animator.SetBool("searching", !canSeePlayer);
-        float playerDistance = _vision.PlayerLOSDistance;
+        float playerDistance = _vision.PlayerDistance;
 
         _agent.SetDestination(_chadistAI.lastKnownPos);
 
