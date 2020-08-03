@@ -3,8 +3,8 @@ using UnityEngine;
 public class EnemyVision : MonoBehaviour {
 
     // delegate stuff
-    public delegate void OnSpotDelegate(bool canSeePlayer);
-    public OnSpotDelegate onSpotDelegate;
+    // public delegate void OnSpotDelegate(bool canSeePlayer);
+    // public OnSpotDelegate onSpotDelegate;
 
     // inspector vars
     public Transform eyeTransform;
@@ -41,7 +41,7 @@ public class EnemyVision : MonoBehaviour {
         bool canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
         if (canSeePlayer != _canSeePlayer) {
             _canSeePlayer = canSeePlayer;
-            onSpotDelegate(canSeePlayer);
+            // onSpotDelegate(canSeePlayer);
         }
     }
 

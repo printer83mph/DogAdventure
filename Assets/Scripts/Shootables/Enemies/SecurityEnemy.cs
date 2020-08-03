@@ -123,14 +123,14 @@ public class SecurityEnemy : MonoBehaviour
         animator.SetFloat("zVel", vel.z);
     }
 
-    void AimSpineBone() {
-        Quaternion requiredRotation = Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up);
-        aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, requiredRotation, animator.GetFloat("AimAccuracy"));
-    }
-
     private void LateUpdate() {
         if (_dead) return;
         AimSpineBone();
+    }
+
+    void AimSpineBone() {
+        Quaternion requiredRotation = Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up);
+        aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, requiredRotation, animator.GetFloat("AimAccuracy"));
     }
 
     void RotateTowardsPlayer()
