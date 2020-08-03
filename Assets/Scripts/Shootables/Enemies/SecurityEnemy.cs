@@ -2,6 +2,7 @@
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Shootable))]
+// TODO: split this script into SecurityEnemy and EnemyMovement with EnemyMovement being applicable to other enemy types and optional for this
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(EnemyVision))]
 public class SecurityEnemy : MonoBehaviour
@@ -13,6 +14,7 @@ public class SecurityEnemy : MonoBehaviour
 
     public float maxShootDistance = 7f;
     public float walkRunScaler = .2f;
+    public float rotateLambda = 4f;
 
     public float gunDamage = .4f;
     public float health = 10;
@@ -31,7 +33,6 @@ public class SecurityEnemy : MonoBehaviour
 
     static int numEngagingPlayer;
     
-    // Start is called before the first frame update
     void Start()
     {
         GetComponent<Shootable>().onShootDelegate += OnShoot;
@@ -43,6 +44,7 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     private void TryEngage() {
+        // TODO: make max engaging based in ChadistAI with different tags and engage limits for diff enemy types
         if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
             _engaging = true;
             numEngagingPlayer ++;
@@ -129,7 +131,7 @@ public class SecurityEnemy : MonoBehaviour
         Vector2 plyxzPos = new Vector2(plyPos.x, plyPos.z);
         transform.rotation = PrintUtil.Damp(transform.rotation,
             Quaternion.Euler(0,
-                Quaternion.LookRotation(plyPos - transform.position, Vector3.up).eulerAngles.y, 0), 4f,
+                Quaternion.LookRotation(plyPos - transform.position, Vector3.up).eulerAngles.y, 0), rotateLambda,
             Time.deltaTime);
     }
 
