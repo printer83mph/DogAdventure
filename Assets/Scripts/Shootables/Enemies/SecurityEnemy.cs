@@ -20,6 +20,7 @@ public class SecurityEnemy : MonoBehaviour
     public float health = 10;
     
     // auto-assigned
+    private Shootable _shootable;
     private EnemyVision _vision;
     private NavMeshAgent _agent;
     private PlayerController _player;
@@ -33,14 +34,22 @@ public class SecurityEnemy : MonoBehaviour
 
     static int numEngagingPlayer;
     
-    void Start()
+    void Awake()
     {
-        GetComponent<Shootable>().onShootDelegate += OnShoot;
+        _shootable = GetComponent<Shootable>();
         _vision = GetComponent<EnemyVision>();
         _agent = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         _health = _player.GetComponent<PlayerHealth>();
         _chadistAI = GameObject.FindWithTag("Chadist AI").GetComponent<ChadistAI>();
+    }
+
+    void OnEnable() {
+        _shootable.onShootDelegate += OnShoot;
+    }
+
+    void OnDisable() {
+        _shootable.onShootDelegate -= OnShoot;
     }
 
     private void TryEngage() {

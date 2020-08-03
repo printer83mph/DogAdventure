@@ -63,22 +63,35 @@ public class PlayerController : MonoBehaviour
     { 
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
+        _health = GetComponent<PlayerHealth>();
+        
+        viewmodelBob.controller = this;
 
         // setup input stuff
         input = GetComponent<PlayerInput>();
         m_Move = input.actions["Move"];
         m_Sprint = input.actions["Sprint"];
         m_Aim = input.actions["Aim"];
-        input.actions["Jump"].performed += _ => Jump();
+    }
+
+    private void OnEnable() {
+        input.actions["Jump"].performed += JumpAction;
+        _health.onDeathDelegate += OnDeath;
+    }
+
+    private void OnDisable() {
+        input.actions["Jump"].performed -= JumpAction;
+        _health.onDeathDelegate -= OnDeath;
+    }
+
+    void JumpAction(InputAction.CallbackContext ctx) {
+        Jump();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         _initialCameraPos = cam.transform.localPosition;
-        viewmodelBob.controller = this;
-        _health = GetComponent<PlayerHealth>();
-        _health.onDeathDelegate += OnDeath;
     }
 
     // Update is called once per frame

@@ -43,6 +43,10 @@ public class PlayerInventory : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         _health = GetComponent<PlayerHealth>();
+
+        _camera = _playerController.cam;
+        _viewmodelBob = _playerController.viewmodelBob;
+
         // initialize each weaponslot floats dict if not already
         if (weapons == null)
         {
@@ -56,16 +60,18 @@ public class PlayerInventory : MonoBehaviour
         _input.actions["Use"].performed += _ => OnUse();
     }
 
-    void Start()
-    {
+    void OnEnable() {
         _health.onDeathDelegate += OnDeath;
-        _camera = _playerController.cam;
-        _viewmodelBob = _playerController.viewmodelBob;
+
         lastSwitch = Time.time;
         if (!holstered)
         {
             SwitchToWeapon(0);
         }
+    }
+
+    void OnDisable() {
+        _health.onDeathDelegate -= OnDeath;
     }
 
     public void OnWeaponSwitch(float amt) {

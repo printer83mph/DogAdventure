@@ -10,18 +10,20 @@ public class WeaponPickup : MonoBehaviour
     public WeaponSlot weapon;
 
     private Useable _useable;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    void Awake() {
         _useable = GetComponent<Useable>();
-        if (_useable)
-        {
-            _useable.onUseDelegate += PickUp;
-        }
     }
 
-    void PickUp(PlayerInventory inventory)
+    void OnEnable() {
+        _useable.onUseDelegate += OnUse;
+    }
+
+    void OnDisable() {
+        _useable.onUseDelegate -= OnUse;
+    }
+
+    void OnUse(PlayerInventory inventory)
     {
         inventory.AddWeapon(weapon);
         Destroy(gameObject);

@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class EnemyVision : MonoBehaviour {
 
+    // delegate stuff
+    public delegate void OnSpotDelegate(bool canSeePlayer);
+    public OnSpotDelegate onSpotDelegate;
+
+    // inspector vars
     public Transform eyeTransform;
 
     public LayerMask layerMask = (1 << 0) | (1 << 9);
@@ -9,6 +14,7 @@ public class EnemyVision : MonoBehaviour {
     public float maxDistance = 25;
     public float maxAngle = 85;
 
+    // math stuff
     private float _playerDistance;
     private bool _canSeePlayer;
     public float PlayerDistance => _playerDistance;
@@ -32,7 +38,11 @@ public class EnemyVision : MonoBehaviour {
         if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) return;
         Debug.DrawRay(eyeTransform.position, _vecToPlayer);
         // this is so cool
-        _canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+        bool canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+        if (canSeePlayer != _canSeePlayer) {
+            _canSeePlayer = canSeePlayer;
+            onSpotDelegate(canSeePlayer);
+        }
     }
 
 }

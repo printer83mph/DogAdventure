@@ -8,7 +8,7 @@ public class Useable : MonoBehaviour
     public OnUseDelegate onUseDelegate;
 
     public Renderer[] renderers;
-    public float useDelay = .5f;
+    // public float useDelay = .5f;
     public bool highlighted;
     
     private bool _highlighted;
@@ -16,14 +16,15 @@ public class Useable : MonoBehaviour
 
     public static List<Useable> useables = new List<Useable>();
 
-    private void Start()
-    {
+    private void Awake() {
         onUseDelegate += OnUse;
+    }
+
+    private void OnEnable() {
         useables.Add(this);
     }
 
-    private void OnDestroy()
-    {
+    private void OnDisable() {
         useables.Remove(this);
     }
 
@@ -38,7 +39,7 @@ public class Useable : MonoBehaviour
 
     void OnUse(PlayerInventory inventory)
     {
-        _lastUse = Time.time;
+        // _lastUse = Time.time;
     }
 
     void Highlight()
@@ -69,6 +70,7 @@ public class Useable : MonoBehaviour
 
     public void Use(PlayerInventory inventory)
     {
-        if (Time.time - _lastUse > useDelay) onUseDelegate(inventory);
+        // if (Time.time - _lastUse > useDelay) 
+        onUseDelegate(inventory);
     }
 }

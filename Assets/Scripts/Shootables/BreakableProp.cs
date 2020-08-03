@@ -6,10 +6,19 @@ public class BreakableProp : MonoBehaviour
     
     public float health;
     public GameObject fxPrefab;
+    
+    private Shootable _shootable;
 
-    void Start()
-    {
-        GetComponent<Shootable>().onShootDelegate += OnShoot;
+    void Awake() {
+        _shootable = GetComponent<Shootable>();
+    }
+
+    void OnEnable() {
+        _shootable.onShootDelegate += OnShoot;
+    }
+
+    void OnDisable() {
+        _shootable.onShootDelegate -= OnShoot;
     }
     
     public void OnShoot(PlayerShotInfo info)
