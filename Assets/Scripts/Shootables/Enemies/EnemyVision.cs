@@ -35,14 +35,17 @@ public class EnemyVision : MonoBehaviour {
         _playerDistance = -1;
         _vecToPlayer = _playerCam.transform.position - eyeTransform.position;
         _playerDistance = _vecToPlayer.magnitude;
-        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) return;
+        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) {
+            _canSeePlayer = false;
+            return;
+        }
         Debug.DrawRay(eyeTransform.position, _vecToPlayer);
         // this is so cool
-        bool canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
-        if (canSeePlayer != _canSeePlayer) {
-            _canSeePlayer = canSeePlayer;
-            // onSpotDelegate(canSeePlayer);
-        }
+        _canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+        // if (canSeePlayer != _canSeePlayer) {
+        //     _canSeePlayer = canSeePlayer;
+        //     // onSpotDelegate(canSeePlayer);
+        // }
     }
 
 }

@@ -261,10 +261,11 @@ GameObject:
   - component: {fileID: 1686218402726571837}
   - component: {fileID: 4721613406568953159}
   - component: {fileID: 1937772319890075954}
-  - component: {fileID: 1937772319890075955}
-  - component: {fileID: 1937772319890075953}
   - component: {fileID: 1937772319890075956}
   - component: {fileID: 229650632}
+  - component: {fileID: 1125007492}
+  - component: {fileID: 1125007493}
+  - component: {fileID: 1125007494}
   m_Layer: 9
   m_Name: ChargerEnemy
   m_TagString: Untagged
@@ -323,41 +324,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1937772319890075955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030408854991156615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05f8575539fa0c4898359f25d8ceb6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 2887522236409222777}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 513
-  maxDistance: 25
-  maxAngle: 85
---- !u!114 &1937772319890075953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030408854991156615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3c85380eba77be4a9c609613c3e011e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 4721613406568953159}
-  maxChargeDistance: 10
-  chargeDistanceBuffer: 1
-  chargeAccel: 10000
-  turnSpeed: 200
 --- !u!136 &1937772319890075956
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -394,6 +360,55 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1125007492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c85380eba77be4a9c609613c3e011e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 4721613406568953159}
+  chargeDistanceBuffer: 1
+  chargeAccel: 10000
+--- !u!114 &1125007493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf9a0d6e8b76c140883e6412d4d108d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 
+  attackingDistance: 10
+  turnSpeed: 150
+  turnWhileLocked: 1
+--- !u!114 &1125007494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05f8575539fa0c4898359f25d8ceb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 2887522236409222777}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 513
+  maxDistance: 25
+  maxAngle: 85
 --- !u!1 &3250676107665926923
 GameObject:
   m_ObjectHideFlags: 0

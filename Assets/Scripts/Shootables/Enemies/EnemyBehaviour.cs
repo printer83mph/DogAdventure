@@ -11,12 +11,14 @@ public class EnemyBehaviour : MonoBehaviour
     public string enemyType;
     public float attackingDistance = 10f;
     public float turnSpeed = 150f;
-    public bool locked;
+    public bool turnWhileLocked;
 
     // for other scripts
     public bool CanAttack => _canAttack;
+    public bool Locked => _locked;
     public bool CanSeePlayer => _vision.CanSeePlayer;
     public float PlayerDistance => _vision.PlayerDistance;
+    public Vector3 AgentVelocity => _agent.velocity;
 
     // auto-assigned
     private NavMeshAgent _agent;
@@ -26,6 +28,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     // math stuff
     private bool _engaging;
+    private bool _locked;
     private bool _canAttack;
 
     void Awake() {
@@ -55,6 +58,10 @@ public class EnemyBehaviour : MonoBehaviour
         return _player.transform.position - transform.position;
     }
 
+    public Vector3 VecToLastKnownPos() {
+        return _chadistAI.lastKnownPos - transform.position;
+    }
+
     void Update() {
         _canAttack = false;
         if (_vision.CanSeePlayer) {
@@ -63,11 +70,10 @@ public class EnemyBehaviour : MonoBehaviour
         }
         // break from this if we're not on alert at all
         if (_chadistAI.alertStatus == 0) return;
-        if (locked) return;
         if (_engaging) {
             _canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
-            _agent.isStopped = _canAttack;
-        } else {
+            if (_agent.enabled) _agent.isStopped = _canAttack;
+        } else if (!_locked || turnWhileLocked) {
             RotateTowards(_chadistAI.lastKnownPos, turnSpeed);
         }
     }
@@ -78,9 +84,16 @@ public class EnemyBehaviour : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(vecToDestination), turnSpeed * Time.deltaTime);
     }
 
+    // for our big ai controller to manage
     public void SetEngaging(bool engaging) {
-        _agent.enabled = engaging;
+        _agent.enabled = engaging && !_locked;
         _engaging = engaging;
+    }
+
+    // for individual AI to manage (charging and shit)
+    public void SetLocked(bool locked) {
+        _locked = locked;
+        _agent.enabled = locked;
     }
     
 }

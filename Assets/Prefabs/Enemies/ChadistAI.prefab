@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6593553244a720d4485f62181311095d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertLength: 15
+  config: {fileID: 11400000, guid: 9391b038740e6fd448c8136015d3bc86, type: 2}
+  maxSecurityEngaging: 2
   lastKnownPos: {x: 0, y: 0, z: 0}
   alertStatus: 0
+  enemyBehaviours: []

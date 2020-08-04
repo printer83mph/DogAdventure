@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3846545193386891220}
   - component: {fileID: 3846545193386891221}
   - component: {fileID: 3846545193386891222}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DebugEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,6 @@ MonoBehaviour:
   enemyType: 
   attackingDistance: 10
   turnSpeed: 150
-  locked: 0
 --- !u!136 &3846545193386891222
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -164,7 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3846545193816821764}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3846545193816821765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.604, z: 0}
+  m_LocalPosition: {x: 0, y: 0.604, z: 0.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3846545193386891216}
@@ -197,7 +196,7 @@ GameObject:
   - component: {fileID: 2839805436108596}
   - component: {fileID: 378645618099787970}
   - component: {fileID: 3095209922786715347}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
