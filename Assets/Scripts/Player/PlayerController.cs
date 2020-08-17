@@ -145,6 +145,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
+        // TODO: make this not cancel out the fun landing animation
         ContactPoint point = other.GetContact(0);
         _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
     }

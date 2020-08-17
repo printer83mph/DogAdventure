@@ -87,9 +87,11 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
+    // TODO: collision detection
+
     private void OnDeath() {
         this.enabled = false;
-        // PLACEHOLDER
+        // TODO: PLACEHOLDER
         Destroy(gameObject);
     }
 }
