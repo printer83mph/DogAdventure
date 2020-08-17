@@ -145,9 +145,12 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        // TODO: make this not cancel out the fun landing animation
-        ContactPoint point = other.GetContact(0);
-        _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
+        if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
+        if (other.collider.gameObject.isStatic)
+        {
+            ContactPoint point = other.GetContact(0);
+            _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
+        }
     }
     
     void LateUpdate()
