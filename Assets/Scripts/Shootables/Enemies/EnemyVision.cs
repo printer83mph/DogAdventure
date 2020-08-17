@@ -3,8 +3,8 @@ using UnityEngine;
 public class EnemyVision : MonoBehaviour {
 
     // delegate stuff
-    // public delegate void OnSpotDelegate(bool canSeePlayer);
-    // public OnSpotDelegate onSpotDelegate;
+    public delegate void VisionEvent(bool canSeePlayer);
+    public VisionEvent onVisionUpdate = delegate { };
 
     // inspector vars
     public Transform eyeTransform;
@@ -41,11 +41,11 @@ public class EnemyVision : MonoBehaviour {
         }
         Debug.DrawRay(eyeTransform.position, _vecToPlayer);
         // this is so cool
-        _canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
-        // if (canSeePlayer != _canSeePlayer) {
-        //     _canSeePlayer = canSeePlayer;
-        //     // onSpotDelegate(canSeePlayer);
-        // }
+        bool canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+        if (canSeePlayer != _canSeePlayer) {
+            onVisionUpdate(canSeePlayer);
+            _canSeePlayer = canSeePlayer;
+        }
     }
 
 }

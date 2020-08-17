@@ -7,15 +7,20 @@ using UnityEngine.AI;
 public class EnemyBehaviour : MonoBehaviour
 {
 
+    // fun events
+    public delegate void BehaviourUpdate(bool newState);
+    public BehaviourUpdate onEngageUpdate = delegate { };
+    public BehaviourUpdate onAttackUpdate = delegate { };
+
     // inspector vars
     public string enemyType;
     public float attackingDistance = 10f;
     public float turnSpeed = 150f;
-    public bool turnWhileLocked;
+    public bool turnTowardsPlayer = true;
 
     // for other scripts
     public bool CanAttack => _canAttack;
-    public bool Locked => _locked;
+    public bool Locked => _attacking;
     public bool CanSeePlayer => _vision.CanSeePlayer;
     public float PlayerDistance => _vision.PlayerDistance;
     public Vector3 AgentVelocity => _agent.velocity;
@@ -28,7 +33,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     // math stuff
     private bool _engaging;
-    private bool _locked;
+    private bool _attacking;
     private bool _canAttack;
 
     void Awake() {
@@ -71,9 +76,15 @@ public class EnemyBehaviour : MonoBehaviour
         // break from this if we're not on alert at all
         if (_chadistAI.alertStatus == 0) return;
         if (_engaging) {
-            _canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
+            // find out if we're close enough to stop
+            bool canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
+            if (canAttack != _canAttack) {
+                _canAttack = canAttack;
+                onAttackUpdate(_canAttack);
+            }
             if (_agent.enabled) _agent.isStopped = _canAttack;
-        } else if (!_locked || turnWhileLocked) {
+        }
+        if (_agent.enabled && _agent.isStopped && turnTowardsPlayer) {
             RotateTowards(_chadistAI.lastKnownPos, turnSpeed);
         }
     }
@@ -86,14 +97,15 @@ public class EnemyBehaviour : MonoBehaviour
 
     // for our big ai controller to manage
     public void SetEngaging(bool engaging) {
-        _agent.enabled = engaging && !_locked;
         _engaging = engaging;
+        _agent.enabled = _engaging && !_attacking;
+        onEngageUpdate(_engaging);
     }
 
     // for individual AI to manage (charging and shit)
-    public void SetLocked(bool locked) {
-        _locked = locked;
-        _agent.enabled = locked;
+    public void SetAttacking(bool attacking) {
+        _attacking = attacking;
+        _agent.enabled = _engaging && !_attacking;
     }
     
 }

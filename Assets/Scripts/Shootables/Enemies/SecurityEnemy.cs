@@ -90,7 +90,6 @@ public class SecurityEnemy : MonoBehaviour
 
         if (canSeePlayer) {
 
-            Debug.Log("Spotted player");
             // update chadist AI if player is spotted
             _chadistAI.SpotPlayer(_player.transform.position);
             
@@ -112,7 +111,6 @@ public class SecurityEnemy : MonoBehaviour
         
         if (_chadistAI.alertStatus == 0)
         {
-            Debug.Log("Alert status is none");
             _agent.isStopped = true;
         } else if (!_info.IsName("Flinch") && _agent.isStopped) {
             RotateTowardsPlayer();

@@ -12,7 +12,7 @@ public class ChadistAI : MonoBehaviour
 {
 
     public delegate void OnSpotDelegate();
-    public OnSpotDelegate onSpotDelegate;
+    public OnSpotDelegate onSpotDelegate = delegate { };
     
     [Header("Config")]
     public ChadistConfig config;
