@@ -20,22 +20,22 @@ public class PlayerShotInfo {
 public class Shootable : MonoBehaviour
 {
 
-    public delegate void OnShootDelegate(PlayerShotInfo info);
+    public delegate void OnShotDelegate(PlayerShotInfo info);
 
-    public OnShootDelegate onShootDelegate;
+    public OnShotDelegate onShot;
     
     public GameObject fxPrefab;
 
     void Start()
     {
-        onShootDelegate += OnShoot;
+        onShot += OnShoot;
     }
     
     void OnShoot(PlayerShotInfo info) {}
 
     public void Shoot(PlayerShotInfo info)
     {
-        onShootDelegate(info);
+        onShot(info);
     }
 
 }

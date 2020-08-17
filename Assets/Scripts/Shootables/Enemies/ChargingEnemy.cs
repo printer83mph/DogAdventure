@@ -14,6 +14,8 @@ public class ChargingEnemy : MonoBehaviour
     private EnemyBehaviour _behaviour;
     private EnemyVision _vision;
     private Rigidbody _rb;
+    private EnemyHealth _health;
+
     private PlayerController _player;
     private ChadistAI _chadistAI;
 
@@ -26,17 +28,21 @@ public class ChargingEnemy : MonoBehaviour
         _behaviour = GetComponent<EnemyBehaviour>();
         _vision = GetComponent<EnemyVision>();
         _rb = GetComponent<Rigidbody>();
+        _health = GetComponent<EnemyHealth>();
+
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     void OnEnable() {
         _behaviour.onAttackUpdate += OnVision;
+        _health.onDeath += OnDeath;
         _vision.onVisionUpdate += OnAttack;
     }
 
     void OnDisable() {
         _behaviour.onAttackUpdate -= OnVision;
+        _health.onDeath -= OnDeath;
         _vision.onVisionUpdate -= OnAttack;
     }
 
@@ -49,7 +55,7 @@ public class ChargingEnemy : MonoBehaviour
         _charging = true;
         _behaviour.turnTowardsPlayer = false;
         _rb.isKinematic = false;
-        _behaviour.SetAttacking(true);
+        _behaviour.SetLocked(true);
     }
 
     void Update() {
@@ -79,5 +85,11 @@ public class ChargingEnemy : MonoBehaviour
         } else {
             
         }
+    }
+
+    private void OnDeath() {
+        this.enabled = false;
+        // PLACEHOLDER
+        Destroy(gameObject);
     }
 }

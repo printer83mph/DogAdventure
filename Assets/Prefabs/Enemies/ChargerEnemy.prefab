@@ -266,6 +266,8 @@ GameObject:
   - component: {fileID: 1125007492}
   - component: {fileID: 1125007493}
   - component: {fileID: 1125007494}
+  - component: {fileID: -4699532853442146650}
+  - component: {fileID: 5680502019243589238}
   m_Layer: 9
   m_Name: ChargerEnemy
   m_TagString: Untagged
@@ -390,7 +392,7 @@ MonoBehaviour:
   enemyType: 
   attackingDistance: 10
   turnSpeed: 150
-  turnWhileLocked: 1
+  turnTowardsPlayer: 1
 --- !u!114 &1125007494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +411,33 @@ MonoBehaviour:
     m_Bits: 513
   maxDistance: 25
   maxAngle: 85
+--- !u!114 &-4699532853442146650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a27f7499553924e9cd06606c890c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 15
+--- !u!114 &5680502019243589238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030408854991156615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6b2d7f29449b8f469747d67742667ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fxPrefab: {fileID: 2198771929463619118, guid: b8736118f7b938046b31b486def279a9,
+    type: 3}
 --- !u!1 &3250676107665926923
 GameObject:
   m_ObjectHideFlags: 0

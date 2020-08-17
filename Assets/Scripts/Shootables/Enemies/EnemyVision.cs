@@ -22,12 +22,26 @@ public class EnemyVision : MonoBehaviour {
 
     // auto-assigned
     private PlayerController _player;
+    private EnemyHealth _health;
     private Transform _playerCam;
     private Vector3 _vecToPlayer;
 
-    void Start() {
+    void Awake() {
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _playerCam = _player.GetComponentInChildren<Camera>().transform;
+        _health = GetComponent<EnemyHealth>();
+    }
+
+    private void OnEnable() {
+        if (_health) _health.onDeath += OnDeath;
+    }
+    
+    private void OnDisable() {
+        if (_health) _health.onDeath -= OnDeath;
+    }
+
+    private void OnDeath() {
+        this.enabled = false;
     }
 
     void Update() {

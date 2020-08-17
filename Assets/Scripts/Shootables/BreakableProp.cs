@@ -14,11 +14,11 @@ public class BreakableProp : MonoBehaviour
     }
 
     void OnEnable() {
-        _shootable.onShootDelegate += OnShoot;
+        _shootable.onShot += OnShoot;
     }
 
     void OnDisable() {
-        _shootable.onShootDelegate -= OnShoot;
+        _shootable.onShot -= OnShoot;
     }
     
     public void OnShoot(PlayerShotInfo info)

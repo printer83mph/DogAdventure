@@ -2,9 +2,7 @@
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Shootable))]
-// TODO: split this script into SecurityEnemy and EnemyMovement with EnemyMovement being applicable to other enemy types and optional for this
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(EnemyVision))]
+[RequireComponent(typeof(EnemyBehaviour))]
 public class SecurityEnemy : MonoBehaviour
 {
 
@@ -12,117 +10,54 @@ public class SecurityEnemy : MonoBehaviour
     public Transform aimBone;
     public Transform eyeTransform;
 
-    public float maxShootDistance = 7f;
-    public float walkRunScaler = .2f;
-    public float rotateLambda = 4f;
-
     public float gunDamage = .4f;
-    public float health = 10;
     
     // auto-assigned
     private Shootable _shootable;
-    private EnemyVision _vision;
-    private NavMeshAgent _agent;
+    private EnemyBehaviour _behaviour;
+    private EnemyHealth _health;
     private PlayerController _player;
-    private PlayerHealth _health;
+    private PlayerHealth _playerHealth;
     private ChadistAI _chadistAI;
-
-    // math stuff
-    private bool _dead;
-    private bool _engaging;
-    private AnimatorStateInfo _info;
-
-    static int numEngagingPlayer;
     
     void Awake()
     {
         _shootable = GetComponent<Shootable>();
-        _vision = GetComponent<EnemyVision>();
-        _agent = GetComponent<NavMeshAgent>();
+        _behaviour = GetComponent<EnemyBehaviour>();
+        _health = GetComponent<EnemyHealth>();
         _player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        _health = _player.GetComponent<PlayerHealth>();
+        _playerHealth = _player.GetComponent<PlayerHealth>();
         _chadistAI = GameObject.FindWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     void OnEnable() {
-        _shootable.onShootDelegate += OnShoot;
+        _shootable.onShot += OnShot;
+        _health.onDeath += OnDeath;
+        _behaviour.onAttackUpdate += OnAttackUpdate;
     }
 
     void OnDisable() {
-        _shootable.onShootDelegate -= OnShoot;
-    }
-
-    private void TryEngage() {
-        // TODO: make max engaging based in ChadistAI with different tags and engage limits for diff enemy types
-        if (!_engaging && numEngagingPlayer < _chadistAI.maxSecurityEngaging) {
-            _engaging = true;
-            numEngagingPlayer ++;
-            animator.SetBool("canShoot", true);
-            // Debug.Log(numEngagingPlayer + " engaging");
-        }
-    }
-
-    private void TryDisengage() {
-        if (_engaging) {
-            _engaging = false;
-            numEngagingPlayer --;
-            animator.SetBool("canShoot", false);
-            // Debug.Log(numEngagingPlayer + " engaging");
-        }
+        _shootable.onShot -= OnShot;
+        _health.onDeath -= OnDeath;
+        _behaviour.onAttackUpdate -= OnAttackUpdate;
     }
 
     private void Update()
     {
-        if (_dead) return;
-        
         // flinch layer info
-        _info = animator.GetCurrentAnimatorStateInfo(1);
+        bool flinching = animator.GetCurrentAnimatorStateInfo(1).IsName("Flinch");
         
-        // update line of sight and spotting data
-        bool canSeePlayer = _vision.CanSeePlayer;
-        animator.SetBool("searching", !canSeePlayer);
-        float playerDistance = _vision.PlayerDistance;
+        animator.SetBool("searching", !_behaviour.CanSeePlayer);
 
-        _agent.SetDestination(_chadistAI.lastKnownPos);
+        _behaviour.SetLocked(flinching);
+        _behaviour.turnTowardsPlayer = !flinching;
 
-        // block moving if we have max engaging or we're flinching
-        bool blockedFromMoving = numEngagingPlayer == _chadistAI.maxSecurityEngaging || _info.IsName("Flinch");
-
-        if (canSeePlayer) {
-
-            // update chadist AI if player is spotted
-            _chadistAI.SpotPlayer(_player.transform.position);
-            
-            if (playerDistance < maxShootDistance) {
-                // we are able to shoot the player, but do we?
-                TryEngage();
-            } else {
-                // we can see them but can't shoot - disengage
-                TryDisengage();
-            }
-        } else {
-
-            // cannot see player - disengage
-            TryDisengage();
-
-        }
-
-        _agent.isStopped = _engaging || blockedFromMoving;
-        
-        if (_chadistAI.alertStatus == 0)
-        {
-            _agent.isStopped = true;
-        } else if (!_info.IsName("Flinch") && _agent.isStopped) {
-            RotateTowardsPlayer();
-        }
-
-        Vector3 vel = transform.InverseTransformVector(_agent.velocity) * (1/_agent.speed);
+        Vector3 vel = transform.InverseTransformVector(_behaviour.AgentVelocity) * (1/_behaviour.Agent.speed);
         animator.SetFloat("xVel", vel.x);
         animator.SetFloat("zVel", vel.z);
     }
 
     private void LateUpdate() {
-        if (_dead) return;
         AimSpineBone();
     }
 
@@ -131,42 +66,24 @@ public class SecurityEnemy : MonoBehaviour
         aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, requiredRotation, animator.GetFloat("AimAccuracy"));
     }
 
-    void RotateTowardsPlayer()
+    private void ShootPlayer()
     {
-        Vector3 plyPos = _player.transform.position;
-        Vector2 xzPos = new Vector2(transform.position.x, transform.position.z);
-        Vector2 plyxzPos = new Vector2(plyPos.x, plyPos.z);
-        transform.rotation = PrintUtil.Damp(transform.rotation,
-            Quaternion.Euler(0,
-                Quaternion.LookRotation(plyPos - transform.position, Vector3.up).eulerAngles.y, 0), rotateLambda,
-            Time.deltaTime);
-    }
-
-    void ShootPlayer()
-    {
-        _health.Damage(gunDamage, _player.transform.position - eyeTransform.position);
+        _playerHealth.Damage(gunDamage, _player.transform.position - eyeTransform.position);
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
     }
     
-    void OnShoot(PlayerShotInfo info)
+    private void OnAttackUpdate(bool canAttack)
     {
-        // flinch and shit
-        health -= info.damage;
-        if (health <= 0)
-        {
-            Die(info);
-        } else {
-            animator.SetTrigger("flinch");
-        }
+        animator.SetBool("canShoot", canAttack);
     }
 
-    private void Die(PlayerShotInfo info) {
-        _dead = true;
-        TryDisengage();
+    private void OnShot(PlayerShotInfo info)
+    {
+        animator.SetTrigger("flinch");
+    }
+
+    private void OnDeath() {
         animator.SetTrigger("death");
-        GetComponent<EnemyRagdoll>().HitDeath(info);
-        _vision.enabled = false;
-        _agent.enabled = false;
-        // Destroy(gameObject);
+        this.enabled = false;
     }
 }

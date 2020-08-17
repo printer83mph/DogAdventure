@@ -20,25 +20,28 @@ public class EnemyBehaviour : MonoBehaviour
 
     // for other scripts
     public bool CanAttack => _canAttack;
-    public bool Locked => _attacking;
+    public bool Locked => _locked;
     public bool CanSeePlayer => _vision.CanSeePlayer;
     public float PlayerDistance => _vision.PlayerDistance;
     public Vector3 AgentVelocity => _agent.velocity;
+    public NavMeshAgent Agent => _agent;
 
     // auto-assigned
     private NavMeshAgent _agent;
     private EnemyVision _vision;
     private PlayerController _player;
     private ChadistAI _chadistAI;
+    private EnemyHealth _health;
 
     // math stuff
     private bool _engaging;
-    private bool _attacking;
+    private bool _locked;
     private bool _canAttack;
 
     void Awake() {
         _agent = GetComponent<NavMeshAgent>();
         _vision = GetComponent<EnemyVision>();
+        _health = GetComponent<EnemyHealth>();
 
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
@@ -46,17 +49,18 @@ public class EnemyBehaviour : MonoBehaviour
 
     void OnEnable() {
         _chadistAI.onSpotDelegate += OnSpot;
+        if (_health) _health.onDeath += OnDeath;
         _chadistAI.enemyBehaviours.Add(this);
     }
 
     void OnDisable() {
         _chadistAI.onSpotDelegate -= OnSpot;
+        if (_health) _health.onDeath -= OnDeath;
         _chadistAI.enemyBehaviours.Remove(this);
     }
 
     void OnSpot() {
         if (!_agent.enabled) return;
-        _agent.destination = _chadistAI.lastKnownPos;
     }
 
     public Vector3 VecToPlayer() {
@@ -68,24 +72,30 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     void Update() {
-        _canAttack = false;
+        bool canAttack = false;
         if (_vision.CanSeePlayer) {
             // we have LOS with the player!
             _chadistAI.SpotPlayer(_player.transform.position);
         }
         // break from this if we're not on alert at all
-        if (_chadistAI.alertStatus == 0) return;
-        if (_engaging) {
-            // find out if we're close enough to stop
-            bool canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
-            if (canAttack != _canAttack) {
-                _canAttack = canAttack;
-                onAttackUpdate(_canAttack);
+        if (_chadistAI.alertStatus != 0)
+        {
+            if (_engaging)
+            {
+                if (_agent.enabled) _agent.destination = _chadistAI.lastKnownPos;
+                // find out if we're close enough to stop
+                canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
+                if (_agent.enabled) _agent.isStopped = canAttack;
             }
-            if (_agent.enabled) _agent.isStopped = _canAttack;
+            if (_agent.enabled && _agent.isStopped && turnTowardsPlayer)
+            {
+                RotateTowards(_chadistAI.lastKnownPos, turnSpeed);
+            }
         }
-        if (_agent.enabled && _agent.isStopped && turnTowardsPlayer) {
-            RotateTowards(_chadistAI.lastKnownPos, turnSpeed);
+        
+        if (canAttack != _canAttack) {
+            _canAttack = canAttack;
+            onAttackUpdate(_canAttack);
         }
     }
 
@@ -98,14 +108,18 @@ public class EnemyBehaviour : MonoBehaviour
     // for our big ai controller to manage
     public void SetEngaging(bool engaging) {
         _engaging = engaging;
-        _agent.enabled = _engaging && !_attacking;
+        _agent.enabled = _engaging && !_locked;
         onEngageUpdate(_engaging);
     }
 
     // for individual AI to manage (charging and shit)
-    public void SetAttacking(bool attacking) {
-        _attacking = attacking;
-        _agent.enabled = _engaging && !_attacking;
+    public void SetLocked(bool locked) {
+        _locked = locked;
+        _agent.enabled = _engaging && !_locked;
+    }
+
+    public void OnDeath() {
+        this.enabled = false;
     }
     
 }
