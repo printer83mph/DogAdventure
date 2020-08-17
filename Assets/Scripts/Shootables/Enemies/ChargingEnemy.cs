@@ -58,6 +58,14 @@ public class ChargingEnemy : MonoBehaviour
         _behaviour.SetLocked(true);
     }
 
+    void StopCharge() {
+        _charging = false;
+        _behaviour.turnTowardsPlayer = true;
+        _rb.isKinematic = true;
+        _behaviour.SetLocked(false);
+        animator.SetTrigger("hitObstacle");
+    }
+
     void Update() {
         bool seesPlayer = _behaviour.CanSeePlayer;
         // give us some buffer room
@@ -87,7 +95,13 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
-    // TODO: collision detection
+    private void OnCollisionEnter(Collision other) {
+        ContactPoint colPoint = other.GetContact(0);
+        if (Vector3.Angle(colPoint.normal, transform.forward) > 105) {
+            Debug.Log(Vector3.Angle(colPoint.normal, transform.forward));
+            StopCharge();
+        }
+    }
 
     private void OnDeath() {
         this.enabled = false;

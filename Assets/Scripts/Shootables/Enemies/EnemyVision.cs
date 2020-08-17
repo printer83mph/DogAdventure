@@ -13,6 +13,7 @@ public class EnemyVision : MonoBehaviour {
 
     public float maxDistance = 25;
     public float maxAngle = 85;
+    public float losRadius = 0;
 
     // math stuff
     private float _playerDistance;
@@ -22,40 +23,59 @@ public class EnemyVision : MonoBehaviour {
 
     // auto-assigned
     private PlayerController _player;
+    private CapsuleCollider _collider;
     private EnemyHealth _health;
     private Transform _playerCam;
     private Vector3 _vecToPlayer;
 
-    void Awake() {
+    void Awake()
+    {
+        _collider = GetComponent<CapsuleCollider>();
+        _health = GetComponent<EnemyHealth>();
+        
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _playerCam = _player.GetComponentInChildren<Camera>().transform;
-        _health = GetComponent<EnemyHealth>();
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         if (_health) _health.onDeath += OnDeath;
     }
     
-    private void OnDisable() {
+    private void OnDisable()
+    {
         if (_health) _health.onDeath -= OnDeath;
     }
 
-    private void OnDeath() {
+    private void OnDeath()
+    {
         this.enabled = false;
     }
 
-    void Update() {
-
+    void Update()
+    {
         _playerDistance = -1;
         _vecToPlayer = _playerCam.transform.position - eyeTransform.position;
         _playerDistance = _vecToPlayer.magnitude;
+        bool canSeePlayer = false;
         if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) {
-            _canSeePlayer = false;
-            return;
+            // player not even in cone of vision
+        } else {
+            // player is in cone of vision
+            if (losRadius == 0) {
+                Debug.DrawRay(eyeTransform.position, _vecToPlayer);
+                canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+            } else {
+                Vector3 start = Vector3.MoveTowards(eyeTransform.position, _playerCam.transform.position, losRadius);
+                Vector3 end = Vector3.MoveTowards(_playerCam.transform.position, eyeTransform.position, losRadius);
+                Debug.DrawRay(start, end - start);
+                _collider.enabled = false;
+                canSeePlayer = (!Physics.CheckCapsule(start, end, losRadius, layerMask));
+                _collider.enabled = true;
+                Debug.Log(canSeePlayer);
+            }
         }
-        Debug.DrawRay(eyeTransform.position, _vecToPlayer);
-        // this is so cool
-        bool canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+        
         if (canSeePlayer != _canSeePlayer) {
             onVisionUpdate(canSeePlayer);
             _canSeePlayer = canSeePlayer;
