@@ -36,6 +36,7 @@ public class PlayerInventory : MonoBehaviour
     private Weapon _currentWeapon;
     [HideInInspector]
     public float lastSwitch;
+    // TODO: add swinging feature
     
     private Useable _thingToUse;
 
@@ -54,7 +55,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         _input = GetComponent<PlayerInput>();
-        _input.actions["Fire1"].performed += ctx => OnFire(ctx.ReadValue<float>());
+        _input.actions["Fire1"].performed += ctx => OnFire();
         _input.actions["WeaponSwitch"].performed += ctx => OnWeaponSwitch(ctx.ReadValue<float>());
         _input.actions["WeaponSlot"].performed += ctx => OnSlotSelect(ctx.ReadValue<float>());
         _input.actions["Use"].performed += _ => OnUse();
@@ -70,12 +71,10 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    void OnDisable() {
-        _health.onDeathDelegate -= OnDeath;
-    }
-
-    public void OnWeaponSwitch(float amt) {
-        if (weapons.Count == 0 || amt == 0) return;
+    private void OnWeaponSwitch(float amt)
+    {
+        int actuAmt = (int) amt;
+        if (weapons.Count == 0 || actuAmt == 0) return;
         if (holstered) {
             SwitchToWeapon(_currentWeaponIndex);
         } else {
@@ -83,19 +82,23 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void OnSlotSelect(float newSlot) {
-        if (newSlot == 0) return;
+    private void OnSlotSelect(float newSlot)
+    {
+        int actualNewSlot = (int) newSlot;
+        if (actualNewSlot == 0) return;
         SwitchToWeapon( (int)newSlot - 1 );
     }
 
-    public void OnFire(float amt) {
+    private void OnFire()
+    {
         if (holstered && weapons.Count > 0) {
             SwitchToWeapon(_currentWeaponIndex);
             return;
         }
     }
 
-    public void OnUse() {
+    private void OnUse()
+    {
         if (_thingToUse)
         {
             _thingToUse.Use(this);
@@ -180,7 +183,8 @@ public class PlayerInventory : MonoBehaviour
         SwitchToWeapon(weapons.Count - 1);
     }
 
-    private void OnDeath() {
+    private void OnDeath()
+    {
         // delete all children
         foreach (Transform trans in _camera.transform) {
             Destroy(trans.gameObject);

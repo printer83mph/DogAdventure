@@ -54,9 +54,9 @@ public class EnemyVision : MonoBehaviour {
 
     void Update()
     {
-        _playerDistance = -1;
         _vecToPlayer = _playerCam.transform.position - eyeTransform.position;
         _playerDistance = _vecToPlayer.magnitude;
+        
         bool canSeePlayer = false;
         if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) {
             // player not even in cone of vision
@@ -72,7 +72,6 @@ public class EnemyVision : MonoBehaviour {
                 _collider.enabled = false;
                 canSeePlayer = (!Physics.CheckCapsule(start, end, losRadius, layerMask));
                 _collider.enabled = true;
-                Debug.Log(canSeePlayer);
             }
         }
         

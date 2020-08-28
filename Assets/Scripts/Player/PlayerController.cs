@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable() {
         input.actions["Jump"].performed -= JumpAction;
         _health.onDeathDelegate -= OnDeath;
+        // TODO: remove all these unnecessary OnDisables and move delegate stuff to Awake
     }
 
     void JumpAction(InputAction.CallbackContext ctx) {
