@@ -2,6 +2,9 @@
 
 public class Weapon : MonoBehaviour
 {
+
+    public delegate void EquipEvent(PlayerController controller, PlayerInventory inventory, WeaponSlot slot);
+    public EquipEvent onEquip = delegate { };
     
     public float switchTime = .3f;
 
@@ -25,10 +28,9 @@ public class Weapon : MonoBehaviour
         _slot = weaponSlot;
         // if no data provided then update with defaults
         if (weaponSlot.Data.Length == 0) weaponSlot.Data = defaultFloatData;
-    }
-
-    public void OnEquip() {
         
+        // run equip delegate
+        onEquip(controller, inventory, weaponSlot);
     }
 
     // has it been long enough since a switch?

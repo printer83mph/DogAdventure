@@ -38,20 +38,22 @@ public class HitscanGun : MonoBehaviour
 
     private const int BulletsIndex = 0;
 
-    void Start()
-    {
+    private void Awake() {
         _weapon = GetComponent<Weapon>();
-        _kickController = _weapon.playerController.kickController;
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
+    }
+
+    private void Start() {
+        _kickController = _weapon.playerController.kickController;
         // setup callbacks
         _input = _weapon.playerController.input;
         m_Fire = _input.actions["Fire1"];
         _input.actions["Reload"].performed += ReloadInput;
     }
 
-    void OnDestroy() {
+    private void OnDestroy() {
         // remove callbacks
-        _input.actions["Reload"].performed -= ReloadInput;
+        if (_input) _input.actions["Reload"].performed -= ReloadInput;
     }
 
     public void ReloadInput(InputAction.CallbackContext ctx) {

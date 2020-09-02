@@ -27,6 +27,7 @@ public class PlayerInventory : MonoBehaviour
     public LayerMask interactMask = ~0;
     
     [Header("Katana")]
+    public bool hasKatana;
     public GameObject katanaPrefab;
     public float katanaSheathTime = .8f;
     public float katanaSwingDelay = .25f;
@@ -118,6 +119,7 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private void OnMelee() {
+        if (!hasKatana) return;
         // if we can swing again
         if (Time.time - _lastSwing > katanaSwingDelay) {
             if (_swinging) {
@@ -198,30 +200,49 @@ public class PlayerInventory : MonoBehaviour
         SwitchToWeapon((_currentWeaponIndex + weapons.Count + amt) % (weapons.Count));
     }
 
-    // actually do the switch
+    // for manual weapon switching
     void SwitchToWeapon(int weaponIndex)
     {
+        
         // don't do anything if swinging
         if (_swinging) return;
 
         // don't do anything if we're switching to the same weapon
         if (weaponIndex == _currentWeaponIndex && !holstered) return;
         if (weaponIndex >= weapons.Count) return;
-        _currentWeaponIndex = weaponIndex;
         
+        InstantiateWeaponSlot(weaponIndex);
+
+    }
+
+    private void InstantiateWeaponSlot(int weaponIndex) {
+
+        _currentWeaponIndex = weaponIndex;
+
         // destroy current weapon gameobject and create new one
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
         _currentWeapon.Equip(_playerController, this, weapons[weaponIndex]);
         lastSwitch = Time.time;
-
+        
         holstered = false;
     }
 
     public void AddWeapon(WeaponSlot weaponSlot)
     {
+        // TODO: optimize this
+        if (weapons.Count == 1 && weapons[0].Weapon.tag == "KatanaWeapon")
+        {
+            weapons.Clear();
+            Debug.Log("actual gun!!");
+        }
+        else if (weaponSlot.Weapon.tag == "KatanaWeapon")
+        {
+            hasKatana = true;
+            if (weapons.Count > 0) return;
+        }
         weapons.Add(weaponSlot);
-        SwitchToWeapon(weapons.Count - 1);
+        InstantiateWeaponSlot(weapons.Count - 1);
     }
 
     private void OnDeath()

@@ -18,12 +18,25 @@ ModelImporter:
   - first:
       74: 6477975688867501219
     second: KatanaArmsRig|KatanaSwing (1)
+  - first:
+      74: 7966919032690908306
+    second: KatanaArmsRig|KatanaRightSwing
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: arms
+    second: {fileID: 2100000, guid: e32d47bf0da7cbb4783bbec257e60bf3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: blademetal.001
     second: {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gloves
+    second: {fileID: 2100000, guid: 83f2e07d9bfdf924190f65c5091b8c6d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -71,7 +84,7 @@ ModelImporter:
       takeName: KatanaArmsRig|KatanaIdle
       internalID: 0
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
