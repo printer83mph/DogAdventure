@@ -224,7 +224,7 @@ public class PlayerInventory : MonoBehaviour
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
         _currentWeapon.Equip(_playerController, this, weapons[weaponIndex]);
         lastSwitch = Time.time;
-        
+
         holstered = false;
     }
 
@@ -251,5 +251,6 @@ public class PlayerInventory : MonoBehaviour
         foreach (Transform trans in _camera.transform) {
             Destroy(trans.gameObject);
         }
+        this.enabled = false;
     }
 }

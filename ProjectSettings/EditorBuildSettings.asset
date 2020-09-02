@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/IkeaAITest.unity
+    guid: 6cbb9f76e8c309242989663fb4553379
   m_configObjects: {}

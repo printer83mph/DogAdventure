@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 9e963a1c3c07f0741982736c499a5b5d,
+  m_LightingDataAsset: {fileID: 112000000, guid: 5a563cf4e1ad2d74bacacbb266721081,
     type: 2}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -3353,8 +3353,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1851843836, guid: 32f69c2035c685c4e9d92bd68f0f1f0c, type: 3}
-      propertyPath: weapons.Array.size
-      value: 0
+      propertyPath: hasKatana
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5371100157787185633, guid: 32f69c2035c685c4e9d92bd68f0f1f0c,
         type: 3}

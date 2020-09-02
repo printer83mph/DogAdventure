@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Shootable))]
+[RequireComponent(typeof(Damageable))]
 [RequireComponent(typeof(EnemyBehaviour))]
 public class SecurityEnemy : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class SecurityEnemy : MonoBehaviour
     public float gunDamage = .4f;
     
     // auto-assigned
-    private Shootable _shootable;
+    private Damageable _damageable;
     private EnemyBehaviour _behaviour;
     private EnemyHealth _health;
     private PlayerController _player;
@@ -22,7 +22,7 @@ public class SecurityEnemy : MonoBehaviour
     
     void Awake()
     {
-        _shootable = GetComponent<Shootable>();
+        _damageable = GetComponent<Damageable>();
         _behaviour = GetComponent<EnemyBehaviour>();
         _health = GetComponent<EnemyHealth>();
         _player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -31,13 +31,13 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     void OnEnable() {
-        _shootable.onShot += OnShot;
+        _damageable.onShot += OnShot;
         _health.onDeath += OnDeath;
         _behaviour.onAttackUpdate += OnAttackUpdate;
     }
 
     void OnDisable() {
-        _shootable.onShot -= OnShot;
+        _damageable.onShot -= OnShot;
         _health.onDeath -= OnDeath;
         _behaviour.onAttackUpdate -= OnAttackUpdate;
     }

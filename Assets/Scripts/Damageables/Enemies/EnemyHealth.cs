@@ -16,20 +16,26 @@ public class EnemyHealth : MonoBehaviour {
     private float _health = 15;
 
     // auto-assigned
-    private Shootable _shootable;
+    private Damageable _damageable;
     
     // mathstuff
     private bool _dead;
 
     private void Awake() {
-        _shootable = GetComponent<Shootable>();
+        _damageable = GetComponent<Damageable>();
         
-        if (_shootable) _shootable.onShot += OnShot;
+        if (_damageable) {
+            _damageable.onDamage += OnDamage;
+            _damageable.onShot += OnShot;
+        }
+    }
+
+    private void OnDamage(float damage) {
+        if (_dead) return;
+        Damage(damage);
     }
 
     private void OnShot(PlayerShotInfo info) {
-        if (_dead) return;
-        Damage(info.damage);
         if (_dead) onBulletDeath(info);
     }
     

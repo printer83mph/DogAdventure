@@ -12,7 +12,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: blademetal.001
+    second: {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: gold
+    second: {fileID: 2100000, guid: 25fcf44a4f420a24f99a38c8caf2cfa9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gold.001
     second: {fileID: 2100000, guid: 25fcf44a4f420a24f99a38c8caf2cfa9, type: 2}
   - first:
       type: UnityEngine:Material
@@ -22,7 +32,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: handle.001
+    second: {fileID: 2100000, guid: 9de8ce70d35923b49b3202ac6b475782, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: hiltmetal
+    second: {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hiltmetal.001
     second: {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
   materials:
     materialImportMode: 1

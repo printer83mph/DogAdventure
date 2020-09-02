@@ -133,12 +133,12 @@ public class HitscanGun : MonoBehaviour
                 hitRB.AddForceAtPosition(shotRay.direction * kineticPower, hit.point);
             }
 
-            Shootable shootable = hitObject.GetComponent<Shootable>();
-            if (shootable)
+            Damageable damageable = hitObject.GetComponent<Damageable>();
+            if (damageable)
             {
-                shootable.Shoot(new PlayerShotInfo(_weapon.playerInventory, _weapon, damage, hit, shotRay.direction));
-                if (shootable.fxPrefab) {
-                    SpawnHitFX(shootable.fxPrefab, hit);
+                damageable.Shoot(new PlayerShotInfo(_weapon.playerInventory, _weapon, damage, hit, shotRay.direction));
+                if (damageable.fxPrefab) {
+                    SpawnHitFX(damageable.fxPrefab, hit);
                 } else {
                     SpawnHitFX(defaultHitPrefab, hit);
                 }

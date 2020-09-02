@@ -265,8 +265,9 @@ MonoBehaviour:
   landingBounceScale: 1
   viewmodelBob: {fileID: 7186984234008654020}
   kickController: {fileID: 2007013324}
-  sensitivity: 3
+  sensitivity: 0.01
   invertMouseY: 0
+  input: {fileID: 0}
 --- !u!114 &1851843836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,12 +282,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons: []
   holstered: 1
-  interactDistance: 2
   scrollScale: 10
+  interactDistance: 2
+  maxUseAngle: 30
   interactMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxUseAngle: 30
+  hasKatana: 0
+  katanaPrefab: {fileID: 300773718603727788, guid: fd21c6f76852bd246b00fb19e5953c67,
+    type: 3}
+  katanaSheathTime: 0.4
+  katanaSwingDelay: 0.2
   lastSwitch: 0
 --- !u!114 &2007013324
 MonoBehaviour:
@@ -378,6 +384,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 00ed98d9-45ca-4e2b-8c81-f80e17d653cb
     m_ActionName: Player/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e0120aad-0914-43d2-9a96-271e9ab54023
+    m_ActionName: Player/Holster[/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 194c0b8d-2582-4c33-81de-0c3e34174ed4
+    m_ActionName: Player/Fire1[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: Player

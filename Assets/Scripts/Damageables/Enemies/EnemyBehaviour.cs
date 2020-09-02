@@ -119,6 +119,7 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     public void OnDeath() {
+        _agent.enabled = false;
         this.enabled = false;
     }
     

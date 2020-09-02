@@ -13,6 +13,7 @@ public class EnemyVision : MonoBehaviour {
 
     public float maxDistance = 25;
     public float maxAngle = 85;
+    // TODO: make los radius only affect whether or not we can attack yet
     public float losRadius = 0;
 
     // math stuff
