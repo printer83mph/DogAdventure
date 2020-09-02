@@ -14,14 +14,22 @@ public class WeaponSlot
 public class PlayerInventory : MonoBehaviour
 {
 
+    [Header("Weapons")]
     // inspector stuff
     [SerializeField]
     public List<WeaponSlot> weapons;
     public bool holstered = true;
-    public float interactDistance = 2f;
     public float scrollScale = 10f;
-    public LayerMask interactMask = ~0;
+
+    [Header("Interaction")]
+    public float interactDistance = 2f;
     public float maxUseAngle = 30f;
+    public LayerMask interactMask = ~0;
+    
+    [Header("Katana")]
+    public GameObject katanaPrefab;
+    public float katanaSheathTime = .8f;
+    public float katanaSwingDelay = .25f;
 
     // auto-assigned
     private PlayerController _playerController;
@@ -36,7 +44,9 @@ public class PlayerInventory : MonoBehaviour
     private Weapon _currentWeapon;
     [HideInInspector]
     public float lastSwitch;
-    // TODO: add swinging feature
+    private GameObject _katanaObject;
+    private float _lastSwing;
+    private bool _swinging;
     
     private Useable _thingToUse;
 
@@ -59,9 +69,11 @@ public class PlayerInventory : MonoBehaviour
         _input.actions["WeaponSwitch"].performed += ctx => OnWeaponSwitch(ctx.ReadValue<float>());
         _input.actions["WeaponSlot"].performed += ctx => OnSlotSelect(ctx.ReadValue<float>());
         _input.actions["Use"].performed += _ => OnUse();
+        _input.actions["Melee"].performed += _ => OnMelee();
     }
 
-    void OnEnable() {
+    void OnEnable()
+    {
         _health.onDeathDelegate += OnDeath;
 
         lastSwitch = Time.time;
@@ -105,10 +117,34 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    private void OnMelee() {
+        // if we can swing again
+        if (Time.time - _lastSwing > katanaSwingDelay) {
+            if (_swinging) {
+                _katanaObject.GetComponent<Animator>().SetTrigger("swing");
+            } else {
+                if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
+                _katanaObject = Instantiate(katanaPrefab);
+                AddToViewmodel(_katanaObject.transform);
+            }
+            _lastSwing = Time.time;
+            _swinging = true;
+            holstered = true;
+        }
+    }
+
     void Update()
     {
 
-        if (_health.Dead) return;
+        if (_swinging)
+        {
+            if (Time.time - _lastSwing > katanaSheathTime)
+            {
+                Destroy(_katanaObject);
+                _swinging = false;
+                SwitchToWeapon(_currentWeaponIndex);
+            }
+        }
 
         // highlight useable element
         CheckUseables();
@@ -118,6 +154,8 @@ public class PlayerInventory : MonoBehaviour
     public void AddToViewmodel(Transform newGuy)
     {
         newGuy.parent = _viewmodelBob.transform;
+        newGuy.localPosition = Vector3.zero;
+        newGuy.localRotation = Quaternion.identity;
     }
 
     void CheckUseables()
@@ -163,6 +201,9 @@ public class PlayerInventory : MonoBehaviour
     // actually do the switch
     void SwitchToWeapon(int weaponIndex)
     {
+        // don't do anything if swinging
+        if (_swinging) return;
+
         // don't do anything if we're switching to the same weapon
         if (weaponIndex == _currentWeaponIndex && !holstered) return;
         if (weaponIndex >= weapons.Count) return;

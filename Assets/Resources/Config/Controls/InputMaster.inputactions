@@ -84,6 +84,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Melee",
+                    "type": "Button",
+                    "id": "b9e7de58-26f8-4a9c-b2ff-28846ac2192d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -392,6 +400,28 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "Fire1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d088068-2a99-46dc-b659-c0ccebc86b5d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8f1898b-44e9-4d5e-ad20-e81853f147df",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

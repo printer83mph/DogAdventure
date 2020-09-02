@@ -97,6 +97,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Melee"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9e7de58-26f8-4a9c-b2ff-28846ac2192d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -407,6 +415,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Fire1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d088068-2a99-46dc-b659-c0ccebc86b5d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8f1898b-44e9-4d5e-ad20-e81853f147df"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -453,6 +483,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Holster = m_Player.FindAction("Holster", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
+        m_Player_Melee = m_Player.FindAction("Melee", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -512,6 +543,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Holster;
     private readonly InputAction m_Player_Fire1;
+    private readonly InputAction m_Player_Melee;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -526,6 +558,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Holster => m_Wrapper.m_Player_Holster;
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
+        public InputAction @Melee => m_Wrapper.m_Player_Melee;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -565,6 +598,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Fire1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
+                @Melee.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
+                @Melee.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
+                @Melee.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -599,6 +635,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Fire1.started += instance.OnFire1;
                 @Fire1.performed += instance.OnFire1;
                 @Fire1.canceled += instance.OnFire1;
+                @Melee.started += instance.OnMelee;
+                @Melee.performed += instance.OnMelee;
+                @Melee.canceled += instance.OnMelee;
             }
         }
     }
@@ -633,5 +672,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnHolster(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
+        void OnMelee(InputAction.CallbackContext context);
     }
 }

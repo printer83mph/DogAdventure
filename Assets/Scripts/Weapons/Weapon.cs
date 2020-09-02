@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
@@ -23,8 +21,6 @@ public class Weapon : MonoBehaviour
         cam = controller.cam;
         
         playerInventory.AddToViewmodel(transform);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
 
         _slot = weaponSlot;
         // if no data provided then update with defaults

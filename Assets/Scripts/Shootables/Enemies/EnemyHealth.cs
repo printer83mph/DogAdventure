@@ -23,14 +23,8 @@ public class EnemyHealth : MonoBehaviour {
 
     private void Awake() {
         _shootable = GetComponent<Shootable>();
-    }
-
-    private void OnEnable() {
+        
         if (_shootable) _shootable.onShot += OnShot;
-    }
-
-    private void OnDisable() {
-        if (_shootable) _shootable.onShot -= OnShot;
     }
 
     private void OnShot(PlayerShotInfo info) {

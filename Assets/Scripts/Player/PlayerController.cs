@@ -82,7 +82,6 @@ public class PlayerController : MonoBehaviour
     private void OnDisable() {
         input.actions["Jump"].performed -= JumpAction;
         _health.onDeathDelegate -= OnDeath;
-        // TODO: remove all these unnecessary OnDisables and move delegate stuff to Awake
     }
 
     void JumpAction(InputAction.CallbackContext ctx) {
@@ -98,9 +97,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        // dont do movement if dead
-        if (_health.Dead) return;
 
         // get desired movement
         Vector2 moveInput = m_Move.ReadValue<Vector2>();
@@ -227,6 +223,10 @@ public class PlayerController : MonoBehaviour
 
         _rb.useGravity = true;
         _rb.velocity = _vel;
+
+        cam.transform.Rotate(0, 0, -45);
+
+        enabled = false;
     }
 
 }
