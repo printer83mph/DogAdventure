@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b2d7f29449b8f469747d67742667ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canShoot: 1
+  canMelee: 1
   fxPrefab: {fileID: 2198771929463619118, guid: b8736118f7b938046b31b486def279a9,
     type: 3}
 --- !u!195 &770465045131024019
@@ -270,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragdollInstantlyOnDeath: 1
   hitRB: {fileID: 5646271489306842610}
-  deathForceScale: 80
+  deathForceScale: 140
   invSquareDistanceScale: 4
   _enabled: 0
 --- !u!114 &2056050807

@@ -5,6 +5,7 @@ public class EnemyVision : MonoBehaviour {
     // delegate stuff
     public delegate void VisionEvent(bool canSeePlayer);
     public VisionEvent onVisionUpdate = delegate { };
+    public VisionEvent onCapsuleVisionUpdate = delegate { };
 
     // inspector vars
     public Transform eyeTransform;
@@ -19,8 +20,10 @@ public class EnemyVision : MonoBehaviour {
     // math stuff
     private float _playerDistance;
     private bool _canSeePlayer;
+    private bool _canCapsulePlayer;
     public float PlayerDistance => _playerDistance;
     public bool CanSeePlayer => _canSeePlayer;
+    public bool CanCapsulePlayer => _canCapsulePlayer;
 
     // auto-assigned
     private PlayerController _player;
@@ -59,19 +62,21 @@ public class EnemyVision : MonoBehaviour {
         _playerDistance = _vecToPlayer.magnitude;
         
         bool canSeePlayer = false;
+        bool canCapsulePlayer = false;
         if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance) {
             // player not even in cone of vision
         } else {
             // player is in cone of vision
+            // Debug.DrawRay(eyeTransform.position, _vecToPlayer);
+            canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
             if (losRadius == 0) {
-                Debug.DrawRay(eyeTransform.position, _vecToPlayer);
-                canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance, layerMask));
+                canCapsulePlayer = canSeePlayer;
             } else {
                 Vector3 start = Vector3.MoveTowards(eyeTransform.position, _playerCam.transform.position, losRadius);
                 Vector3 end = Vector3.MoveTowards(_playerCam.transform.position, eyeTransform.position, losRadius);
-                Debug.DrawRay(start, end - start);
+                // Debug.DrawRay(start, end - start);
                 _collider.enabled = false;
-                canSeePlayer = (!Physics.CheckCapsule(start, end, losRadius, layerMask));
+                canCapsulePlayer = (!Physics.CheckCapsule(start, end, losRadius, layerMask));
                 _collider.enabled = true;
             }
         }
@@ -79,7 +84,14 @@ public class EnemyVision : MonoBehaviour {
         if (canSeePlayer != _canSeePlayer) {
             onVisionUpdate(canSeePlayer);
             _canSeePlayer = canSeePlayer;
+            Debug.Log("Vision update");
         }
+
+        if (canCapsulePlayer != _canCapsulePlayer) {
+            onCapsuleVisionUpdate(canCapsulePlayer);
+            _canCapsulePlayer = canCapsulePlayer;
+        }
+
     }
 
 }

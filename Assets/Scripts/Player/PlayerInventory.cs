@@ -10,6 +10,13 @@ public class WeaponSlot
     public float[] Data;
 }
 
+[Serializable]
+public class Ammo
+{
+    public string type;
+    public int count;
+} // TODO: this
+
 [RequireComponent(typeof(PlayerController))]
 public class PlayerInventory : MonoBehaviour
 {
@@ -18,6 +25,7 @@ public class PlayerInventory : MonoBehaviour
     // inspector stuff
     [SerializeField]
     public List<WeaponSlot> weapons;
+    public List<Ammo> ammo;
     public bool holstered = true;
     public float scrollScale = 10f;
 
@@ -38,13 +46,15 @@ public class PlayerInventory : MonoBehaviour
     private Camera _camera;
     private PlayerHealth _health;
     private PlayerInput _input;
+
+    // scrip references
+    public float LastSwitch => _lastSwitch;
     
     // math things
     private int _currentWeaponIndex;
     private float _scrollBuildup;
     private Weapon _currentWeapon;
-    [HideInInspector]
-    public float lastSwitch;
+    private float _lastSwitch;
     private GameObject _katanaObject;
     private float _lastSwing;
     private bool _swinging;
@@ -55,17 +65,13 @@ public class PlayerInventory : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         _health = GetComponent<PlayerHealth>();
+        _input = GetComponent<PlayerInput>();
 
         _camera = _playerController.cam;
         _viewmodelBob = _playerController.viewmodelBob;
+        
+        _health.onDeathDelegate += OnDeath;
 
-        // initialize each weaponslot floats dict if not already
-        if (weapons == null)
-        {
-            weapons = new List<WeaponSlot>();
-        }
-
-        _input = GetComponent<PlayerInput>();
         _input.actions["Fire1"].performed += ctx => OnFire();
         _input.actions["WeaponSwitch"].performed += ctx => OnWeaponSwitch(ctx.ReadValue<float>());
         _input.actions["WeaponSlot"].performed += ctx => OnSlotSelect(ctx.ReadValue<float>());
@@ -73,11 +79,14 @@ public class PlayerInventory : MonoBehaviour
         _input.actions["Melee"].performed += _ => OnMelee();
     }
 
-    void OnEnable()
+    private void Start()
     {
-        _health.onDeathDelegate += OnDeath;
+        // initialize each lists if not already
+        if (weapons == null) weapons = new List<WeaponSlot>();
+        if (ammo == null) ammo = new List<Ammo>();
 
-        lastSwitch = Time.time;
+        _lastSwitch = Time.time;
+
         if (!holstered)
         {
             SwitchToWeapon(0);
@@ -223,7 +232,7 @@ public class PlayerInventory : MonoBehaviour
         if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
         _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
         _currentWeapon.Equip(_playerController, this, weapons[weaponIndex]);
-        lastSwitch = Time.time;
+        _lastSwitch = Time.time;
 
         holstered = false;
     }

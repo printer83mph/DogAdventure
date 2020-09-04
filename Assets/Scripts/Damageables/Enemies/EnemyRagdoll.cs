@@ -49,7 +49,8 @@ public class EnemyRagdoll : MonoBehaviour {
         foreach(Rigidbody rb in _rbs) {
             Vector3 closestPoint = rb.GetComponent<Collider>().ClosestPoint(info.hit.point);
             float invSquare = Vector3.SqrMagnitude((closestPoint - info.hit.point) * invSquareDistanceScale) + .02f;
-            rb.AddForceAtPosition(baseForce / invSquare, closestPoint);
+            // rb.AddForceAtPosition(baseForce / invSquare, closestPoint);
+            rb.AddForceAtPosition(baseForce / invSquare, info.hit.point);
         }
     }
 

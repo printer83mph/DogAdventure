@@ -19,6 +19,7 @@ public class SecurityEnemy : MonoBehaviour
     private PlayerController _player;
     private PlayerHealth _playerHealth;
     private ChadistAI _chadistAI;
+    private float _nextLook;
     
     void Awake()
     {
@@ -31,15 +32,19 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     void OnEnable() {
-        _damageable.onShot += OnShot;
+        _damageable.onDamage += OnDamage;
         _health.onDeath += OnDeath;
         _behaviour.onAttackUpdate += OnAttackUpdate;
     }
 
     void OnDisable() {
-        _damageable.onShot -= OnShot;
+        _damageable.onDamage -= OnDamage;
         _health.onDeath -= OnDeath;
         _behaviour.onAttackUpdate -= OnAttackUpdate;
+    }
+
+    void Start() {
+        _nextLook = Time.time + Random.Range(2, 5);
     }
 
     private void Update()
@@ -47,7 +52,10 @@ public class SecurityEnemy : MonoBehaviour
         // flinch layer info
         bool flinching = animator.GetCurrentAnimatorStateInfo(1).IsName("Flinch");
         
-        animator.SetBool("searching", !_behaviour.CanSeePlayer);
+        if (Time.time > _nextLook) {
+            animator.SetTrigger("lookAround");
+            _nextLook = Time.time + Random.Range(2, 5); 
+        }
 
         _behaviour.SetLocked(flinching);
         _behaviour.turnTowardsPlayer = !flinching;
@@ -77,7 +85,7 @@ public class SecurityEnemy : MonoBehaviour
         animator.SetBool("canShoot", canAttack);
     }
 
-    private void OnShot(PlayerShotInfo info)
+    private void OnDamage(float damage)
     {
         animator.SetTrigger("flinch");
     }

@@ -47,20 +47,28 @@ public class EnemyBehaviour : MonoBehaviour
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
-    void OnEnable() {
+    private void OnEnable()
+    {
         _chadistAI.onSpotDelegate += OnSpot;
         if (_health) _health.onDeath += OnDeath;
+        GetComponent<Damageable>().onMelee += OnMelee;
         _chadistAI.enemyBehaviours.Add(this);
     }
 
-    void OnDisable() {
+    private void OnDisable()
+    {
         _chadistAI.onSpotDelegate -= OnSpot;
-        if (_health) _health.onDeath -= OnDeath;
         _chadistAI.enemyBehaviours.Remove(this);
     }
 
-    void OnSpot() {
+    private void OnSpot()
+    {
         if (!_agent.enabled) return;
+    }
+
+    private void OnMelee(float damage)
+    {
+        _chadistAI.SpotPlayer(_player.transform.position);
     }
 
     public Vector3 VecToPlayer() {
@@ -84,7 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 if (_agent.enabled) _agent.destination = _chadistAI.lastKnownPos;
                 // find out if we're close enough to stop
-                canAttack = (_vision.CanSeePlayer && VecToPlayer().magnitude < attackingDistance);
+                canAttack = (_vision.CanCapsulePlayer && VecToPlayer().magnitude < attackingDistance);
                 if (_agent.enabled) _agent.isStopped = canAttack;
             }
             if (_agent.enabled && _agent.isStopped && turnTowardsPlayer)

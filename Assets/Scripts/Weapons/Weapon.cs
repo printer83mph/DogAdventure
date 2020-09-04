@@ -36,7 +36,7 @@ public class Weapon : MonoBehaviour
     // has it been long enough since a switch?
     public bool CanFire()
     {
-        return Time.time - playerInventory.lastSwitch > switchTime;
+        return Time.time - playerInventory.LastSwitch > switchTime;
     }
 
     public void SetFloat(int index, float val)

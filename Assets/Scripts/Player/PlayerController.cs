@@ -142,11 +142,13 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
+        // TODO: fix jumping while next to charging enemies
+        Debug.Log("We hit something bro...");
         if (other.collider.gameObject.isStatic)
         {
             ContactPoint point = other.GetContact(0);
             _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
+            if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
         }
     }
     

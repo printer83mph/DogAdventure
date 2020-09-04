@@ -74,6 +74,7 @@ public class ChadistAI : MonoBehaviour
 
     public void UpdateEngagingEnemies() {
         // TODO: specific enemy types (maybe)
+        // TODO: make this more EFFICIENT
         int totalEngaged = 0;
         List<EnemyBehaviour> newList = GetSortedEnemies();
         foreach (EnemyBehaviour behaviour in newList) {

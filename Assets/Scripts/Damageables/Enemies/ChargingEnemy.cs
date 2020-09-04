@@ -95,7 +95,9 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other) {
+    private void OnCollisionEnter(Collision other)
+    {
+        if (!_charging) return;
         ContactPoint colPoint = other.GetContact(0);
         if (Vector3.Angle(colPoint.normal, transform.forward) > 105) {
             Debug.Log(Vector3.Angle(colPoint.normal, transform.forward));
@@ -103,7 +105,8 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
-    private void OnDeath() {
+    private void OnDeath()
+    {
         this.enabled = false;
         // TODO: PLACEHOLDER
         Destroy(gameObject);

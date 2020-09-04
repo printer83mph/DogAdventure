@@ -3,22 +3,19 @@
 [RequireComponent(typeof(Damageable))]
 public class BreakableProp : MonoBehaviour
 {
+
+    public delegate void BreakEvent();
+    public BreakEvent onBreak = delegate { };
     
     public float health;
     public GameObject fxPrefab;
     
     private Damageable _damageable;
 
-    void Awake() {
+    void Awake()
+    {
         _damageable = GetComponent<Damageable>();
-    }
-
-    void OnEnable() {
         _damageable.onDamage += OnShoot;
-    }
-
-    void OnDisable() {
-        _damageable.onDamage -= OnShoot;
     }
     
     public void OnShoot(float damage)
@@ -36,6 +33,7 @@ public class BreakableProp : MonoBehaviour
             GameObject fx = Instantiate(fxPrefab);
             fx.transform.position = transform.position;
         }
+        onBreak();
         Destroy(gameObject);
     }
 
