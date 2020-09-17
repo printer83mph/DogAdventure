@@ -9,10 +9,10 @@ public class PlayerHealth : MonoBehaviour
 
     [HideInInspector]
     public PlayerController _controller;
-    public float health = 1;
+    public float health = 100;
     public bool god;
 
-    public float maxHealth = 1;
+    public float maxHealth = 100;
 
     public bool Dead => (health == 0);
 

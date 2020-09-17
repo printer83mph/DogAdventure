@@ -52,7 +52,7 @@ public class SecurityEnemy : MonoBehaviour
         // flinch layer info
         bool flinching = animator.GetCurrentAnimatorStateInfo(1).IsName("Flinch");
         
-        if (Time.time > _nextLook) {
+        if (Time.time > _nextLook && !_behaviour.CanSeePlayer) {
             animator.SetTrigger("lookAround");
             _nextLook = Time.time + Random.Range(2, 5); 
         }
