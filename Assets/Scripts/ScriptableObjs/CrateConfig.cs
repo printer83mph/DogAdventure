@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponChance
 {
     public GameObject weaponPrefab;
-    public float quality = 3f;
+    public float quality = 5f;
 
 }
 

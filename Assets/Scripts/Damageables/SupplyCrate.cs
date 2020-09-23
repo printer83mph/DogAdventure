@@ -65,24 +65,24 @@ public class SupplyCrate : MonoBehaviour
 
     private void SpawnRandomWeapon()
     {
-        float total = 0;
+        float rand = 0;
         
         foreach (WeaponChance chance in crateConfig.weaponChances)
         {
-            total += 1/chance.quality;
+            rand += 10 - chance.quality;
         }
 
-        float rand = UnityEngine.Random.Range(0, total);
+        rand = UnityEngine.Random.Range(0, rand);
 
         // TODO: check to see if player already has weapon
         foreach (WeaponChance chance in crateConfig.weaponChances)
         {
-            if (rand < 1/chance.quality)
+            if (rand < 10 - chance.quality)
             {
                 Instantiate(chance.weaponPrefab, transform.position, transform.rotation);
                 return;
             }
-            total -= 1/chance.quality;
+            rand -= 10 - chance.quality;
         }
     }
 
