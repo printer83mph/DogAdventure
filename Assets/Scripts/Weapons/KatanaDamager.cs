@@ -14,8 +14,10 @@ public class KatanaDamager : MonoBehaviour
         Damageable damageable = other.GetComponent<Damageable>();
         if (damageable) {
             damageable.Melee(damage);
-        } if (hitFX || (damageable && damageable.fxPrefab)) {
-            Transform hitFXTransform = Instantiate(damageable.fxPrefab ? damageable.fxPrefab : hitFX).transform;
+        }
+        bool hasDamageableFX = damageable && damageable.fxPrefab;
+        if (hitFX || hasDamageableFX) {
+            Transform hitFXTransform = Instantiate(hasDamageableFX ? damageable.fxPrefab : hitFX).transform;
             hitFXTransform.transform.position = other.ClosestPointOnBounds(transform.position);
             hitFXTransform.transform.rotation = Quaternion.Euler(0, 180, 0) * transform.rotation;
         }
