@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: KMetalUseable
-  m_Shader: {fileID: -6465566751694194690, guid: 88ec0b86df606a141a75801c4570c7a1,
+  m_Shader: {fileID: -6465566751694194690, guid: 376dd20096214814285f325d20adf4f3,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,6 +21,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_3FCB7981:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_49B6B9FA:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -54,7 +58,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_28577CA1: 1
-    - Vector1_3AAF0316: 1
+    - Vector1_3AAF0316: 0.2
     - Vector1_71D2D071: 2
     - _AlphaClip: 0
     - _Blend: 0
@@ -77,8 +81,9 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - glowStrength: 0
+    - glowStrength: 0.2
     m_Colors:
+    - Color_209B6F0D: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
     - Color_444060AB: {r: 4, g: 4, b: 0, a: 0}
     - Color_719B182A: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

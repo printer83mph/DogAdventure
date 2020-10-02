@@ -61,7 +61,7 @@ public class Useable : MonoBehaviour
         {
             foreach (Material material in renderer.materials)
             {
-                material.SetFloat("glowStrength", 0f);
+                material.SetFloat("glowStrength", 0.2f);
             }
         }
 

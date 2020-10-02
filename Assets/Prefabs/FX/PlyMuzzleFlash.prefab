@@ -41,7 +41,7 @@ Light:
   m_GameObject: {fileID: 3352830429689830369}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 0
+  m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.8997889, b: 0.7216981, a: 1}
   m_Intensity: 1
@@ -86,7 +86,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 68014373016908807}
   - component: {fileID: 5838399296273987620}
   m_Layer: 8
-  m_Name: MuzzleFlash
+  m_Name: PlyMuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

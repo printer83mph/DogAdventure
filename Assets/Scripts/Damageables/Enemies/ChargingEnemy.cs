@@ -109,6 +109,6 @@ public class ChargingEnemy : MonoBehaviour
     {
         this.enabled = false;
         // TODO: PLACEHOLDER
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
 }
