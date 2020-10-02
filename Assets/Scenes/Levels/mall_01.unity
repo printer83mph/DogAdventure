@@ -972,6 +972,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &447006736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7580107792794399875, guid: edeb0221fbdd41843b7dbddbfb2deae5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1343962556}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &447006740
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447006736}
+  m_Material: {fileID: 13400000, guid: 21c4d78a3a34ed84284f5f29646ed0a6, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6855891173832126549, guid: edeb0221fbdd41843b7dbddbfb2deae5, type: 3}
 --- !u!1 &479083986 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2557003037127485647, guid: edeb0221fbdd41843b7dbddbfb2deae5,
@@ -1862,7 +1882,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814503708}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.2400002, y: 0, z: 0}
+  m_LocalPosition: {x: -6.2400002, y: -0, z: 2.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 672168125}
@@ -3654,7 +3674,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300010524}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.152, y: 0, z: 0}
+  m_LocalPosition: {x: -3.152, y: -0, z: 2.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2145500727}
@@ -3980,6 +4000,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6916683704200562273, guid: edeb0221fbdd41843b7dbddbfb2deae5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7580107792794399875, guid: edeb0221fbdd41843b7dbddbfb2deae5,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
@@ -5529,7 +5554,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082371223}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 2.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 292959845}
