@@ -44,12 +44,17 @@ public class PlayerController : MonoBehaviour
     private Vector3 _initialCameraPos;
 
     private Vector3 _vel;
+    private Quaternion _groundRotation;
+    private Vector3 _groundVelocity;
+    private Rigidbody _groundRigidbody;
     private bool _midAir;
     private Vector2 _cameraXZPos;
     private float _lookY;
     private float _lookX;
     private float _dRotY;
     private float _dRotX;
+
+    // input stuff
     private InputAction m_Move;
     private InputAction m_Sprint;
     private InputAction m_Aim;
@@ -104,13 +109,13 @@ public class PlayerController : MonoBehaviour
         Vector3 globalDesiredMovement = PlayerRotation() * desiredMovement;
         float actualSpeed = speed * (m_Sprint.ReadValue<float>() > 0 ? sprintMultiplier : 1);
         
-        Quaternion groundRotation = GetGroundRotation();
+        GetGroundData();
 
         if (CheckGrounded())
         {
 
             // ground movement
-            _vel = Vector3.MoveTowards(_vel, groundRotation * (globalDesiredMovement * actualSpeed), Time.fixedDeltaTime * groundControl);
+            _vel = Vector3.MoveTowards(_vel, _groundRotation * (globalDesiredMovement * actualSpeed) + _groundVelocity, Time.fixedDeltaTime * groundControl);
 
         }
         else
@@ -138,18 +143,26 @@ public class PlayerController : MonoBehaviour
 
     void Jump() {
         if (_midAir) return;
-        _vel.y = jumpPower;
+        if (_groundRigidbody) {
+            float massRatio = _groundRigidbody.mass / _rb.mass;
+            _groundRigidbody.AddForceAtPosition(new Vector3(0, -jumpPower * _rb.mass, 0), new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z), ForceMode.Impulse);
+            // _vel.y += jumpPower * massRatio;
+        }
+        _vel.y += jumpPower + _groundVelocity.y;
     }
 
     private void OnCollisionEnter(Collision other) {
         // TODO: fix jumping while next to charging enemies
         Debug.Log("We hit something bro...");
-        if (other.collider.gameObject.isStatic)
-        {
+        // if (other.collider.gameObject.isStatic)
+        // {
             ContactPoint point = other.GetContact(0);
-            _vel -= point.normal * Mathf.Min(Vector3.Dot(_vel, point.normal), 0);
-            if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
-        }
+            // _vel -= other.impulse;
+            float massRatio = other.rigidbody ? Mathf.Min(other.rigidbody.mass / _rb.mass) : 1;
+            Debug.Log(massRatio);
+            _vel -= point.normal * (Mathf.Min(Vector3.Dot(_vel - other.relativeVelocity, point.normal), 0) * massRatio);
+            if (landingBounce) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
+        // }
     }
     
     void LateUpdate()
@@ -157,17 +170,22 @@ public class PlayerController : MonoBehaviour
         CameraMovement();
     }
 
-    Quaternion GetGroundRotation()
+    void GetGroundData()
     {
+        _groundRotation = Quaternion.identity;
+        _groundVelocity = Vector3.zero;
         if (Physics.Raycast(new Vector3(transform.position.x, _collider.bounds.min.y, transform.position.z), Vector3.down, out RaycastHit hit, .2f))
         {
             Quaternion angle = Quaternion.FromToRotation(transform.up, hit.normal);
+            _groundRigidbody = hit.transform.GetComponent<Rigidbody>();
 
-            // only return the angle if it's walkable
-            if (Quaternion.Angle(angle, Quaternion.identity) < maxSlopeAngle) return angle;
+            // only do shit if its walkable
+            if (Quaternion.Angle(angle, Quaternion.identity) < maxSlopeAngle)
+            {
+                _groundRotation = angle;
+                if (_groundRigidbody) _groundVelocity = _groundRigidbody.GetPointVelocity(hit.point);
+            }
         }
-
-        return Quaternion.identity;
     }
 
     Quaternion PlayerRotation()
@@ -188,8 +206,9 @@ public class PlayerController : MonoBehaviour
         cam.transform.localRotation = Quaternion.Euler(_lookX, _lookY, 0) * kickController.CameraKickRot;
 
         // move camera ahead a bit if grounded
+        Vector2 relativeVel = new Vector2(_vel.x - _groundVelocity.x, _vel.z - _groundVelocity.z);
         _cameraXZPos = !_midAir && cameraVelocityShift
-            ? PrintUtil.Damp(_cameraXZPos, new Vector2(_vel.x, _vel.z) * cameraVelocityShiftScale, 10f,
+            ? PrintUtil.Damp(_cameraXZPos, relativeVel * cameraVelocityShiftScale, 10f,
                 Time.deltaTime)
             : PrintUtil.Damp(_cameraXZPos, Vector2.zero, 10f, Time.deltaTime);
 
@@ -207,7 +226,7 @@ public class PlayerController : MonoBehaviour
             // cancel downwards velocity
             if (_midAir)
             {
-                if (landingBounce) kickController.AddVel(Vector3.up * (_vel.y * landingBounceScale));
+                if (landingBounce) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
                 _midAir = false;
             }
             _vel -= Mathf.Min(Vector3.Dot(hit.normal, _vel), 0) * hit.normal;
