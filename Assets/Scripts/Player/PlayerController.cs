@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour
 
             // ground movement
             _vel = Vector3.MoveTowards(_vel, _groundRotation * (globalDesiredMovement * actualSpeed) + _groundVelocity, Time.fixedDeltaTime * groundControl);
+            // push down whatever we're standing on
+            if (_groundRigidbody) _groundRigidbody.AddForceAtPosition(new Vector3(0, -_rb.mass, 0), GetFeetPos());
 
         }
         else
@@ -141,28 +143,32 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    Vector3 GetFeetPos() => new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
+
     void Jump() {
         if (_midAir) return;
         if (_groundRigidbody) {
-            float massRatio = _groundRigidbody.mass / _rb.mass;
-            _groundRigidbody.AddForceAtPosition(new Vector3(0, -jumpPower * _rb.mass, 0), new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z), ForceMode.Impulse);
+            // float massRatio = _groundRigidbody.mass / _rb.mass;
+            _groundRigidbody.AddForceAtPosition(new Vector3(0, -jumpPower * _rb.mass / 2, 0), GetFeetPos(), ForceMode.Impulse);
             // _vel.y += jumpPower * massRatio;
         }
-        _vel.y += jumpPower + _groundVelocity.y;
+        _vel.y += jumpPower;
     }
 
-    private void OnCollisionEnter(Collision other) {
-        // TODO: fix jumping while next to charging enemies
-        Debug.Log("We hit something bro...");
-        // if (other.collider.gameObject.isStatic)
-        // {
-            ContactPoint point = other.GetContact(0);
-            // _vel -= other.impulse;
-            float massRatio = other.rigidbody ? Mathf.Min(other.rigidbody.mass / _rb.mass) : 1;
-            Debug.Log(massRatio);
-            _vel -= point.normal * (Mathf.Min(Vector3.Dot(_vel - other.relativeVelocity, point.normal), 0) * massRatio);
-            if (landingBounce) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
-        // }
+    private void OnCollisionEnter(Collision other)
+    {
+        ContactPoint point = other.GetContact(0);
+        // figure out counter acceleration scale (limited to 1 so that we don't bounce back)
+        float massRatio = other.rigidbody ? Mathf.Min(other.rigidbody.mass / _rb.mass, 1) : 1;
+
+        // actual counter acceleration
+        Vector3 otherPointVel = other.rigidbody ? other.rigidbody.GetPointVelocity(point.point) : Vector3.zero;
+        float counterAccel = Vector3.Dot(_vel - otherPointVel, point.normal * massRatio);
+        _vel -= point.normal * counterAccel;
+
+        // add landing bounce
+        GetGroundData();
+        if (landingBounce && CheckGrounded()) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
     }
     
     void LateUpdate()
