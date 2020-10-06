@@ -44,6 +44,7 @@ public class Useable : MonoBehaviour
 
     void Highlight()
     {
+        // TODO: refactor this so it's just UI based (no icky material stuff)
         foreach (Renderer renderer in renderers)
         {
             foreach (Material material in renderer.materials)
