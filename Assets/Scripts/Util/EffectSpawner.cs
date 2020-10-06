@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EffectSpawner : MonoBehaviour
 {
@@ -13,5 +11,6 @@ public class EffectSpawner : MonoBehaviour
         spawnedFlash.position = muzzle.position;
         spawnedFlash.rotation = muzzle.rotation;
         spawnedFlash.parent = muzzle;
+        spawnedFlash.gameObject.layer = gameObject.layer;
     }
 }
