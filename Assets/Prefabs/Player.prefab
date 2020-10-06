@@ -57,7 +57,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 72.54524
   orthographic: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
   transitionLambda: 5
   sway: 0.0002
   swayLambda: 8
-  verticalVelocityInfluence: -0.02
-  verticalInfluenceClamp: 0.1
+  verticalVelocityInfluence: -0.014
+  verticalInfluenceClamp: 0.06
   controller: {fileID: 0}
 --- !u!1 &5371100157787185663
 GameObject:

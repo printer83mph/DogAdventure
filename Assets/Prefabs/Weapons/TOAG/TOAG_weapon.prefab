@@ -853,7 +853,7 @@ MonoBehaviour:
     m_Bits: 513
   fireDelay: 0.05
   automatic: 1
-  damage: 3
+  damage: 2
   kineticPower: 250
   clipSize: 250
   reloadTime: 1
