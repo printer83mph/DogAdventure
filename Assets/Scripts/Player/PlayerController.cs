@@ -149,10 +149,10 @@ public class PlayerController : MonoBehaviour
         if (_midAir) return;
         if (_groundRigidbody) {
             // float massRatio = _groundRigidbody.mass / _rb.mass;
-            _groundRigidbody.AddForceAtPosition(new Vector3(0, -jumpPower * _rb.mass / 2, 0), GetFeetPos(), ForceMode.Impulse);
+            _groundRigidbody.AddForceAtPosition(_groundRotation * new Vector3(0, -jumpPower * _rb.mass / 2, 0), GetFeetPos(), ForceMode.Impulse);
             // _vel.y += jumpPower * massRatio;
         }
-        _vel.y += jumpPower;
+        _vel += _groundRotation * new Vector3(0, jumpPower, 0);
     }
 
     private void OnCollisionEnter(Collision other)
