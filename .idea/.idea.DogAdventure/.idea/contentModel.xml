@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\print\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\print\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_DogAdventure.1401623143.00" t="ExcludeRecursive" />
+    <e p="C:\Users\print\Documents\Programming\DogAdventure" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Resources" t="Include">
+          <e p="Config" t="Include">
+            <e p="Controls" t="Include">
+              <e p="InputMaster.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="Damageables" t="Include">
+            <e p="BreakableProp.cs" t="Include" />
+            <e p="Damage.cs" t="Include" />
+            <e p="Damageable.cs" t="Include" />
+            <e p="DamageSource.cs" t="Include" />
+            <e p="SupplyCrate.cs" t="Include" />
+          </e>
+          <e p="Enemies" t="Include">
+            <e p="ChargingEnemy.cs" t="Include" />
+            <e p="EnemyBehaviour.cs" t="Include" />
+            <e p="EnemyHealth.cs" t="Include" />
+            <e p="EnemyRagdoll.cs" t="Include" />
+            <e p="EnemyVision.cs" t="Include" />
+            <e p="SecurityEnemy.cs" t="Include" />
+            <e p="SecurityEnemyIKController.cs" t="Include" />
+            <e p="Squad.cs" t="Include" />
+          </e>
+          <e p="Player" t="Include">
+            <e p="CameraKickController.cs" t="Include" />
+            <e p="PlayerController.cs" t="Include" />
+            <e p="PlayerHealth.cs" t="Include" />
+            <e p="PlayerInventory.cs" t="Include" />
+            <e p="ViewmodelBob.cs" t="Include" />
+          </e>
+          <e p="ScriptableObjs" t="Include">
+            <e p="ChadistConfig.cs" t="Include" />
+            <e p="CrateConfig.cs" t="Include" />
+          </e>
+          <e p="Useable.cs" t="Include" />
+          <e p="Util" t="Include">
+            <e p="ChadistAI.cs" t="Include" />
+            <e p="CustomFramerate.cs" t="Include" />
+            <e p="CustomPhysicsTick.cs" t="Include" />
+            <e p="Despawner.cs" t="Include" />
+            <e p="EffectSpawner.cs" t="Include" />
+            <e p="Faction.cs" t="Include" />
+            <e p="LockCursor.cs" t="Include" />
+            <e p="PrintUtil.cs" t="Include" />
+          </e>
+          <e p="Weapons" t="Include">
+            <e p="HitscanGun.cs" t="Include" />
+            <e p="KatanaDamager.cs" t="Include" />
+            <e p="Weapon.cs" t="Include" />
+            <e p="WeaponPickup.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="DogAdventure.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

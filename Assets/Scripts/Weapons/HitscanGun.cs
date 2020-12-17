@@ -66,6 +66,7 @@ public class HitscanGun : MonoBehaviour
     void Update()
     {
         _bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
+        // todo: convert this all to beautiful coroutines
         if (CanFire())
         {
             if (_bullets == 0) {
@@ -119,7 +120,8 @@ public class HitscanGun : MonoBehaviour
         _weapon.SetFloat(HitscanGun.BulletsIndex, _bullets - 1);
 
         if (!silenced) {
-            _chadistAI.SpotPlayer(transform.position);
+            // todo: refine this
+            _chadistAI.PlaySound(transform.position, SoundType.Alarming, damage * 5);
         }
         
         Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
@@ -136,7 +138,7 @@ public class HitscanGun : MonoBehaviour
             Damageable damageable = hitObject.GetComponent<Damageable>();
             if (damageable)
             {
-                damageable.Shoot(new PlayerShotInfo(_weapon.playerInventory, _weapon, damage, hit, shotRay.direction));
+                damageable.Damage(new Damage.PlayerBulletDamage(damage, shotRay.direction, hit));
                 if (damageable.fxPrefab) {
                     SpawnHitFX(damageable.fxPrefab, hit);
                 } else {

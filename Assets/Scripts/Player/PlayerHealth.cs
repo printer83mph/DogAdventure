@@ -21,10 +21,10 @@ public class PlayerHealth : MonoBehaviour
         onDeathDelegate += OnDeath;
     }
 
-    public void Damage(float amt, Vector3 direction)
+    public void Damage(Damage damage)
     {
         if (Dead || god) return;
-        health -= amt;
+        health -= damage.damage;
         health = Mathf.Max(0, health);
         if (health == 0) onDeathDelegate();
     }

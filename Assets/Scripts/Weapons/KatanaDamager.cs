@@ -13,7 +13,7 @@ public class KatanaDamager : MonoBehaviour
 
         Damageable damageable = other.GetComponent<Damageable>();
         if (damageable) {
-            damageable.Melee(damage);
+            damageable.Damage(new Damage.PlayerKatanaDamage(damage));
         }
         bool hasDamageableFX = damageable && damageable.fxPrefab;
         if (hitFX || hasDamageableFX) {

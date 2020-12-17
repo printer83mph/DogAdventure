@@ -1,92 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 class DistSort : IComparer<EnemyBehaviour> {
     public int Compare(EnemyBehaviour a, EnemyBehaviour b) {
-        return a.PlayerDistance.CompareTo(b.PlayerDistance);
+        return a.LastKnownPosDistance.CompareTo(b.LastKnownPosDistance);
     }
 }
 
 public class ChadistAI : MonoBehaviour
 {
 
-    public delegate void OnSpotDelegate();
-    public OnSpotDelegate onSpotDelegate = delegate { };
-    
-    [Header("Config")]
-    public ChadistConfig config;
-    public int maxSecurityEngaging = 2;
+    public int maxEngagingCount = 3;
+    public List<EnemyBehaviour> enemies;
+    public List<EnemyBehaviour> engaging;
 
-    [Header("For enemy scripts")]
-    public Vector3 lastKnownPos;
-    public int alertStatus = 0;
-    [HideInInspector]
-    public List<EnemyBehaviour> enemyBehaviours = new List<EnemyBehaviour>();
+    public int totalEnemies => enemies.Count;
+    public int totalEngaging => engaging.Count;
+    public bool MaxEngaging => engaging.Count >= maxEngagingCount;
 
-    private float _lastSpot;
+    private void Start()
+    {
+        StartCoroutine(nameof(UpdateAI));
+    }
 
-    void Update() {
-        if (alertStatus != 0) {
-            // if we're on the hunt!
-            UpdateEngagingEnemies();
-            // if it's been long enough then forget abt the player
-            if (Time.time - _lastSpot > config.alertLength) {
-                alertStatus = 0;
+    IEnumerator UpdateAI()
+    {
+        while (true)
+        {
+            CullEngagingEnemies();
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    public void CullEngagingEnemies()
+    {
+        // nothing to do if value is within bounds
+        if (totalEngaging <= maxEngagingCount) return;
+        // sort by distance
+        engaging.Sort(new DistSort());
+        // filter out overriding dudes
+        List<EnemyBehaviour> filtered = engaging.Where( behaviour => !behaviour.OverrideEngageLimit ).ToList();
+        // return if we have no enemies we can remove
+        if (filtered.Count == 0) return;
+        while (totalEngaging > maxEngagingCount)
+        {
+            Debug.Log("Removing an extra enemy from engaging list");
+            EnemyBehaviour behaviour = filtered[filtered.Count - 1];
+            behaviour.Disengage();
+        }
+    }
+
+    public void PlaySound(Vector3 pos, SoundType soundType, float maxDistance)
+    {
+        float sqrMaxDistance = Mathf.Pow(maxDistance, 2);
+        foreach (EnemyBehaviour enemyBehaviour in enemies)
+        {
+            if ((enemyBehaviour.transform.position - pos).sqrMagnitude < sqrMaxDistance)
+            {
+                enemyBehaviour.SoundAlert(pos, soundType);
             }
         }
     }
+}
 
-    public void SpotPlayer(Vector3 pos) {
-        lastKnownPos = pos;
-        alertStatus = 1;
-        _lastSpot = Time.time;
-        onSpotDelegate();
-    }
-
-    private List<EnemyBehaviour> GetSortedEnemies() {
-        List<EnemyBehaviour> tempList = new List<EnemyBehaviour>(enemyBehaviours);
-        List<EnemyBehaviour> result = new List<EnemyBehaviour>();
-        // run through enemies already attacking
-        for (int i = tempList.Count - 1; i >= 0; i--) {
-            EnemyBehaviour behaviour = tempList[i];
-            if (behaviour.Locked) {
-                result.Add(behaviour);
-                tempList.RemoveAt(i);
-            }
-        }
-        // run through the enemies that can see the player
-        for (int i = tempList.Count - 1; i >= 0; i--) {
-            EnemyBehaviour behaviour = tempList[i];
-            if (behaviour.CanSeePlayer) {
-                result.Add(behaviour);
-                tempList.RemoveAt(i);
-            }
-        }
-        DistSort s = new DistSort();
-        result.Sort(s);
-        tempList.Sort(s);
-        foreach (EnemyBehaviour behaviour in tempList) {
-            result.Add(behaviour);
-        }
-        return result;
-    }
-
-    public void UpdateEngagingEnemies() {
-        // TODO: specific enemy types (maybe)
-        // TODO: make this more EFFICIENT
-        int totalEngaged = 0;
-        List<EnemyBehaviour> newList = GetSortedEnemies();
-        foreach (EnemyBehaviour behaviour in newList) {
-            // foreach (EnemyTypeLimit limit in config.enemyTypeLimits) {
-            //     if (limit.type == behaviour.enemyType) {
-
-            //     }
-            // }
-            bool engage = totalEngaged < config.totalLimit && behaviour.VecToLastKnownPos().sqrMagnitude < Mathf.Pow(config.alertDistance, 2);
-            behaviour.SetEngaging(engage);
-            if (engage) totalEngaged++;
-        }
-    }
-
+public enum SoundType
+{
+    Suspicious,
+    Alarming,
+    Stunning
 }

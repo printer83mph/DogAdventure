@@ -69,8 +69,8 @@ public class ChargingEnemy : MonoBehaviour
     void Update() {
         bool seesPlayer = _behaviour.CanSeePlayer;
         // give us some buffer room
-        _behaviour.attackingDistance = _maxChargeDistance + (_behaviour.CanAttack ? chargeDistanceBuffer : 0);
-        bool closeEnoughToCharge = _behaviour.CanAttack;
+        _behaviour.attackingDistance = _maxChargeDistance + (_behaviour.Attacking ? chargeDistanceBuffer : 0);
+        bool closeEnoughToCharge = _behaviour.Attacking;
 
         Vector3 localVel = transform.InverseTransformVector(_behaviour.AgentVelocity);
         animator.SetFloat("xVel", localVel.x);
@@ -105,7 +105,7 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
-    private void OnDeath()
+    private void OnDeath(Damage damage)
     {
         this.enabled = false;
         // TODO: PLACEHOLDER

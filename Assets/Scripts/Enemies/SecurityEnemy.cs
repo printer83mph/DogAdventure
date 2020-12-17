@@ -20,7 +20,7 @@ public class SecurityEnemy : MonoBehaviour
     private PlayerHealth _playerHealth;
     private ChadistAI _chadistAI;
     private float _nextLook;
-    
+
     void Awake()
     {
         _damageable = GetComponent<Damageable>();
@@ -69,14 +69,17 @@ public class SecurityEnemy : MonoBehaviour
         AimSpineBone();
     }
 
-    void AimSpineBone() {
-        Quaternion requiredRotation = Quaternion.LookRotation(transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up);
+    void AimSpineBone()
+    {
+        Quaternion requiredRotation = Quaternion.LookRotation(
+            transform.InverseTransformDirection(_player.cam.transform.position - eyeTransform.position), Vector3.up);
         aimBone.rotation *= Quaternion.Slerp(Quaternion.identity, requiredRotation, animator.GetFloat("AimAccuracy"));
     }
 
     private void ShootPlayer()
     {
-        _playerHealth.Damage(gunDamage, _player.transform.position - eyeTransform.position);
+        _playerHealth.Damage(new Damage.BulletDamage(gunDamage, new EnemyDamageSource(_behaviour, "a Chadist Goon"),
+            _player.transform.position - eyeTransform.position));
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
     }
     
@@ -85,12 +88,12 @@ public class SecurityEnemy : MonoBehaviour
         animator.SetBool("canShoot", canAttack);
     }
 
-    private void OnDamage(float damage)
+    private void OnDamage(Damage damage)
     {
         animator.SetTrigger("flinch");
     }
 
-    private void OnDeath() {
+    private void OnDeath(Damage damage) {
         animator.SetTrigger("death");
         this.enabled = false;
     }

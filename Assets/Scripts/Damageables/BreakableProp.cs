@@ -15,12 +15,12 @@ public class BreakableProp : MonoBehaviour
     void Awake()
     {
         _damageable = GetComponent<Damageable>();
-        _damageable.onDamage += OnShoot;
+        _damageable.onDamage += OnDamage;
     }
     
-    public void OnShoot(float damage)
+    public void OnDamage(Damage damage)
     {
-        health -= damage;
+        health -= damage.damage;
         if (health <= 0)
         {
             Break();

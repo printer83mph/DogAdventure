@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
 
     public delegate void EquipEvent(PlayerController controller, PlayerInventory inventory, WeaponSlot slot);
     public EquipEvent onEquip = delegate { };
-    
+
+    public String displayName;
     public float switchTime = .3f;
 
     public PlayerController playerController;
@@ -45,5 +47,5 @@ public class Weapon : MonoBehaviour
     }
 
     public float GetFloat(int index) => _slot.Data[index];
-
+    
 }
