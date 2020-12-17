@@ -81,6 +81,7 @@ public class SecurityEnemy : MonoBehaviour
         _playerHealth.Damage(new Damage.BulletDamage(gunDamage, new EnemyDamageSource(_behaviour, "a Chadist Goon"),
             _player.transform.position - eyeTransform.position));
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
+        _chadistAI.PlaySound(transform.position, SoundType.Alarming, 25f);
     }
     
     private void OnAttackUpdate(bool canAttack)
@@ -90,6 +91,7 @@ public class SecurityEnemy : MonoBehaviour
 
     private void OnDamage(Damage damage)
     {
+        if (damage.damage == 0) return;
         animator.SetTrigger("flinch");
     }
 

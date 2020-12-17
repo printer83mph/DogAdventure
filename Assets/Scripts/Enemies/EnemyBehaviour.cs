@@ -21,7 +21,7 @@ public class EnemyBehaviour : MonoBehaviour
     // for other scripts
     public bool Locked => _locked;
     public bool CanSeePlayer => _vision.CanSeePlayer;
-    public bool CanAttackPlayer => _vision.CanCapsulePlayer;
+    public bool CanAttackPlayer => _vision.CanCapsulePlayer && WithinAttackingDistance && _engaging;
     public float PlayerDistance => _vision.PlayerDistance;
     public float LastKnownPosDistance => VecToLastKnownPos.magnitude;
     public Vector3 AgentVelocity => _agent.velocity;
@@ -48,8 +48,8 @@ public class EnemyBehaviour : MonoBehaviour
     public bool OverrideEngageLimit => _overrideEngageLimit;
     
     private Vector3 _positionOfInterest; // used to track player and whatnot
-    private float _horniness;
-    private bool _horny;
+    private float _horniness; // personal alertness meter
+    private bool _horny; // if we should be on personal alert
 
     // util methods
     public Vector3 VecToPlayer => _player.transform.position - transform.position;
@@ -159,7 +159,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void UpdateEngagement()
     {
         // return if we're already at max engaging or overriding it
-        if (_overrideEngageLimit) return;
+        // if (_overrideEngageLimit) return;
 
         if (!_engaging)
         {
@@ -172,6 +172,8 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 if (_squad.AlertStatus == AlertStatus.FullAlert) TryEngage();
             }
+            
+            SetAttacking(false);
         }
         else
         {
@@ -192,8 +194,7 @@ public class EnemyBehaviour : MonoBehaviour
     public void ForceEngage()
     {
         _overrideEngageLimit = true;
-        _engaging = true;
-        onEngageUpdate(true);
+        Engage();
         StartCoroutine(nameof(ForceEngageLoop));
     }
 
@@ -206,17 +207,23 @@ public class EnemyBehaviour : MonoBehaviour
             yield return new WaitForSeconds(1);
         } while (CanSeePlayer);
 
-        _engaging = false;
-        onEngageUpdate(false);
+        Disengage();
         _overrideEngageLimit = false;
     }
 
     public void TryEngage()
     {
-        if (_chadistAI.MaxEngaging || _engaging) return;
+        if (_chadistAI.MaxEngaging) return;
 
-        Debug.Log("Engaging.");
+        Engage();
+
+    }
+
+    public void Engage()
+    {
+        if (_engaging) return;
         // actually engage
+        Debug.Log("Now Engaging");
         _engaging = true;
         onEngageUpdate(true);
         _chadistAI.engaging.Add(this);
@@ -249,6 +256,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void RotateTowards(Vector3 destination) {
         Vector3 vecToDestination = destination - transform.position;
         vecToDestination.y = 0;
+        if (vecToDestination.sqrMagnitude < .1f) return;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(vecToDestination),
             turnSpeed * Time.deltaTime);
     }
@@ -265,9 +273,12 @@ public class EnemyBehaviour : MonoBehaviour
         // special damage things
         if (damage is Damage.SourcedDamage)
         {
-            if (((Damage.SourcedDamage) damage).source == GenericDamageSources.Player && CanSeePlayer)
+            bool playerForceShooting =
+                ((Damage.SourcedDamage) damage).source == GenericDamageSources.Player && CanSeePlayer;
+            if (playerForceShooting || damage is Damage.PlayerKatanaDamage)
             {
-                ForceEngage();
+                if (!_engaging) ForceEngage();
+                _positionOfInterest = _player.transform.position;
                 _horniness = 1f;
                 _horny = true;
             }
@@ -275,6 +286,8 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     private void OnDeath(Damage damage) {
+        if (_chadistAI.enemies.Contains(this)) _chadistAI.enemies.Remove(this);
+        if (_chadistAI.engaging.Contains(this)) _chadistAI.engaging.Remove(this);
         _agent.enabled = false;
         enabled = false;
     }
@@ -290,7 +303,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (soundType == SoundType.Alarming || soundType == SoundType.Suspicious)
         {
-            Debug.Log("Suspicious or alarming sound heard");
+            // Debug.Log("Suspicious or alarming sound heard");
             _positionOfInterest = pos;
             _horny = true;
             _horniness = 1;
