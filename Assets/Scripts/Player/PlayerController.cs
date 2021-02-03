@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
@@ -103,6 +104,12 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
+        bool wasMidAir = _midAir;
+
+        // move based on velocity
+        _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
+        _rb.velocity = Vector3.zero;
+        
         // get desired movement
         Vector2 moveInput = m_Move.ReadValue<Vector2>();
         Vector3 desiredMovement = new Vector3(moveInput.x, 0, moveInput.y);
@@ -114,6 +121,13 @@ public class PlayerController : MonoBehaviour
         if (CheckGrounded())
         {
 
+            if (wasMidAir)
+            {
+                // on landing
+                if (landingBounce) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
+                // todo: add vel to rigidbody if landing on it
+            }
+            
             // ground movement
             _vel = Vector3.MoveTowards(_vel, _groundRotation * (globalDesiredMovement * actualSpeed) + _groundVelocity, Time.fixedDeltaTime * groundControl);
             // push down whatever we're standing on
@@ -136,10 +150,6 @@ public class PlayerController : MonoBehaviour
             
             _vel.y -= gravity * Time.fixedDeltaTime;
         }
-        
-        // move based on velocity
-        _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
-        _rb.velocity = Vector3.zero;
 
     }
 
@@ -147,12 +157,16 @@ public class PlayerController : MonoBehaviour
 
     void Jump() {
         if (_midAir) return;
+
+        Quaternion jumpRotation = Quaternion.Slerp(_groundRotation, Quaternion.identity, .5f);
+        
         if (_groundRigidbody) {
             // float massRatio = _groundRigidbody.mass / _rb.mass;
-            _groundRigidbody.AddForceAtPosition(_groundRotation * new Vector3(0, -jumpPower * _rb.mass / 2, 0), GetFeetPos(), ForceMode.Impulse);
+            _groundRigidbody.AddForceAtPosition(jumpRotation * new Vector3(0, -jumpPower * _rb.mass / 2, 0), GetFeetPos(), ForceMode.Impulse);
             // _vel.y += jumpPower * massRatio;
         }
-        _vel += _groundRotation * new Vector3(0, jumpPower, 0);
+        _vel += jumpRotation * new Vector3(0, jumpPower, 0);
+        // _midAir = true;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -167,8 +181,8 @@ public class PlayerController : MonoBehaviour
         _vel -= point.normal * counterAccel;
 
         // add landing bounce
-        GetGroundData();
-        if (landingBounce && CheckGrounded()) kickController.AddVel(Vector3.up * ((_vel.y - _groundVelocity.y) * landingBounceScale));
+        // GetGroundData();
+        
     }
     
     void LateUpdate()
