@@ -277,6 +277,7 @@ MonoBehaviour:
   hitFX: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703, type: 3}
   damage: 5
   hitForce: 1200
+  audioEvent: {fileID: 11400000, guid: 15c2f12d588108748afd5801c21c40ef, type: 2}
 --- !u!1 &1265979357178557549
 GameObject:
   m_ObjectHideFlags: 0

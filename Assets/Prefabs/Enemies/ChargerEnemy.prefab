@@ -433,12 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeTransform: {fileID: 2887522236409222777}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 513
-  maxDistance: 25
-  maxAngle: 85
-  losRadius: 0
+  visionConfig: {fileID: 11400000, guid: 44e88dd204ea8754c825d919e9b8b307, type: 2}
 --- !u!195 &229650632
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -473,10 +468,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf9a0d6e8b76c140883e6412d4d108d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 
-  attackingDistance: 20
+  config: {fileID: 11400000, guid: 0ec285630b909c142a9b54bf6e63a9fa, type: 2}
   turnSpeed: 150
   turnTowardsPlayer: 1
+  attackingDistance: 20
 --- !u!114 &-4699532853442146650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragdollInstantlyOnDeath: 1
   hitRB: {fileID: 0}
+  katanaDeathForce: 100
   deathForceScale: 140
   invSquareDistanceScale: 4
   _enabled: 0
@@ -519,8 +515,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b2d7f29449b8f469747d67742667ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canShoot: 1
-  canMelee: 1
   fxPrefab: {fileID: 2198771929463619118, guid: b8736118f7b938046b31b486def279a9,
     type: 3}
 --- !u!136 &1937772319890075956

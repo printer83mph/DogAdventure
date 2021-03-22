@@ -1,3 +1,4 @@
+using ScriptableObjects.Enemies;
 using UnityEngine;
 
 public class EnemyVision : MonoBehaviour {
@@ -8,14 +9,9 @@ public class EnemyVision : MonoBehaviour {
     public VisionEvent onCapsuleVisionUpdate = delegate { };
 
     // inspector vars
-    public Transform eyeTransform;
+    [SerializeField] private Transform eyeTransform = null;
 
-    public LayerMask layerMask = (1 << 0) | (1 << 9);
-
-    public float maxDistance = 25;
-    public float maxAngle = 85;
-    // TODO: make los radius only affect whether or not we can attack yet
-    public float losRadius = 0;
+    [SerializeField] private EnemyVisionConfig visionConfig = null;
 
     // math stuff
     private float _playerDistance;
@@ -70,7 +66,7 @@ public class EnemyVision : MonoBehaviour {
     {
         bool canSeePlayer = false;
         bool canCapsulePlayer = false;
-        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > maxAngle || _playerDistance > maxDistance)
+        if (Vector3.Angle(_vecToPlayer, eyeTransform.forward) > visionConfig.MaxAngle || _playerDistance > visionConfig.MaxDistance)
         {
             // player not even in cone of vision
         }
@@ -79,18 +75,18 @@ public class EnemyVision : MonoBehaviour {
             // player is in cone of vision
             // Debug.DrawRay(eyeTransform.position, _vecToPlayer);
             canSeePlayer = (!Physics.Raycast(eyeTransform.position, _vecToPlayer, out RaycastHit hit, _playerDistance,
-                layerMask));
-            if (losRadius == 0)
+                visionConfig.LayerMask));
+            if (visionConfig.LosRadius == 0)
             {
                 canCapsulePlayer = canSeePlayer;
             }
             else
             {
-                Vector3 start = Vector3.MoveTowards(eyeTransform.position, _playerCam.transform.position, losRadius);
-                Vector3 end = Vector3.MoveTowards(_playerCam.transform.position, eyeTransform.position, losRadius);
+                Vector3 start = Vector3.MoveTowards(eyeTransform.position, _playerCam.transform.position, visionConfig.LosRadius);
+                Vector3 end = Vector3.MoveTowards(_playerCam.transform.position, eyeTransform.position, visionConfig.LosRadius);
                 // Debug.DrawRay(start, end - start);
                 _collider.enabled = false;
-                canCapsulePlayer = (!Physics.CheckCapsule(start, end, losRadius, layerMask));
+                canCapsulePlayer = (!Physics.CheckCapsule(start, end, visionConfig.LosRadius, visionConfig.LayerMask));
                 _collider.enabled = true;
             }
         }
@@ -99,7 +95,6 @@ public class EnemyVision : MonoBehaviour {
         {
             onVisionUpdate(canSeePlayer);
             _canSeePlayer = canSeePlayer;
-            Debug.Log("Vision update");
         }
 
         if (canCapsulePlayer != _canCapsulePlayer)

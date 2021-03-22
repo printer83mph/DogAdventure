@@ -26,7 +26,6 @@
       <Path>Blender</Path>
       <Path>Library</Path>
       <Path>LocalPackages</Path>
-      <Path>Temp</Path>
       <Path>obj</Path>
     </explicitExcludes>
   </component>

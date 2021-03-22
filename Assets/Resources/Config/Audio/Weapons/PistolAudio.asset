@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62cdd19bfb1f4277a4b3271fcfc5705a, type: 3}
+  m_Name: PistolAudio
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 1e3c7ba727d6091419ad27caf15db5e9, type: 3}
+  channels:
+  - {fileID: 11400000, guid: b7f182d9c2e1f6f4c849af0f4c450c05, type: 2}
+  volumeMin: 0.7
+  volumeMax: 0.9
+  pitchMin: 0.9
+  pitchMax: 1.1
+  soundType: 2
+  radius: 20
+  actuallyRandom: 1

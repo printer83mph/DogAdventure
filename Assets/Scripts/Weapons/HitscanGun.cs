@@ -1,32 +1,29 @@
 ﻿using System.Collections;
+using ScriptableObjects;
+using ScriptableObjects.Audio;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Weapon))]
 public class HitscanGun : MonoBehaviour
 {
 
-    public Animator animator;
-    public GameObject defaultHitPrefab;
-    public LayerMask layerMask = (1 << 9) | (1 << 0);
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private GameObject defaultHitPrefab = null;
+    [SerializeField] private LayerMask layerMask = (1 << 9) | (1 << 0);
+    [SerializeField] private AudioSource audioSource = null;
     
-    [Header("Gun Mechanics")]
-    public float fireDelay = .4f;
-    public bool automatic = true;
-    public float damage = 5f;
-    public float kineticPower = 1000f;
-    public int clipSize = 7;
-    public float reloadTime = .8f;
-    public bool silenced;
+    [Header("Gun Mechanics")] [SerializeField]
+    private HitscanGunData gunData = null;
 
     [Header("Feedback")]
-    public float kickBack = 3;
-    public float kickRotation = 2;
+    [SerializeField] private float kickBack = 3;
+    [SerializeField] private float kickRotation = 2;
 
     // auto-assigned
     private Weapon _weapon;
     private CameraKickController _kickController;
-    private ChadistAI _chadistAI;
     private PlayerInput _input;
     private InputAction m_Fire;
 
@@ -40,7 +37,6 @@ public class HitscanGun : MonoBehaviour
 
     private void Awake() {
         _weapon = GetComponent<Weapon>();
-        _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     private void Start() {
@@ -58,15 +54,28 @@ public class HitscanGun : MonoBehaviour
 
     public void ReloadInput(InputAction.CallbackContext ctx) {
         if (!CanFire()) return;
-        if (_bullets < clipSize) {
+        if (_bullets < gunData.ClipSize) {
             Reload();
         }
+    }
+
+    private float GetDamage(float distance)
+    {
+        Debug.Log(gunData.BaseDamage * (1 - Mathf.Pow(distance / gunData.MaxRange, gunData.FalloffExponent)));
+        return gunData.BaseDamage * (1 - Mathf.Pow(distance / gunData.MaxRange, gunData.FalloffExponent));
     }
 
     void Update()
     {
         _bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
-        // todo: convert this all to beautiful coroutines
+        // todo: convert to coroutines so audio doesnt get fucked
+        if (Time.time - _lastShot > fireDelay + .03f)
+        {
+            if (gunData.AudioEvent is ContinuousAudioEvent)
+            {
+                gunData.AudioChannel.Stop();
+            }
+        }
         if (CanFire())
         {
             if (_bullets == 0) {
@@ -77,7 +86,7 @@ public class HitscanGun : MonoBehaviour
                 animator.SetBool("trigger", held);
                 if (held) {
                     // return if we're holding fire on semi
-                    if (_firing && !automatic) return;
+                    if (_firing && !gunData.Automatic) return;
                     Fire();
                     _firing = true;
                     return;
@@ -89,10 +98,7 @@ public class HitscanGun : MonoBehaviour
 
     private bool CanFire() => _weapon.CanFire() && Time.time - _lastShot > fireDelay && !_reloading;
 
-    public void SetFireRate(float fireRate)
-    {
-        fireDelay = 60f / fireRate;
-    }
+    private float fireDelay => 1.0f / gunData.FireRate;
 
     void Reload()
     {
@@ -105,9 +111,9 @@ public class HitscanGun : MonoBehaviour
     IEnumerator ReloadCoroutine()
     {
         _reloading = true;
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(gunData.ReloadTime);
         _reloading = false;
-        _weapon.SetFloat(HitscanGun.BulletsIndex, clipSize);
+        _weapon.SetFloat(BulletsIndex, gunData.ClipSize);
     }
 
     void Fire()
@@ -117,28 +123,26 @@ public class HitscanGun : MonoBehaviour
             // play clicking noise?
             return;
         }
-        _weapon.SetFloat(HitscanGun.BulletsIndex, _bullets - 1);
+        _weapon.SetFloat(BulletsIndex, _bullets - 1);
 
-        if (!silenced) {
-            // todo: refine this
-            _chadistAI.PlaySound(transform.position, SoundType.Alarming, damage * 5);
-        }
+        // audio event
+        gunData.AudioChannel.PlayEvent(gunData.AudioEvent);
         
         Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
-        if (Physics.Raycast(shotRay, out RaycastHit hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(shotRay, out RaycastHit hit, gunData.MaxRange, layerMask))
         {
             // we hit something???
             Transform hitObject = hit.transform;
             Rigidbody hitRB = hitObject.GetComponent<Rigidbody>();
             if (hitRB)
             {
-                hitRB.AddForceAtPosition(shotRay.direction * kineticPower, hit.point);
+                hitRB.AddForceAtPosition(shotRay.direction * gunData.KineticPower, hit.point);
             }
 
             Damageable damageable = hitObject.GetComponent<Damageable>();
             if (damageable)
             {
-                damageable.Damage(new Damage.PlayerBulletDamage(damage, shotRay.direction, hit));
+                damageable.Damage(new Damage.PlayerBulletDamage(GetDamage(hit.distance), shotRay.direction, hit));
                 if (damageable.fxPrefab) {
                     SpawnHitFX(damageable.fxPrefab, hit);
                 } else {

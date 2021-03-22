@@ -12,6 +12,11 @@
               <e p="InputMaster.cs" t="Include" />
             </e>
           </e>
+          <e p="Shaders" t="Include">
+            <e p="DepthNormalsFeature.cs" t="Include" />
+            <e p="Outline.hlsl" t="Include" />
+            <e p="OutlineFeature.cs" t="Include" />
+          </e>
         </e>
         <e p="Scripts" t="Include">
           <e p="Damageables" t="Include">
@@ -33,14 +38,33 @@
           </e>
           <e p="Player" t="Include">
             <e p="CameraKickController.cs" t="Include" />
+            <e p="NewPlayerController.cs" t="Include" />
+            <e p="PlayerAudioManager.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
             <e p="PlayerHealth.cs" t="Include" />
             <e p="PlayerInventory.cs" t="Include" />
             <e p="ViewmodelBob.cs" t="Include" />
           </e>
-          <e p="ScriptableObjs" t="Include">
-            <e p="ChadistConfig.cs" t="Include" />
+          <e p="ScriptableObjects" t="Include">
+            <e p="Audio" t="Include">
+              <e p="AudioChannel.cs" t="Include" />
+              <e p="AudioEvent.cs" t="Include" />
+              <e p="ContinuousAudioEvent.cs" t="Include" />
+              <e p="PlayerAudioChannel.cs" t="Include" />
+              <e p="VariedAudioEvent.cs" t="Include" />
+            </e>
             <e p="CrateConfig.cs" t="Include" />
+            <e p="Enemies" t="Include">
+              <e p="ChadistConfig.cs" t="Include" />
+              <e p="EnemyBehaviourConfig.cs" t="Include" />
+              <e p="EnemyVisionConfig.cs" t="Include" />
+            </e>
+            <e p="Material.cs" t="Include" />
+            <e p="Weapons" t="Include">
+              <e p="AmmoData.cs" t="Include" />
+              <e p="GunKickData.cs" t="Include" />
+              <e p="HitscanGunData.cs" t="Include" />
+            </e>
           </e>
           <e p="Useable.cs" t="Include" />
           <e p="Util" t="Include">
@@ -52,6 +76,7 @@
             <e p="Faction.cs" t="Include" />
             <e p="LockCursor.cs" t="Include" />
             <e p="PrintUtil.cs" t="Include" />
+            <e p="RangedFloat.cs" t="Include" />
           </e>
           <e p="Weapons" t="Include">
             <e p="HitscanGun.cs" t="Include" />

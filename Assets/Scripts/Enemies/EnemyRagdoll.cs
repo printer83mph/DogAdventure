@@ -4,6 +4,7 @@ public class EnemyRagdoll : MonoBehaviour {
 
     public bool ragdollInstantlyOnDeath = true;
     public Rigidbody hitRB;
+    public float katanaDeathForce = 100;
     public float deathForceScale = 100000;
     public float invSquareDistanceScale = .01f;
 
@@ -47,6 +48,10 @@ public class EnemyRagdoll : MonoBehaviour {
         {
             OnBulletDeath((Damage.PlayerBulletDamage) damage);
         }
+        else if (damage is Damage.PlayerKatanaDamage)
+        {
+            OnKatanaDeath((Damage.PlayerKatanaDamage) damage);
+        }
         else if (damage is Damage.BluntForceDamage)
         {
             OnBluntForceDeath((Damage.BluntForceDamage) damage);
@@ -79,6 +84,23 @@ public class EnemyRagdoll : MonoBehaviour {
             // rb.AddForceAtPosition(baseForce / invSquare, closestPoint);
             rb.AddForceAtPosition(baseForce / invSquare, damage.hit.point);
         }
+    }
+
+    private void OnKatanaDeath(Damage.PlayerKatanaDamage damage)
+    {
+        Vector3 baseForce = damage.damager.transform.forward * -katanaDeathForce;
+        Rigidbody closestRB = _rbs[0];
+        float closestDistance = 10000;
+        foreach(Rigidbody rb in _rbs)
+        {
+            float newDist = Vector3.SqrMagnitude(rb.position - damage.damager.transform.position);
+            if (newDist < closestDistance)
+            {
+                closestDistance = newDist;
+                closestRB = rb;
+            }
+        }
+        closestRB.AddForce(baseForce, ForceMode.Impulse);
     }
     
     public void SetRagdoll(bool on) {

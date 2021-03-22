@@ -61,9 +61,12 @@ public abstract class Damage
 
     public class PlayerKatanaDamage : SourcedDamage
     {
-        public PlayerKatanaDamage(float damage) : base(damage, DamageType.Slice, GenericDamageSources.Player)
+
+        public readonly KatanaDamager damager;
+        
+        public PlayerKatanaDamage(float damage, KatanaDamager damager) : base(damage, DamageType.Slice, GenericDamageSources.Player)
         {
-            // todo: slice info
+            this.damager = damager;
         }
     }
 

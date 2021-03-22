@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using ScriptableObjects.Audio;
+using ScriptableObjects.Enemies;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,10 +15,15 @@ public class EnemyBehaviour : MonoBehaviour
     public BehaviourUpdate onEngageUpdate = delegate { };
     public BehaviourUpdate onAttackUpdate = delegate { };
 
+    // config
+    [SerializeField] private EnemyBehaviourConfig config = null;
+    
     // inspector vars
-    public float attackingDistance = 10f;
-    public float turnSpeed = 150f;
+    [SerializeField] private float turnSpeed = 150f;
+    
+    // public things
     public bool turnTowardsPlayer = true;
+    public float attackingDistance = 10f;
 
     // for other scripts
     public bool Locked => _locked;
@@ -78,6 +85,27 @@ public class EnemyBehaviour : MonoBehaviour
         if (_damageable) _damageable.onDamage += OnDamage;
 
         if (!_chadistAI.enemies.Contains(this)) _chadistAI.enemies.Add(this);
+        
+        config.AudioChannel.playAudio += OnAudioPlay;
+    }
+
+    private void OnAudioPlay(Vector3 pos, SoundType soundType, float radius)
+    {
+        // make sure we're in range
+        if (Vector3.SqrMagnitude(pos - transform.position) > Mathf.Pow(radius, 2)) return;
+        // todo: investigative behaviour
+        if (soundType == SoundType.Alarming)
+        {
+            _squad?.Alert(pos);
+        }
+
+        if (soundType == SoundType.Alarming || soundType == SoundType.Suspicious)
+        {
+            // Debug.Log("Suspicious or alarming sound heard");
+            _positionOfInterest = pos;
+            _horny = true;
+            _horniness = 1;
+        }
     }
 
     private void OnDisable()
@@ -146,7 +174,7 @@ public class EnemyBehaviour : MonoBehaviour
             if (_horniness == 1f)
             {
                 _horny = true;
-                Debug.Log("Now Horny");
+                
             }
         }
         else
@@ -223,7 +251,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (_engaging) return;
         // actually engage
-        Debug.Log("Now Engaging");
         _engaging = true;
         onEngageUpdate(true);
         _chadistAI.engaging.Add(this);
@@ -242,7 +269,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void UpdateMovement()
     {
         bool stopped = _locked || (WithinAttackingDistance && _vision.CanCapsulePlayer);
-        if (!(stopped && !turnTowardsPlayer)) RotateTowards(_positionOfInterest);
+        if (!(stopped && turnTowardsPlayer)) RotateTowards(_positionOfInterest);
         
         _agent.enabled = !_locked;
         if (_locked) return;
@@ -291,22 +318,5 @@ public class EnemyBehaviour : MonoBehaviour
         _agent.enabled = false;
         enabled = false;
     }
-
-
-    public void SoundAlert(Vector3 pos, SoundType soundType)
-    {
-        // todo: investigative behaviour
-        if (soundType == SoundType.Alarming)
-        {
-            _squad?.Alert(pos);
-        }
-
-        if (soundType == SoundType.Alarming || soundType == SoundType.Suspicious)
-        {
-            // Debug.Log("Suspicious or alarming sound heard");
-            _positionOfInterest = pos;
-            _horny = true;
-            _horniness = 1;
-        }
-    }
+    
 }

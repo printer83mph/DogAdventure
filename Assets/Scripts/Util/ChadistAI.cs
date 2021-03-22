@@ -51,22 +51,11 @@ public class ChadistAI : MonoBehaviour
             behaviour.Disengage();
         }
     }
-
-    public void PlaySound(Vector3 pos, SoundType soundType, float maxDistance)
-    {
-        float sqrMaxDistance = Mathf.Pow(maxDistance, 2);
-        foreach (EnemyBehaviour enemyBehaviour in enemies)
-        {
-            if ((enemyBehaviour.transform.position - pos).sqrMagnitude < sqrMaxDistance)
-            {
-                enemyBehaviour.SoundAlert(pos, soundType);
-            }
-        }
-    }
 }
 
 public enum SoundType
 {
+    Unimportant,
     Suspicious,
     Alarming,
     Stunning

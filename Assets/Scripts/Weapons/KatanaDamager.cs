@@ -1,19 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ScriptableObjects;
 using UnityEngine;
 
 public class KatanaDamager : MonoBehaviour
 {
 
-    public GameObject hitFX;
-    public float damage = 5f;
-    public float hitForce = 2000f;
+    [SerializeField] private GameObject hitFX;
+    [SerializeField] private float damage = 5f;
+    [SerializeField] private float hitForce = 2000f;
+    [SerializeField] private AudioEvent audioEvent;
     
     private void OnTriggerEnter(Collider other) {
 
         Damageable damageable = other.GetComponent<Damageable>();
         if (damageable) {
-            damageable.Damage(new Damage.PlayerKatanaDamage(damage));
+            damageable.Damage(new Damage.PlayerKatanaDamage(damage, this));
         }
         bool hasDamageableFX = damageable && damageable.fxPrefab;
         if (hitFX || hasDamageableFX) {
@@ -23,8 +25,9 @@ public class KatanaDamager : MonoBehaviour
         }
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (rb) {
-            rb.AddForce(transform.rotation * (Vector3.back * hitForce));
+            rb.AddForce(transform.forward * -hitForce);
         }
+        AudioEvent.InstantiateEvent(audioEvent, transform.position, 3f);
     }
 
 }

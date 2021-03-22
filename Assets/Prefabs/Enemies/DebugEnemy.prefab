@@ -98,11 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeTransform: {fileID: 3846545193816821764}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 513
-  maxDistance: 25
-  maxAngle: 85
+  visionConfig: {fileID: 0}
 --- !u!195 &3846545193386891220
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -137,9 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf9a0d6e8b76c140883e6412d4d108d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 
-  attackingDistance: 10
+  config: {fileID: 11400000, guid: 0ec285630b909c142a9b54bf6e63a9fa, type: 2}
   turnSpeed: 150
+  turnTowardsPlayer: 1
+  attackingDistance: 10
 --- !u!136 &3846545193386891222
 CapsuleCollider:
   m_ObjectHideFlags: 0

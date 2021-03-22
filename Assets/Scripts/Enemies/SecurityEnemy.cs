@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Damageable))]
@@ -6,19 +7,20 @@ using UnityEngine.AI;
 public class SecurityEnemy : MonoBehaviour
 {
 
-    public Animator animator;
-    public Transform aimBone;
-    public Transform eyeTransform;
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private Transform aimBone = null;
+    [SerializeField] private Transform eyeTransform = null;
+    [SerializeField] private AudioEvent audioEvent = null;
+    [SerializeField] private AudioSource audioSource = null;
 
     public float gunDamage = .4f;
     
     // auto-assigned
-    private Damageable _damageable;
-    private EnemyBehaviour _behaviour;
-    private EnemyHealth _health;
-    private PlayerController _player;
-    private PlayerHealth _playerHealth;
-    private ChadistAI _chadistAI;
+    private Damageable _damageable = null;
+    private EnemyBehaviour _behaviour = null;
+    private EnemyHealth _health = null;
+    private PlayerController _player = null;
+    private PlayerHealth _playerHealth = null;
     private float _nextLook;
 
     void Awake()
@@ -28,7 +30,6 @@ public class SecurityEnemy : MonoBehaviour
         _health = GetComponent<EnemyHealth>();
         _player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         _playerHealth = _player.GetComponent<PlayerHealth>();
-        _chadistAI = GameObject.FindWithTag("Chadist AI").GetComponent<ChadistAI>();
     }
 
     void OnEnable() {
@@ -81,7 +82,7 @@ public class SecurityEnemy : MonoBehaviour
         _playerHealth.Damage(new Damage.BulletDamage(gunDamage, new EnemyDamageSource(_behaviour, "a Chadist Goon"),
             _player.transform.position - eyeTransform.position));
         _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
-        _chadistAI.PlaySound(transform.position, SoundType.Alarming, 25f);
+        audioEvent.Play(audioSource);
     }
     
     private void OnAttackUpdate(bool canAttack)

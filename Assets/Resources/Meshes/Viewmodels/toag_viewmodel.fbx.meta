@@ -21,6 +21,18 @@ ModelImporter:
   - first:
       74: -6794040710505933510
     second: ArmsRig|TOAG_Idle
+  - first:
+      74: 5084478559041983031
+    second: TOAG_Whip
+  - first:
+      74: 6149478609727735928
+    second: TOAG_Fire
+  - first:
+      74: 7508141826788770308
+    second: TOAG_FireAlt
+  - first:
+      74: 8986037422459932562
+    second: TOAG_Base.001
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -70,11 +82,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: ArmsRig|TOAG_Equip
-      takeName: ArmsRig|TOAG_Equip
+      name: TOAG_Whip
+      takeName: TOAG_Whip
       internalID: 0
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 90
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -99,11 +111,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ArmsRig|TOAG_Fire1
-      takeName: ArmsRig|TOAG_Fire1
+      name: TOAG_Fire
+      takeName: TOAG_Fire
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -136,11 +148,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ArmsRig|TOAG_Fire2
-      takeName: ArmsRig|TOAG_Fire2
+      name: TOAG_FireAlt
+      takeName: TOAG_FireAlt
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -173,8 +185,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ArmsRig|TOAG_Idle
-      takeName: ArmsRig|TOAG_Idle
+      name: TOAG_Base.001
+      takeName: TOAG_Base.001
       internalID: 0
       firstFrame: 0
       lastFrame: 1
