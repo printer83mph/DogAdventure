@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -4281797674624649093, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+  m_Motion: {fileID: -8881422421825812583, guid: ccd87601b2e15254f8d0d0d09618174e,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -95,7 +95,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 8714723829453138602, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+  m_Motion: {fileID: -2174332685516222161, guid: ccd87601b2e15254f8d0d0d09618174e,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -123,8 +123,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 3960284918615870167, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
-    type: 3}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -151,7 +150,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 224564265967228646, guid: f6e90a825a0c72f4bbe6fcd610b0ef49, type: 3}
+  m_Motion: {fileID: 3580686271935326003, guid: ccd87601b2e15254f8d0d0d09618174e,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -178,7 +178,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -8462093940591089753, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
+  m_Motion: {fileID: -146847089227795247, guid: ccd87601b2e15254f8d0d0d09618174e,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -206,8 +206,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 8714723829453138602, guid: f6e90a825a0c72f4bbe6fcd610b0ef49,
-    type: 3}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -247,7 +246,7 @@ AnimatorController:
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
-    m_BlendingMode: 0
+    m_BlendingMode: 1
     m_SyncedLayerIndex: -1
     m_DefaultWeight: 1
     m_IKPass: 0
@@ -259,7 +258,7 @@ AnimatorController:
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
-    m_BlendingMode: 1
+    m_BlendingMode: 0
     m_SyncedLayerIndex: -1
     m_DefaultWeight: 1
     m_IKPass: 0

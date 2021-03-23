@@ -1,44 +1,62 @@
 fileFormatVersion: 2
-guid: 55fa4af40c8adbb49bab98c87d85dac5
+guid: ccd87601b2e15254f8d0d0d09618174e
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: -3495033376791896747
-    second: ArmsRig|Idle
+      74: 7930566718376146537
+    second: Base
   - first:
-      74: -6632153995877966042
-    second: ArmsRig|Idle.001
+      74: 8350816339630823838
+    second: Equip
   - first:
-      74: -6151602096159114906
-    second: ArmsRig|TOAG_Equip
+      74: -4579541417933013020
+    second: Fire
   - first:
-      74: 6469937552584897743
-    second: ArmsRig|TOAG_Fire1
+      74: -3100369314251171874
+    second: Idle
   - first:
-      74: 7052023934571717787
-    second: ArmsRig|TOAG_Fire2
+      74: -7004606068608036969
+    second: Fidget
   - first:
-      74: -6794040710505933510
-    second: ArmsRig|TOAG_Idle
+      74: 3908209885621247943
+    second: PistolArms|Equip
   - first:
-      74: 5084478559041983031
-    second: TOAG_Whip
+      74: -2118428634880029449
+    second: Pistol|Base
   - first:
-      74: 6149478609727735928
-    second: TOAG_Fire
+      74: -2174332685516222161
+    second: Pistol|Idle
   - first:
-      74: 7508141826788770308
-    second: TOAG_FireAlt
+      74: 3580686271935326003
+    second: Pistol|Equip
   - first:
-      74: 8986037422459932562
-    second: TOAG_Base.001
+      74: -146847089227795247
+    second: Pistol|Fire
+  - first:
+      74: -8881422421825812583
+    second: Pistol|Fidget
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: DiffuseMat
     second: {fileID: 2100000, guid: 8b1997dc9b1a8054f88bffb37d3672e9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grip
+    second: {fileID: 2100000, guid: e2c6032118e743240bc97e1a82af256f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GunMetal
+    second: {fileID: 2100000, guid: f09876c12aeb7df41afbc85845932acf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: f09876c12aeb7df41afbc85845932acf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -49,11 +67,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: gloves
     second: {fileID: 2100000, guid: 83f2e07d9bfdf924190f65c5091b8c6d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: toag_metal_bake.001
-    second: {fileID: 2100000, guid: a1f472b7ac629924099c1c87c0f300de, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -82,11 +95,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: TOAG_Whip
-      takeName: TOAG_Whip
+      name: Pistol|Base
+      takeName: Base
       internalID: 0
       firstFrame: 0
-      lastFrame: 90
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -111,11 +124,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: TOAG_Fire
-      takeName: TOAG_Fire
+      name: Pistol|Idle
+      takeName: Idle
       internalID: 0
       firstFrame: 0
-      lastFrame: 38
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Pistol|Equip
+      takeName: Equip
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 57
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Pistol|Fire
+      takeName: Fire
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -148,48 +219,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: TOAG_FireAlt
-      takeName: TOAG_FireAlt
+      name: Pistol|Fidget
+      takeName: Fidget
       internalID: 0
       firstFrame: 0
-      lastFrame: 38
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0
-        functionName: SpawnMuzzleFlash
-        data: 
-        objectReferenceParameter: {fileID: 4798033503246964537, guid: 95ad0cad30a4bd649ae81838cfd79af6,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: TOAG_Base.001
-      takeName: TOAG_Base.001
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 1
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -264,7 +298,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: PistolArms
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
