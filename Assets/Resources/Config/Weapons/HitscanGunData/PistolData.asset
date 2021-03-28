@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireRate: 6
   automatic: 0
-  reloadTime: 0.8
+  reloadTime: 1.1
   clipSize: 7
   ammoData: {fileID: 0}
   maxRange: 30

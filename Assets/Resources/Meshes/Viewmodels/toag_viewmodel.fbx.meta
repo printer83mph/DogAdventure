@@ -52,6 +52,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: toag_metal_bake
+    second: {fileID: 2100000, guid: a1f472b7ac629924099c1c87c0f300de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: toag_metal_bake.001
     second: {fileID: 2100000, guid: a1f472b7ac629924099c1c87c0f300de, type: 2}
   materials:

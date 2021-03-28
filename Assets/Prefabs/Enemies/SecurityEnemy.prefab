@@ -268,8 +268,7 @@ MonoBehaviour:
   ragdollInstantlyOnDeath: 1
   hitRB: {fileID: 5646271489306842610}
   katanaDeathForce: 100
-  deathForceScale: 140
-  invSquareDistanceScale: 4
+  deathForceScale: 17
   _enabled: 0
 --- !u!114 &2056050807
 MonoBehaviour:

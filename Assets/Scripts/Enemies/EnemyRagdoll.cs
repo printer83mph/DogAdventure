@@ -5,8 +5,7 @@ public class EnemyRagdoll : MonoBehaviour {
     public bool ragdollInstantlyOnDeath = true;
     public Rigidbody hitRB;
     public float katanaDeathForce = 100;
-    public float deathForceScale = 100000;
-    public float invSquareDistanceScale = .01f;
+    public float deathForceScale = 15;
 
     [SerializeField]
     private bool _enabled;
@@ -78,12 +77,21 @@ public class EnemyRagdoll : MonoBehaviour {
 
     private void OnBulletDeath(Damage.PlayerBulletDamage damage) {
         Vector3 baseForce = damage.direction * (deathForceScale * damage.damage);
-        foreach(Rigidbody rb in _rbs) {
-            Vector3 closestPoint = rb.GetComponent<Collider>().ClosestPoint(damage.hit.point);
-            float invSquare = Vector3.SqrMagnitude((closestPoint - damage.hit.point) * invSquareDistanceScale) + .02f;
-            // rb.AddForceAtPosition(baseForce / invSquare, closestPoint);
-            rb.AddForceAtPosition(baseForce / invSquare, damage.hit.point);
+        Rigidbody closestRb = _rbs[0];
+        Vector3 closestPoint = transform.position;
+        float closestDistance = 1000;
+        foreach(Rigidbody rb in _rbs)
+        {
+            Vector3 point = rb.ClosestPointOnBounds(damage.hit.point);
+            float dist = Vector3.SqrMagnitude(point - damage.hit.point);
+            if (dist < closestDistance)
+            {
+                closestRb = rb;
+                closestPoint = point;
+                closestDistance = dist;
+            }
         }
+        closestRb.AddForceAtPosition(baseForce, closestPoint, ForceMode.Impulse);
     }
 
     private void OnKatanaDeath(Damage.PlayerKatanaDamage damage)

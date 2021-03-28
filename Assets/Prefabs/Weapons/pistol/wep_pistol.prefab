@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName: 
-  switchTime: 0.4
+  switchTime: 0.5
   playerController: {fileID: 0}
   playerInventory: {fileID: 0}
   cam: {fileID: 0}

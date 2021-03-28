@@ -107,8 +107,8 @@ public class PlayerController : MonoBehaviour
         bool wasMidAir = _midAir;
 
         // move based on velocity
-        _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
         _rb.velocity = Vector3.zero;
+        _rb.MovePosition(transform.position + _vel * Time.fixedDeltaTime);
         
         // get desired movement
         Vector2 moveInput = m_Move.ReadValue<Vector2>();
