@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 527b1e83cbd0486487479270378e174c, type: 3}
-  m_Name: TOAGData
+  m_Name: TOAGHitscanData
   m_EditorClassIdentifier: 
   fireRate: 25
   automatic: 1

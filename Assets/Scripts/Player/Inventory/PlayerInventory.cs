@@ -11,6 +11,8 @@ namespace Player.Inventory
         
         [SerializeField] private WeaponInventoryState[] weapons;
         private int _currentWeapon;
+        
+        // todo: implement ammo data
 
         [SerializeField] private NewPlayerController controller;
         [SerializeField] private PlayerInput input;
@@ -23,10 +25,7 @@ namespace Player.Inventory
             }
             
             _currentWeapon = index;
-            GameObject newWep = Instantiate(weapons[index].WeaponData.Prefab);
-            newWep.transform.position = weaponParent.position;
-            newWep.transform.rotation = weaponParent.rotation;
-            newWep.transform.parent = weaponParent;
+            GameObject newWep = Instantiate(weapons[index].WeaponData.Prefab, weaponParent);
 
             newWep.GetComponent<Weapon>().Initialize(this, controller, weapons[index], input);
         }
