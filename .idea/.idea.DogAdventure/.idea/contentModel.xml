@@ -38,7 +38,11 @@
           </e>
           <e p="Player" t="Include">
             <e p="CameraKickController.cs" t="Include" />
-            <e p="NewPlayerController.cs" t="Include" />
+            <e p="Controlling" t="Include">
+              <e p="CameraMovement.cs" t="Include" />
+              <e p="GroundCheck.cs" t="Include" />
+              <e p="NewPlayerController.cs" t="Include" />
+            </e>
             <e p="PlayerAudioManager.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
             <e p="PlayerHealth.cs" t="Include" />

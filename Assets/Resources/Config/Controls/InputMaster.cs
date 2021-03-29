@@ -333,7 +333,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""id"": ""0139f96b-c27e-4d10-b086-96b55e4f9b40"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=3,y=3)"",
+                    ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""Aim"",
                     ""isComposite"": false,
