@@ -295,7 +295,7 @@ MonoBehaviour:
   walkSpeed: 4.5
   sprintSpeed: 8
   groundAcceleration: 40
-  airAcceleration: 300
+  airAcceleration: 800
   jumpForce: 340
 --- !u!114 &3404832504129322928
 MonoBehaviour:

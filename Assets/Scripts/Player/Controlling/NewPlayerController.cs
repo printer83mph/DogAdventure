@@ -65,47 +65,51 @@ namespace Player.Controlling
 
         private void RunMovement(Vector2 desiredMovement)
         {
-            // desired movement direction
+            // desired movement direction (without ground angle)
             Vector3 baseEulers = orientation.rotation.eulerAngles;
             Vector3 orientedMovement =  Quaternion.AngleAxis(baseEulers.y, Vector3.up) * new Vector3(desiredMovement.x, 0, desiredMovement.y);
             
             if (_groundCheck.Grounded)
             {
+                // sprint/walk speed logic
+                orientedMovement *= (m_Sprint.ReadValue<float>() > .5f ? sprintSpeed : walkSpeed);
+                
+                // add gravity component in ground direction
                 _rb.AddForce(
                     _groundCheck.GroundDirection *
                     Vector3.Project(Physics.gravity, _groundCheck.GroundDirection * Vector3.down),
                     ForceMode.Acceleration);
-                
-                orientedMovement *= (m_Sprint.ReadValue<float>() > .5f ? sprintSpeed : walkSpeed);
 
+                // if on a rigidbody, shift target movement by its velocity
                 if (_groundCheck.GroundRigidbody)
                 {
                     Vector3 groundRbVel = Quaternion.Inverse(_groundCheck.GroundDirection) * _groundCheck.GroundRigidbody.GetPointVelocity(_groundCheck.FeetPos);
                     orientedMovement += groundRbVel;
                 }
                 
+                // velocity rotated by inverse ground direction
                 Vector3 reorientedVel = Quaternion.Inverse(_groundCheck.GroundDirection) * _rb.velocity;
-
                 Vector2 flatVel = new Vector2(reorientedVel.x, reorientedVel.z);
+                
+                // move flat vel towards desired movement
                 flatVel = Vector2.MoveTowards(flatVel, new Vector2(orientedMovement.x, orientedMovement.z), 
                     groundAcceleration * Time.deltaTime);
                 // todo: maybe use AddForce for this?
-                
-                // reorientedVel.x = Mathf.MoveTowards(reorientedVel.x, orientedMovement.x,
-                //     groundAcceleration * Time.deltaTime);
-                // reorientedVel.z = Mathf.MoveTowards(reorientedVel.z, orientedMovement.z,
-                //     groundAcceleration * Time.deltaTime);
 
                 reorientedVel.x = flatVel.x;
                 reorientedVel.z = flatVel.y;
 
                 _rb.velocity = _groundCheck.GroundDirection * reorientedVel;
-                // _rb.velocity = orientedMovement * walkSpeed;
             }
             else
             {
+                // just add gravity and air acceleration
                 _rb.AddForce(Physics.gravity, ForceMode.Acceleration);
-                _rb.AddForce(orientedMovement * airAcceleration);
+                
+                // todo: limit this using velocity projected onto desired movement
+                float velocityOnDesired = Mathf.Clamp(Vector3.Dot(_rb.velocity, orientedMovement) / sprintSpeed, -1, 1);
+                velocityOnDesired = (1 - velocityOnDesired) / 2;
+                _rb.AddForce(orientedMovement * (velocityOnDesired * airAcceleration));
             }
         }
 
@@ -115,7 +119,7 @@ namespace Player.Controlling
             Debug.Log("jumping");
             
             // todo: make this ground rigidbody dependent
-            _rb.velocity += Vector3.down * Mathf.Min(_rb.velocity.y);
+            _rb.velocity += Vector3.down * Mathf.Min(_rb.velocity.y, 0);
 
             if (_groundCheck.GroundRigidbody)
             {
