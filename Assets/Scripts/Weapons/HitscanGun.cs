@@ -4,8 +4,8 @@ using ScriptableObjects.Audio;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.InputSystem;
+using Weapons;
 
-[RequireComponent(typeof(Weapon))]
 public class HitscanGun : MonoBehaviour
 {
 
@@ -23,7 +23,7 @@ public class HitscanGun : MonoBehaviour
 
     // auto-assigned
     private Weapon _weapon;
-    private CameraKickController _kickController;
+    // private CameraKickController _kickController;
     private PlayerInput _input;
     private InputAction m_Fire;
 
@@ -39,10 +39,11 @@ public class HitscanGun : MonoBehaviour
         _weapon = GetComponent<Weapon>();
     }
 
-    private void Start() {
-        _kickController = _weapon.playerController.kickController;
+    private void Start()
+    {
+        // _kickController = _weapon.Controller.kickController;
         // setup callbacks
-        _input = _weapon.playerController.input;
+        _input = _weapon.Input;
         m_Fire = _input.actions["Fire1"];
         _input.actions["Reload"].performed += ReloadInput;
     }
@@ -67,7 +68,7 @@ public class HitscanGun : MonoBehaviour
 
     void Update()
     {
-        _bullets = (int)_weapon.GetFloat(HitscanGun.BulletsIndex);
+        _bullets = _weapon.InventoryState.GetInt(HitscanGun.BulletsIndex);
         // todo: convert to coroutines so audio doesnt get fucked
         if (Time.time - _lastShot > fireDelay + .03f)
         {
@@ -96,7 +97,10 @@ public class HitscanGun : MonoBehaviour
         }
     }
 
-    private bool CanFire() => _weapon.CanFire() && Time.time - _lastShot > fireDelay && !_reloading;
+    // private bool CanFire() => _weapon.CanFire() && Time.time - _lastShot > fireDelay && !_reloading;
+    // todo: make equiphandler component
+
+    private bool CanFire() => Time.time - _lastShot > fireDelay && !_reloading;
 
     private float fireDelay => 1.0f / gunData.FireRate;
 
@@ -113,7 +117,7 @@ public class HitscanGun : MonoBehaviour
         _reloading = true;
         yield return new WaitForSeconds(gunData.ReloadTime);
         _reloading = false;
-        _weapon.SetFloat(BulletsIndex, gunData.ClipSize);
+        _weapon.InventoryState.SetInt(BulletsIndex, gunData.ClipSize);
     }
 
     void Fire()
@@ -123,12 +127,14 @@ public class HitscanGun : MonoBehaviour
             // play clicking noise?
             return;
         }
-        _weapon.SetFloat(BulletsIndex, _bullets - 1);
+        _weapon.InventoryState.SetInt(BulletsIndex, _bullets - 1);
 
         // audio event
         gunData.AudioChannel.PlayEvent(gunData.AudioEvent);
+
+        Transform shotTransform = _weapon.Controller.Orientation;
         
-        Ray shotRay = new Ray(_weapon.cam.transform.position, _weapon.cam.transform.rotation * Vector3.forward);
+        Ray shotRay = new Ray(shotTransform.position, shotTransform.rotation * Vector3.forward);
         if (Physics.Raycast(shotRay, out RaycastHit hit, gunData.MaxRange, layerMask))
         {
             // we hit something???
@@ -156,8 +162,8 @@ public class HitscanGun : MonoBehaviour
 
         }
         
-        _kickController.AddVel(_weapon.cam.transform.TransformVector(Vector3.forward * (-kickBack)));
-        _kickController.AddKick(Quaternion.Euler(-kickRotation, 0, 0));
+        // _kickController.AddVel(_weapon.cam.transform.TransformVector(Vector3.forward * (-kickBack)));
+        // _kickController.AddKick(Quaternion.Euler(-kickRotation, 0, 0));
         
         _lastShot = Time.time;
         animator.SetTrigger("fire");

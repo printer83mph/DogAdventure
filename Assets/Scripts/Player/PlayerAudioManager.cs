@@ -9,17 +9,12 @@ namespace Player
     {
         
         [SerializeField] private PlayerAudioChannel[] audioChannels;
+        [SerializeField] private Transform audioParent;
         
-        private Transform _audioParent;
         private AudioSource[] _sources;
 
-        public Transform AudioParent => _audioParent;
+        public Transform AudioParent => audioParent;
 
-        private void Awake()
-        {
-            _audioParent = Camera.main.transform;
-        }
-        
         private void OnEnable()
         {
             foreach (PlayerAudioChannel audioChannel in audioChannels)

@@ -1,51 +1,28 @@
-﻿using System;
+﻿using Player.Controlling;
+using Player.Inventory;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Weapon : MonoBehaviour
+namespace Weapons
 {
-
-    public delegate void EquipEvent(PlayerController controller, PlayerInventory inventory, WeaponSlot slot);
-    public EquipEvent onEquip = delegate { };
-
-    public String displayName;
-    public float switchTime = .3f;
-
-    public PlayerController playerController;
-    public PlayerInventory playerInventory;
-    public Camera cam;
-
-    private WeaponSlot _slot;
-
-    [SerializeField]
-    public float[] defaultFloatData;
-
-    public void Equip(PlayerController controller, PlayerInventory inventory, WeaponSlot weaponSlot)
+    public class Weapon : MonoBehaviour
     {
-        playerController = controller;
-        playerInventory = inventory;
-        cam = controller.cam;
+        private PlayerInventory _inventory;
+        private NewPlayerController _controller;
+        private WeaponInventoryState _inventoryState;
+        private PlayerInput _input;
         
-        playerInventory.AddToViewmodel(transform);
+        public PlayerInventory Inventory => _inventory;
+        public NewPlayerController Controller => _controller;
+        public WeaponInventoryState InventoryState => _inventoryState;
+        public PlayerInput Input => _input;
 
-        _slot = weaponSlot;
-        // if no data provided then update with defaults
-        if (weaponSlot.Data.Length == 0) weaponSlot.Data = defaultFloatData;
-        
-        // run equip delegate
-        onEquip(controller, inventory, weaponSlot);
+        public void Initialize(PlayerInventory inventory, NewPlayerController controller, WeaponInventoryState inventoryState, PlayerInput input)
+        {
+            _inventory = inventory;
+            _controller = controller;
+            _inventoryState = inventoryState;
+            _input = input;
+        }
     }
-
-    // has it been long enough since a switch?
-    public bool CanFire()
-    {
-        return Time.time - playerInventory.LastSwitch > switchTime;
-    }
-
-    public void SetFloat(int index, float val)
-    {
-        _slot.Data[index] = val;
-    }
-
-    public float GetFloat(int index) => _slot.Data[index];
-    
 }

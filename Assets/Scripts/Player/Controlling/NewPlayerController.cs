@@ -1,4 +1,5 @@
 ﻿using System;
+using Player.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,13 +11,17 @@ namespace Player.Controlling
         private GroundCheck _groundCheck;
 
         private CameraMovement _cameraMovement;
+        public CameraMovement CameraMovement => _cameraMovement;
         public Vector2 DeltaAim => _cameraMovement.DeltaAim;
 
-        [SerializeField] private PlayerInput input;
+        private PlayerInventory _inventory;
+
+        private PlayerInput _input;
         private InputAction m_Move;
         private InputAction m_Sprint;
 
         [SerializeField] private Transform orientation;
+        public Transform Orientation => orientation;
 
         [Header("Movement")]
         [SerializeField] private float walkSpeed = 4f;
@@ -30,14 +35,16 @@ namespace Player.Controlling
             _rb = GetComponent<Rigidbody>();
             _groundCheck = GetComponentInChildren<GroundCheck>();
             _cameraMovement = GetComponent<CameraMovement>();
+            _inventory = GetComponentInChildren<PlayerInventory>();
+            _input = GetComponent<PlayerInput>();
             
-            m_Move = input.actions["Move"];
-            m_Sprint = input.actions["Sprint"];
+            m_Move = _input.actions["Move"];
+            m_Sprint = _input.actions["Sprint"];
         }
 
         private void OnEnable()
         {
-            input.actions["Jump"].performed += JumpAction;
+            _input.actions["Jump"].performed += JumpAction;
         }
 
         private void JumpAction(InputAction.CallbackContext ctx)
@@ -47,7 +54,7 @@ namespace Player.Controlling
         
         private void OnDisable()
         {
-            input.actions["Jump"].performed -= JumpAction;
+            _input.actions["Jump"].performed -= JumpAction;
         }
 
         private void Start()

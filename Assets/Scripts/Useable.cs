@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Useable : MonoBehaviour
 {
-    public delegate void OnUseDelegate(PlayerInventory inventory);
+    public delegate void OnUseDelegate(OldPlayerInventory inventory);
 
     public OnUseDelegate onUseDelegate;
 
@@ -37,7 +37,7 @@ public class Useable : MonoBehaviour
         }
     }
 
-    void OnUse(PlayerInventory inventory)
+    void OnUse(OldPlayerInventory inventory)
     {
         // _lastUse = Time.time;
     }
@@ -69,7 +69,7 @@ public class Useable : MonoBehaviour
         _highlighted = false;
     }
 
-    public void Use(PlayerInventory inventory)
+    public void Use(OldPlayerInventory inventory)
     {
         // if (Time.time - _lastUse > useDelay) 
         onUseDelegate(inventory);

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10145451c4134cc78ea98cc1dcc13f11, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  displayName: Epic Pistol
+  prefab: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3, type: 3}
+  defaultInts: 07000000

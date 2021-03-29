@@ -23,7 +23,7 @@ public class WeaponPickup : MonoBehaviour
         _useable.onUseDelegate -= OnUse;
     }
 
-    void OnUse(PlayerInventory inventory)
+    void OnUse(OldPlayerInventory inventory)
     {
         inventory.AddWeapon(weapon);
         Destroy(gameObject);

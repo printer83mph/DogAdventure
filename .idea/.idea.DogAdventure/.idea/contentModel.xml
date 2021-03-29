@@ -39,14 +39,19 @@
           <e p="Player" t="Include">
             <e p="CameraKickController.cs" t="Include" />
             <e p="Controlling" t="Include">
+              <e p="CameraAdjuster.cs" t="Include" />
               <e p="CameraMovement.cs" t="Include" />
               <e p="GroundCheck.cs" t="Include" />
               <e p="NewPlayerController.cs" t="Include" />
             </e>
+            <e p="Inventory" t="Include">
+              <e p="PlayerInventory.cs" t="Include" />
+              <e p="WeaponInventoryState.cs" t="Include" />
+            </e>
+            <e p="OldPlayerInventory.cs" t="Include" />
             <e p="PlayerAudioManager.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
             <e p="PlayerHealth.cs" t="Include" />
-            <e p="PlayerInventory.cs" t="Include" />
             <e p="ViewmodelBob.cs" t="Include" />
           </e>
           <e p="ScriptableObjects" t="Include">
@@ -68,6 +73,7 @@
               <e p="AmmoData.cs" t="Include" />
               <e p="GunKickData.cs" t="Include" />
               <e p="HitscanGunData.cs" t="Include" />
+              <e p="WeaponData.cs" t="Include" />
             </e>
           </e>
           <e p="Useable.cs" t="Include" />
@@ -85,6 +91,7 @@
           <e p="Weapons" t="Include">
             <e p="HitscanGun.cs" t="Include" />
             <e p="KatanaDamager.cs" t="Include" />
+            <e p="OldWeapon.cs" t="Include" />
             <e p="Weapon.cs" t="Include" />
             <e p="WeaponPickup.cs" t="Include" />
           </e>

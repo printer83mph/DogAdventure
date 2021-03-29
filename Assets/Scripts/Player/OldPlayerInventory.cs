@@ -18,7 +18,7 @@ public class Ammo
 } // TODO: this
 
 [RequireComponent(typeof(PlayerController))]
-public class PlayerInventory : MonoBehaviour
+public class OldPlayerInventory : MonoBehaviour
 {
 
     [Header("Weapons")]
@@ -53,7 +53,7 @@ public class PlayerInventory : MonoBehaviour
     // math things
     private int _currentWeaponIndex;
     private float _scrollBuildup;
-    private Weapon _currentWeapon;
+    private OldWeapon _currentOldWeapon;
     private float _lastSwitch;
     private GameObject _katanaObject;
     private float _lastSwing;
@@ -134,7 +134,7 @@ public class PlayerInventory : MonoBehaviour
             if (_swinging) {
                 _katanaObject.GetComponent<Animator>().SetTrigger("swing");
             } else {
-                if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
+                if (_currentOldWeapon != null) Destroy(_currentOldWeapon.gameObject);
                 _katanaObject = Instantiate(katanaPrefab);
                 AddToViewmodel(_katanaObject.transform);
             }
@@ -229,9 +229,9 @@ public class PlayerInventory : MonoBehaviour
         _currentWeaponIndex = weaponIndex;
 
         // destroy current weapon gameobject and create new one
-        if (_currentWeapon != null) Destroy(_currentWeapon.gameObject);
-        _currentWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<Weapon>();
-        _currentWeapon.Equip(_playerController, this, weapons[weaponIndex]);
+        if (_currentOldWeapon != null) Destroy(_currentOldWeapon.gameObject);
+        _currentOldWeapon = Instantiate(weapons[weaponIndex].Weapon).GetComponent<OldWeapon>();
+        _currentOldWeapon.Equip(_playerController, this, weapons[weaponIndex]);
         _lastSwitch = Time.time;
 
         holstered = false;
