@@ -20,6 +20,8 @@ namespace ScriptableObjects
         [SerializeField] private bool actuallyRandom = true;
         
         private int _lastClip;
+        
+        public SoundType SoundType => soundType;
 
         private AudioClip GetRandomClip()
         {
@@ -48,25 +50,27 @@ namespace ScriptableObjects
             return actuallyRandom ? GetActualRandomClip() : GetRandomClip();
         }
 
-        private void TriggerChannels(Vector3 position)
-        {
-            foreach (AudioChannel channel in channels)
-            {
-                channel.playAudio(position, soundType, radius);
-            }
-        }
-        
-        public override void Play(AudioSource source)
+        public void PlayAudio(AudioSource source)
         {
             source.loop = false;
             source.clip = GetClip();
             source.volume = Random.Range(volumeMin, volumeMax);
             source.pitch = Random.Range(pitchMin, pitchMax);
             source.Play();
-
-            TriggerChannels(source.transform.position);            
         }
 
-        public SoundType SoundType => soundType;
+        public void TriggerChannels(Vector3 position)
+        {
+            foreach (AudioChannel channel in channels)
+            {
+                channel.playAudio(position, soundType, radius);
+            }
+        }
+
+        public override void Play(AudioSource source)
+        {
+            PlayAudio(source);
+            TriggerChannels(source.transform.position);            
+        }
     }
 }

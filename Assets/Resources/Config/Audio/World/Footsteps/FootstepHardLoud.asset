@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62cdd19bfb1f4277a4b3271fcfc5705a, type: 3}
+  m_Name: FootstepHardLoud
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 01544711551ec114d80c1a6e39ce224a, type: 3}
+  - {fileID: 8300000, guid: f17c3198cefa15c49a39ed596e5cc606, type: 3}
+  - {fileID: 8300000, guid: ff4b33f3fd2d67746bf07efee22b50ed, type: 3}
+  channels: []
+  volumeMin: 2
+  volumeMax: 2.3
+  pitchMin: 1.1
+  pitchMax: 1.2
+  soundType: 1
+  radius: 10
+  actuallyRandom: 1

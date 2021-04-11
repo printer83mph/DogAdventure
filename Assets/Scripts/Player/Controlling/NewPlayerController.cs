@@ -7,20 +7,31 @@ namespace Player.Controlling
 {
     public class NewPlayerController : MonoBehaviour
     {
-        private Rigidbody _rb;
-        private GroundCheck _groundCheck;
 
-        private CameraMovement _cameraMovement;
+        public delegate void ActionEvent();
+        public ActionEvent onJump = delegate {  };
+        
+        private Rigidbody _rb = null;
+        private GroundCheck _groundCheck = null;
+        private CameraMovement _cameraMovement = null;
+        private PlayerInventory _inventory = null;
+        private FootstepManager _footstep = null;
+
+        public Rigidbody Rigidbody => _rb;
         public CameraMovement CameraMovement => _cameraMovement;
+        public FootstepManager FootstepManager => _footstep;
+
+        public bool Grounded => _groundCheck.Grounded;
+        public Vector3 Velocity => _rb.velocity;
+
+        public Vector3 RelativeGroundVel => _groundCheck.GetRelativeToGroundVelocity(_rb.velocity);
         public Vector2 DeltaAim => _cameraMovement.DeltaAim;
 
-        private PlayerInventory _inventory;
+        private PlayerInput _input = null;
+        private InputAction m_Move = null;
+        private InputAction m_Sprint = null;
 
-        private PlayerInput _input;
-        private InputAction m_Move;
-        private InputAction m_Sprint;
-
-        [SerializeField] private Transform orientation;
+        [SerializeField] private Transform orientation = null;
         public Transform Orientation => orientation;
 
         [Header("Movement")]
@@ -36,6 +47,7 @@ namespace Player.Controlling
             _groundCheck = GetComponentInChildren<GroundCheck>();
             _cameraMovement = GetComponent<CameraMovement>();
             _inventory = GetComponentInChildren<PlayerInventory>();
+            _footstep = GetComponentInChildren<FootstepManager>();
             _input = GetComponent<PlayerInput>();
             
             m_Move = _input.actions["Move"];
@@ -83,19 +95,19 @@ namespace Player.Controlling
                 
                 // add gravity component in ground direction
                 _rb.AddForce(
-                    _groundCheck.GroundDirection *
-                    Vector3.Project(Physics.gravity, _groundCheck.GroundDirection * Vector3.down),
+                    _groundCheck.GroundRotation *
+                    Vector3.Project(Physics.gravity, _groundCheck.GroundRotation * Vector3.down),
                     ForceMode.Acceleration);
 
                 // if on a rigidbody, shift target movement by its velocity
                 if (_groundCheck.GroundRigidbody)
                 {
-                    Vector3 groundRbVel = Quaternion.Inverse(_groundCheck.GroundDirection) * _groundCheck.GroundRigidbody.GetPointVelocity(_groundCheck.FeetPos);
+                    Vector3 groundRbVel = Quaternion.Inverse(_groundCheck.GroundRotation) * _groundCheck.GroundRigidbody.GetPointVelocity(_groundCheck.FeetPos);
                     orientedMovement += groundRbVel;
                 }
                 
                 // velocity rotated by inverse ground direction
-                Vector3 reorientedVel = Quaternion.Inverse(_groundCheck.GroundDirection) * _rb.velocity;
+                Vector3 reorientedVel = Quaternion.Inverse(_groundCheck.GroundRotation) * _rb.velocity;
                 Vector2 flatVel = new Vector2(reorientedVel.x, reorientedVel.z);
                 
                 // move flat vel towards desired movement
@@ -106,7 +118,7 @@ namespace Player.Controlling
                 reorientedVel.x = flatVel.x;
                 reorientedVel.z = flatVel.y;
 
-                _rb.velocity = _groundCheck.GroundDirection * reorientedVel;
+                _rb.velocity = _groundCheck.GroundRotation * reorientedVel;
             }
             else
             {
@@ -124,6 +136,8 @@ namespace Player.Controlling
         {
             if (!_groundCheck.Grounded) return;
             Debug.Log("jumping");
+
+            onJump();
             
             // todo: make this ground rigidbody dependent
             _rb.velocity += Vector3.down * Mathf.Min(_rb.velocity.y, 0);

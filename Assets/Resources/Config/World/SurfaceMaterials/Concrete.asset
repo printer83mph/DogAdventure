@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 635510abb90e4a7d95278092d3c9b480, type: 3}
+  m_Name: Concrete
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  bulletHit:
+    prefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
+      type: 3}
+    audioEvent: {fileID: 11400000, guid: 3e5b033cf07c4224785275348a0862eb, type: 2}
+  woodBig:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 0}
+  woodSmall:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 0}
+  metalBig:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 0}
+  metalSmall:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 0}
+  footstepQuiet:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 11400000, guid: b0b256bbbfdd0eb4b8152fa2b34d5c00, type: 2}
+  footstepLoud:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 11400000, guid: 33ffdb097518dd04fb66b792fb1af0b0, type: 2}

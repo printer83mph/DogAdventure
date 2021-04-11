@@ -6,10 +6,10 @@ using UnityEngine;
 public class KatanaDamager : MonoBehaviour
 {
 
-    [SerializeField] private GameObject hitFX;
+    [SerializeField] private GameObject hitFX = null;
     [SerializeField] private float damage = 5f;
     [SerializeField] private float hitForce = 2000f;
-    [SerializeField] private AudioEvent audioEvent;
+    [SerializeField] private AudioEvent audioEvent = null;
     
     private void OnTriggerEnter(Collider other) {
 

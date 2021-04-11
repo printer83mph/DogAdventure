@@ -1,5 +1,6 @@
 ﻿using System;
 using ScriptableObjects;
+using ScriptableObjects.Weapons;
 using UnityEngine;
 
 namespace Player.Inventory
@@ -7,8 +8,8 @@ namespace Player.Inventory
     [Serializable]
     public class WeaponInventoryState
     {
-        [SerializeField] private WeaponData weaponData;
-        [SerializeField] private int[] ints;
+        [SerializeField] private WeaponData weaponData = null;
+        [SerializeField] private int[] ints = null;
 
         public WeaponData WeaponData => weaponData;
 

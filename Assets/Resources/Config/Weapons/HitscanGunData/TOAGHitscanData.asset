@@ -20,6 +20,10 @@ MonoBehaviour:
   maxRange: 25
   baseDamage: 2
   falloffExponent: 1.4
-  kineticPower: 200
+  kineticPower: 4
+  layerMask: {fileID: 11400000, guid: 06e8d6389666b8a40b7a337ecfaa9720, type: 2}
+  defaultMaterial: {fileID: 0}
+  hitPrefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
+    type: 3}
   audioEvent: {fileID: 11400000, guid: 6a2e05dcf0191e941b591dda03ac09ba, type: 2}
   audioChannel: {fileID: 11400000, guid: bf1069c2578694c4f8e5db5a5493700c, type: 2}

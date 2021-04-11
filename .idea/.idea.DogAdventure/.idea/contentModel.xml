@@ -37,10 +37,15 @@
             <e p="Squad.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
+            <e p="Aesthetics" t="Include">
+              <e p="CameraAdjuster.cs" t="Include" />
+              <e p="FootstepPlayer.cs" t="Include" />
+              <e p="ViewmodelAdjuster.cs" t="Include" />
+            </e>
             <e p="CameraKickController.cs" t="Include" />
             <e p="Controlling" t="Include">
-              <e p="CameraAdjuster.cs" t="Include" />
               <e p="CameraMovement.cs" t="Include" />
+              <e p="FootstepManager.cs" t="Include" />
               <e p="GroundCheck.cs" t="Include" />
               <e p="NewPlayerController.cs" t="Include" />
             </e>
@@ -57,10 +62,12 @@
           <e p="ScriptableObjects" t="Include">
             <e p="Audio" t="Include">
               <e p="AudioChannel.cs" t="Include" />
-              <e p="AudioEvent.cs" t="Include" />
-              <e p="ContinuousAudioEvent.cs" t="Include" />
+              <e p="Events" t="Include">
+                <e p="AudioEvent.cs" t="Include" />
+                <e p="ContinuousAudioEvent.cs" t="Include" />
+                <e p="VariedAudioEvent.cs" t="Include" />
+              </e>
               <e p="PlayerAudioChannel.cs" t="Include" />
-              <e p="VariedAudioEvent.cs" t="Include" />
             </e>
             <e p="CrateConfig.cs" t="Include" />
             <e p="Enemies" t="Include">
@@ -68,12 +75,16 @@
               <e p="EnemyBehaviourConfig.cs" t="Include" />
               <e p="EnemyVisionConfig.cs" t="Include" />
             </e>
-            <e p="Material.cs" t="Include" />
             <e p="Weapons" t="Include">
               <e p="AmmoData.cs" t="Include" />
               <e p="GunKickData.cs" t="Include" />
               <e p="HitscanGunData.cs" t="Include" />
+              <e p="ViewmodelHandlingData.cs" t="Include" />
               <e p="WeaponData.cs" t="Include" />
+            </e>
+            <e p="World" t="Include">
+              <e p="LayerMaskConfig.cs" t="Include" />
+              <e p="SurfaceMaterial.cs" t="Include" />
             </e>
           </e>
           <e p="Useable.cs" t="Include" />
@@ -89,11 +100,18 @@
             <e p="RangedFloat.cs" t="Include" />
           </e>
           <e p="Weapons" t="Include">
-            <e p="HitscanGun.cs" t="Include" />
+            <e p="Guns" t="Include">
+              <e p="FalloffEffect.cs" t="Include" />
+              <e p="Hitscan.cs" t="Include" />
+              <e p="HitscanGun.cs" t="Include" />
+            </e>
             <e p="KatanaDamager.cs" t="Include" />
             <e p="OldWeapon.cs" t="Include" />
             <e p="Weapon.cs" t="Include" />
             <e p="WeaponPickup.cs" t="Include" />
+          </e>
+          <e p="World" t="Include">
+            <e p="WorldProperties.cs" t="Include" />
           </e>
         </e>
       </e>

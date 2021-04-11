@@ -19,9 +19,10 @@ namespace ScriptableObjects.Audio
 
             _manager = newManager;
             _source = new GameObject().AddComponent<AudioSource>();
-            _source.transform.parent = _manager.AudioParent;
-            _source.transform.localPosition = Vector3.zero;
-            _source.transform.localRotation = Quaternion.identity;
+            Transform sourceTransform = _source.transform;
+            sourceTransform.parent = _manager.transform;
+            sourceTransform.localPosition = Vector3.zero;
+            sourceTransform.localRotation = Quaternion.identity;
         }
 
         public void ClearManager()

@@ -16,21 +16,32 @@ namespace ScriptableObjects.Audio
         [SerializeField] private SoundType soundType = SoundType.Unimportant;
         [SerializeField] private float radius = 25;
 
+        private bool _currentlyPlaying;
+
         public override void Play(AudioSource source)
         {
-            if (source.isPlaying) return;
+            if (_currentlyPlaying) return;
+            StartPlaying(source);
+
+        }
+
+        private void StartPlaying(AudioSource source)
+        {
             source.clip = clip;
             source.volume = volume;
             source.pitch = pitch;
             source.loop = true;
-            // todo: figure out how to regularly alert
-            // StartCoroutine(AlertChannels(source));
+            _currentlyPlaying = true;
             source.Play();
         }
 
         public void Stop(AudioSource source)
         {
-            if (source.isPlaying) source.Stop();
+            if (!_currentlyPlaying) return;
+            _currentlyPlaying = false;
+            if (source.clip != clip) return;
+            // only stop clip if we've been playing and no one else has changed the clip
+            source.Stop();
         }
 
         IEnumerator AlertChannels(AudioSource source)
