@@ -1,8 +1,9 @@
 ﻿using ScriptableObjects;
+using Stims;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Damageable))]
+[RequireComponent(typeof(StimReceiver))]
 [RequireComponent(typeof(EnemyBehaviour))]
 public class SecurityEnemy : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class SecurityEnemy : MonoBehaviour
     public float gunDamage = .4f;
     
     // auto-assigned
-    private Damageable _damageable = null;
+    private StimReceiver _stimReceiver = null;
     private EnemyBehaviour _behaviour = null;
     private EnemyHealth _health = null;
     private PlayerController _player = null;
@@ -25,7 +26,7 @@ public class SecurityEnemy : MonoBehaviour
 
     void Awake()
     {
-        _damageable = GetComponent<Damageable>();
+        _stimReceiver = GetComponent<StimReceiver>();
         _behaviour = GetComponent<EnemyBehaviour>();
         _health = GetComponent<EnemyHealth>();
         _player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
@@ -33,13 +34,13 @@ public class SecurityEnemy : MonoBehaviour
     }
 
     void OnEnable() {
-        _damageable.onDamage += OnDamage;
+        _stimReceiver.AddStimListener(OnStim);
         _health.onDeath += OnDeath;
         _behaviour.onAttackUpdate += OnAttackUpdate;
     }
 
     void OnDisable() {
-        _damageable.onDamage -= OnDamage;
+        _stimReceiver.RemoveStimListener(OnStim);
         _health.onDeath -= OnDeath;
         _behaviour.onAttackUpdate -= OnAttackUpdate;
     }
@@ -79,9 +80,9 @@ public class SecurityEnemy : MonoBehaviour
 
     private void ShootPlayer()
     {
-        _playerHealth.Damage(new Damage.BulletDamage(gunDamage, new EnemyDamageSource(_behaviour, "a Chadist Goon"),
-            _player.transform.position - eyeTransform.position));
-        _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
+        // _playerHealth.Damage(new Stim.(gunDamage, new EnemyDamageSource(_behaviour, "a Chadist Goon"),
+        //     _player.transform.position - eyeTransform.position));
+        // _player.GetComponent<CameraKickController>().AddKick(Quaternion.Euler(-5,0,3));
         audioEvent.Play(audioSource);
     }
     
@@ -90,13 +91,13 @@ public class SecurityEnemy : MonoBehaviour
         animator.SetBool("canShoot", canAttack);
     }
 
-    private void OnDamage(Damage damage)
+    private void OnStim(Stim stim)
     {
-        if (damage.damage == 0) return;
+        if (!(stim is IStimDamage)) return;
         animator.SetTrigger("flinch");
     }
 
-    private void OnDeath(Damage damage) {
+    private void OnDeath(Stim stim) {
         animator.SetTrigger("death");
         this.enabled = false;
     }

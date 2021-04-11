@@ -18,11 +18,10 @@ MonoBehaviour:
   clipSize: 7
   ammoData: {fileID: 0}
   maxRange: 30
-  baseDamage: 30
+  baseDamage: 35
   falloffExponent: 1.8
-  kineticPower: 10
-  layerMask: {fileID: 11400000, guid: 06e8d6389666b8a40b7a337ecfaa9720, type: 2}
-  defaultMaterial: {fileID: 11400000, guid: 4b59df36979d983498b6c6ccf4052dc6, type: 2}
-  hitPrefab: {fileID: 0}
+  baseForce: 30
   audioEvent: {fileID: 11400000, guid: 3776359242de3c1448a7f8a3328c02cb, type: 2}
   audioChannel: {fileID: 11400000, guid: bf1069c2578694c4f8e5db5a5493700c, type: 2}
+  hitPrefab: {fileID: 0}
+  hitAudioEvent: {fileID: 0}

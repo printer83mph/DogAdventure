@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Stims;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerHealth : MonoBehaviour
@@ -21,10 +22,12 @@ public class PlayerHealth : MonoBehaviour
         onDeathDelegate += OnDeath;
     }
 
-    public void Damage(Damage damage)
+    public void Damage(Stim stim)
     {
         if (Dead || god) return;
-        health -= damage.damage;
+        if (!(stim is IStimDamage)) return;
+        // todo: implement fall/collision damage
+        health -= ((IStimDamage) stim).Damage();
         health = Mathf.Max(0, health);
         if (health == 0) onDeathDelegate();
     }

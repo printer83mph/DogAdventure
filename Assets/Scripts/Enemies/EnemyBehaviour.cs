@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ScriptableObjects.Audio;
 using ScriptableObjects.Enemies;
+using Stims;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -41,7 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
     // auto-assigned
     private NavMeshAgent _agent;
     private EnemyVision _vision;
-    private Damageable _damageable;
+    private StimReceiver _stimReceiver;
     private PlayerController _player;
     private ChadistAI _chadistAI;
     private EnemyHealth _health;
@@ -69,7 +70,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Awake() {
         _agent = GetComponent<NavMeshAgent>();
         _vision = GetComponent<EnemyVision>();
-        _damageable = GetComponent<Damageable>();
+        _stimReceiver = GetComponent<StimReceiver>();
         _health = GetComponent<EnemyHealth>();
 
         _chadistAI = GameObject.FindGameObjectWithTag("Chadist AI").GetComponent<ChadistAI>();
@@ -82,7 +83,7 @@ public class EnemyBehaviour : MonoBehaviour
         // _chadistAI.onSpotDelegate += OnSpot;
         // _chadistAI.enemyBehaviours.Add(this);
         if (_health) _health.onDeath += OnDeath;
-        if (_damageable) _damageable.onDamage += OnDamage;
+        if (_stimReceiver) _stimReceiver.AddStimListener(OnDamage);
 
         if (!_chadistAI.enemies.Contains(this)) _chadistAI.enemies.Add(this);
         
@@ -115,7 +116,7 @@ public class EnemyBehaviour : MonoBehaviour
         
         // might break stuff
         if (_health) _health.onDeath -= OnDeath;
-        if (_damageable) _damageable.onDamage -= OnDamage;
+        if (_stimReceiver) _stimReceiver.RemoveStimListener(OnDamage);
         
         if (_chadistAI.enemies.Contains(this)) _chadistAI.enemies.Remove(this);
     }
@@ -295,14 +296,15 @@ public class EnemyBehaviour : MonoBehaviour
         _locked = locked;
     }
 
-    private void OnDamage(Damage damage)
+    private void OnDamage(Stim stim)
     {
         // special damage things
-        if (damage is Damage.SourcedDamage)
+        if (stim is Stim.Sourced && stim is IStimDamage)
         {
+            var sourcedDamageStim = ((Stim.Sourced) stim);
             bool playerForceShooting =
-                ((Damage.SourcedDamage) damage).source == GenericDamageSources.Player && CanSeePlayer;
-            if (playerForceShooting || damage is Damage.PlayerKatanaDamage)
+                sourcedDamageStim.Source() == StimSource.Generic.Player && CanSeePlayer;
+            if (playerForceShooting || stim is Stim.Katana)
             {
                 if (!_engaging) ForceEngage();
                 _positionOfInterest = _player.transform.position;
@@ -312,7 +314,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private void OnDeath(Damage damage) {
+    private void OnDeath(Stim stim) {
         if (_chadistAI.enemies.Contains(this)) _chadistAI.enemies.Remove(this);
         if (_chadistAI.engaging.Contains(this)) _chadistAI.engaging.Remove(this);
         _agent.enabled = false;

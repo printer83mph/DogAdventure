@@ -38,7 +38,6 @@ namespace Player.Aesthetics
                 }
             }
 
-            Debug.Log("Playing footstep noise");
             // instantiate audio + prefab
             var audioEvent = material.GetAudioEvent(hitType);
             if (audioEvent)

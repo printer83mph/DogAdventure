@@ -1,4 +1,5 @@
 using ScriptableObjects.Enemies;
+using Stims;
 using UnityEngine;
 
 public class EnemyVision : MonoBehaviour {
@@ -48,7 +49,7 @@ public class EnemyVision : MonoBehaviour {
         if (_health) _health.onDeath -= OnDeath;
     }
 
-    private void OnDeath(Damage damage)
+    private void OnDeath(Stim stim)
     {
         enabled = false;
     }

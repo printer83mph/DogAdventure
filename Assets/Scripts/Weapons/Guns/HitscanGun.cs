@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using ScriptableObjects;
 using ScriptableObjects.Audio;
+using Stims;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,7 @@ namespace Weapons.Guns
 
         // auto-assigned
         private Weapon _weapon;
+        private HitscanShooter _hitscanShooter;
         // private CameraKickController _kickController;
         private PlayerInput _input;
         private InputAction m_Fire;
@@ -34,6 +36,7 @@ namespace Weapons.Guns
 
         private void Awake() {
             _weapon = GetComponent<Weapon>();
+            _hitscanShooter = GetComponent<HitscanShooter>();
         }
 
         private void Start()
@@ -101,10 +104,13 @@ namespace Weapons.Guns
             // audio event
             gunData.AudioChannel.PlayEvent(gunData.AudioEvent);
             // run hitscan shooter guy here
-            Hitscan.FireShot(gunData.BaseDamage, gunData.KineticPower,
+            _hitscanShooter.Shoot(gunData.BaseDamage, gunData.BaseForce,
                 new FalloffEffect.LimitedExponential(gunData.FalloffExponent, gunData.MaxRange),
-                gunData.LayerMask, maxRange: gunData.MaxRange, shotTransform: _weapon.Controller.Orientation,
-                defaultSurfaceMaterial: gunData.DefaultMaterial, hitPrefab: gunData.HitPrefab);
+                StimSource.Generic.Player,
+                // raycast data
+                maxRange: gunData.MaxRange, shotTransform: _weapon.Controller.Orientation,
+                // overrides
+                overrideHitPrefab: gunData.HitPrefab, overrideHitAudioEvent: gunData.HitAudioEvent);
             _lastShot = Time.time;
             animator.SetTrigger("fire");
             _weapon.InventoryState.SetInt((int)StateInts.Bullets, _bullets - 1);

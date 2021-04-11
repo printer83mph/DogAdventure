@@ -1,3 +1,4 @@
+using Stims;
 using UnityEngine;
 
 public class EnemyRagdoll : MonoBehaviour {
@@ -41,30 +42,31 @@ public class EnemyRagdoll : MonoBehaviour {
         SetRagdoll(_enabled);
     }
 
-    private void OnDeath(Damage damage) {
+    private void OnDeath(Stim stim)
+    {
         if (ragdollInstantlyOnDeath) SetRagdoll(true);
-        if (damage is Damage.PlayerBulletDamage)
+        switch (stim)
         {
-            OnBulletDeath((Damage.PlayerBulletDamage) damage);
-        }
-        else if (damage is Damage.PlayerKatanaDamage)
-        {
-            OnKatanaDeath((Damage.PlayerKatanaDamage) damage);
-        }
-        else if (damage is Damage.BluntForceDamage)
-        {
-            OnBluntForceDeath((Damage.BluntForceDamage) damage);
+            case HitscanDamageStim hitscanStim:
+                OnBulletDeath(hitscanStim);
+                break;
+            case Stim.Katana katanaStim:
+                OnKatanaDeath(katanaStim);
+                break;
+            case SourcedPointForceStim forceStim:
+                OnBluntForceDeath(forceStim);
+                break;
         }
     }
 
-    private void OnBluntForceDeath(Damage.BluntForceDamage damage)
+    private void OnBluntForceDeath(SourcedPointForceStim stim)
     {
-        Vector3 baseForce = damage.force.direction * deathForceScale;
+        Vector3 baseForce = stim.Force();
         Rigidbody closest = _rbs[0];
         float dist = 1f;
         foreach (Rigidbody rb in _rbs)
         {
-            float newDist = rb.ClosestPointOnBounds(damage.force.origin).sqrMagnitude;
+            float newDist = rb.ClosestPointOnBounds(stim.Point()).sqrMagnitude;
             if (newDist < dist)
             {
                 closest = rb;
@@ -72,18 +74,19 @@ public class EnemyRagdoll : MonoBehaviour {
             }
         }
 
-        closest.AddForceAtPosition(baseForce, damage.force.origin);
+        closest.AddForceAtPosition(baseForce, stim.Point());
     }
 
-    private void OnBulletDeath(Damage.PlayerBulletDamage damage) {
-        Vector3 baseForce = damage.direction * (deathForceScale * damage.damage);
+    private void OnBulletDeath(HitscanDamageStim stim)
+    {
+        Vector3 baseForce = stim.Force();
         Rigidbody closestRb = _rbs[0];
         Vector3 closestPoint = transform.position;
         float closestDistance = 1000;
         foreach(Rigidbody rb in _rbs)
         {
-            Vector3 point = rb.ClosestPointOnBounds(damage.hit.point);
-            float dist = Vector3.SqrMagnitude(point - damage.hit.point);
+            Vector3 point = rb.ClosestPointOnBounds(stim.Point());
+            float dist = Vector3.SqrMagnitude(point - stim.Point());
             if (dist < closestDistance)
             {
                 closestRb = rb;
@@ -94,14 +97,14 @@ public class EnemyRagdoll : MonoBehaviour {
         closestRb.AddForceAtPosition(baseForce, closestPoint, ForceMode.Impulse);
     }
 
-    private void OnKatanaDeath(Damage.PlayerKatanaDamage damage)
+    private void OnKatanaDeath(Stim.Katana stim)
     {
-        Vector3 baseForce = damage.damager.transform.forward * -katanaDeathForce;
+        Vector3 baseForce = stim.damager.transform.forward * -katanaDeathForce;
         Rigidbody closestRB = _rbs[0];
         float closestDistance = 10000;
         foreach(Rigidbody rb in _rbs)
         {
-            float newDist = Vector3.SqrMagnitude(rb.position - damage.damager.transform.position);
+            float newDist = Vector3.SqrMagnitude(rb.position - stim.damager.transform.position);
             if (newDist < closestDistance)
             {
                 closestDistance = newDist;

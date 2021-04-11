@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Stims;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyBehaviour))]
@@ -105,7 +106,7 @@ public class ChargingEnemy : MonoBehaviour
         }
     }
 
-    private void OnDeath(Damage damage)
+    private void OnDeath(Stim stim)
     {
         this.enabled = false;
         // TODO: PLACEHOLDER

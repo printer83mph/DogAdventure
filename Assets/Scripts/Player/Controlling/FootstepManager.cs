@@ -41,6 +41,7 @@ namespace Player.Controlling
 
         private void OnJump()
         {
+            // todo: fix double footstep when jumping from standstill
             onFootstep(_currentFoot, _sprinting);
         }
 

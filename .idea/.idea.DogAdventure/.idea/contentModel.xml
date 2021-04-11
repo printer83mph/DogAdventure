@@ -19,13 +19,6 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
-          <e p="Damageables" t="Include">
-            <e p="BreakableProp.cs" t="Include" />
-            <e p="Damage.cs" t="Include" />
-            <e p="Damageable.cs" t="Include" />
-            <e p="DamageSource.cs" t="Include" />
-            <e p="SupplyCrate.cs" t="Include" />
-          </e>
           <e p="Enemies" t="Include">
             <e p="ChargingEnemy.cs" t="Include" />
             <e p="EnemyBehaviour.cs" t="Include" />
@@ -87,6 +80,22 @@
               <e p="SurfaceMaterial.cs" t="Include" />
             </e>
           </e>
+          <e p="Stims" t="Include">
+            <e p="Affectors" t="Include">
+              <e p="FalloffEffect.cs" t="Include" />
+              <e p="HitscanShooter.cs" t="Include" />
+            </e>
+            <e p="ForceStims.cs" t="Include" />
+            <e p="HitscanStims.cs" t="Include" />
+            <e p="Receivers" t="Include">
+              <e p="BreakableProp.cs" t="Include" />
+              <e p="StimReceiver.cs" t="Include" />
+              <e p="SupplyCrate.cs" t="Include" />
+            </e>
+            <e p="Stim.cs" t="Include" />
+            <e p="StimInterfaces.cs" t="Include" />
+            <e p="StimSource.cs" t="Include" />
+          </e>
           <e p="Useable.cs" t="Include" />
           <e p="Util" t="Include">
             <e p="ChadistAI.cs" t="Include" />
@@ -101,8 +110,6 @@
           </e>
           <e p="Weapons" t="Include">
             <e p="Guns" t="Include">
-              <e p="FalloffEffect.cs" t="Include" />
-              <e p="Hitscan.cs" t="Include" />
               <e p="HitscanGun.cs" t="Include" />
             </e>
             <e p="KatanaDamager.cs" t="Include" />

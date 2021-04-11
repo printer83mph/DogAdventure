@@ -1,9 +1,11 @@
+using System;
+using Stims;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour {
 
     // delegate shit
-    public delegate void OnDeathEvent(Damage damage);
+    public delegate void OnDeathEvent(Stim stim);
     public OnDeathEvent onDeath = delegate { };
 
     public float Health => _health;
@@ -14,31 +16,41 @@ public class EnemyHealth : MonoBehaviour {
     private float _health = 15;
 
     // auto-assigned
-    private Damageable _damageable;
+    private StimReceiver _stimReceiver;
     
     // mathstuff
     private bool _dead;
 
-    private void Awake() {
-        _damageable = GetComponent<Damageable>();
-        
-        if (_damageable) {
-            _damageable.onDamage += OnDamage;
+    private void Awake()
+    {
+        _stimReceiver = GetComponent<StimReceiver>();
+    }
+
+    private void OnEnable()
+    {
+        _stimReceiver.AddStimListener(OnDamage);
+    }
+
+    private void OnDisable()
+    {
+        _stimReceiver.RemoveStimListener(OnDamage);
+    }
+
+    private void OnDamage(Stim stim) {
+        if (_dead) return;
+        if (stim is IStimDamage damageStim)
+        {
+            Damage(damageStim);
         }
     }
 
-    private void OnDamage(Damage damage) {
+    public void Damage(IStimDamage stim) {
         if (_dead) return;
-        Damage(damage);
-    }
-
-    public void Damage(Damage damage) {
-        if (_dead) return;
-        _health -= damage.damage;
+        _health -= stim.Damage();
         if (_health <= 0) {
             Debug.Log("Bro.. i died");
             _dead = true;
-            onDeath(damage);
+            onDeath((Stim)stim);
         }
     }
 

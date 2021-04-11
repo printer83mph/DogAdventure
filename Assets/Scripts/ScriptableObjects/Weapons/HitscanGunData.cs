@@ -1,6 +1,7 @@
 ﻿using ScriptableObjects.Audio;
 using ScriptableObjects.World;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ScriptableObjects
 {
@@ -18,14 +19,15 @@ namespace ScriptableObjects
         [SerializeField] private float maxRange = 40f;
         [SerializeField] private float baseDamage = 7f;
         [SerializeField][Range(1, 5)] private float falloffExponent = 2f;
-        [SerializeField] private float kineticPower = 1000f;
-        [SerializeField] private LayerMaskConfig layerMask = default;
+        [FormerlySerializedAs("kineticPower")] [SerializeField] private float baseForce = 1000f;
 
         [Header("Feedback")]
-        [SerializeField] private SurfaceMaterial defaultMaterial = null;
-        [SerializeField] private GameObject hitPrefab = null;
         [SerializeField] private AudioEvent audioEvent = null;
         [SerializeField] private PlayerAudioChannel audioChannel = null;
+        
+        [Header("Overrides")]
+        [SerializeField] private GameObject hitPrefab = null;
+        [SerializeField] private AudioEvent hitAudioEvent = null;
 
         public float FireRate => fireRate;
         public bool Automatic => automatic;
@@ -36,13 +38,12 @@ namespace ScriptableObjects
         public float MaxRange => maxRange;
         public float BaseDamage => baseDamage;
         public float FalloffExponent => falloffExponent;
-        public float KineticPower => kineticPower;
+        public float BaseForce => baseForce;
 
-        public SurfaceMaterial DefaultMaterial => defaultMaterial;
-        public GameObject HitPrefab => hitPrefab;
         public AudioEvent AudioEvent => audioEvent;
         public PlayerAudioChannel AudioChannel => audioChannel;
-
-        public LayerMask LayerMask => layerMask.Mask;
+        
+        public GameObject HitPrefab => hitPrefab;
+        public AudioEvent HitAudioEvent => hitAudioEvent;
     }
 }

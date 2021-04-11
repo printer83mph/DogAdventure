@@ -6,6 +6,7 @@ namespace ScriptableObjects.World
     public enum HitType
     {
         Bullet,
+        Katana,
         WoodBig,
         WoodSmall,
         MetalBig,
@@ -31,6 +32,7 @@ namespace ScriptableObjects.World
         }
         
         [SerializeField] private HitResponse bulletHit;
+        [SerializeField] private HitResponse katanaHit;
         [SerializeField] private HitResponse woodBig;
         [SerializeField] private HitResponse woodSmall;
         [SerializeField] private HitResponse metalBig;
@@ -57,13 +59,40 @@ namespace ScriptableObjects.World
             // if parent, keep recursing bro
             if (parent) return parent.GetAudioEvent(hitType, lastWorking);
             // if no parent just return the last working guy
-            Debug.Log("Returning the last working guy");
             return (lastWorking);
+        }
+
+        public GameObject InstantiateHitPrefab(HitType hitType, SurfaceMaterial fallback = null, Vector3 position = default, Quaternion rotation = default)
+        {
+            GameObject prefab = null;
+            prefab = GetPrefab(hitType);
+            // if still unset and we have fallback
+            if (!prefab && fallback)
+            {
+                prefab = fallback.GetPrefab(hitType);
+            }
+
+            if (!prefab) return null;
+            return GameObject.Instantiate(prefab, position, rotation);
+        }
+
+        public AudioSource InstantiateAudioEvent(HitType hitType, SurfaceMaterial fallback = null, Vector3 position = default, Transform parent = null)
+        {
+            AudioEvent audioEvent = null;
+            audioEvent = GetAudioEvent(hitType);
+            // if still unset and we have fallback
+            if (!audioEvent && fallback)
+            {
+                audioEvent = fallback.GetAudioEvent(hitType);
+            }
+            
+            if (!audioEvent) return null;
+            return AudioEvent.InstantiateEvent(audioEvent, position, parent);
         }
 
         private void OnEnable()
         {
-            _responses = new[] {bulletHit, woodBig, woodSmall, metalBig, metalSmall, footstepQuiet, footstepLoud};
+            _responses = new[] {bulletHit, katanaHit, woodBig, woodSmall, metalBig, metalSmall, footstepQuiet, footstepLoud};
         }
     }
 }
