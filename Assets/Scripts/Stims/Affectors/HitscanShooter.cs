@@ -47,14 +47,9 @@ namespace Weapons.Guns
                         damageType, shotRay, hit, force, source));
                 }
 
-                Debug.Log("Getting surface material component");
-                var material = defaultSurfaceMaterial;
+                SurfaceMaterial material = null;
                 WorldProperties properties = hitObject.GetComponent<WorldProperties>();
-                if (properties)
-                {
-                    Debug.Log("Using hit object's surface properties");
-                    if (!material) material = properties.SurfaceMaterial;
-                } else Debug.Log("Using default surface properties");
+                if (properties) material = properties.SurfaceMaterial;
                 
                 if (overrideHitPrefab)
                 {
@@ -64,8 +59,9 @@ namespace Weapons.Guns
                 else
                 {
                     // grab surface material
-                    material.InstantiateHitPrefab(hitType, position: hit.point,
-                        rotation: Quaternion.FromToRotation(Vector3.forward, hit.normal));
+                    SurfaceMaterial.InstantiateHitPrefab(material, hitType, hit.point,
+                        Quaternion.FromToRotation(Vector3.forward, hit.normal),
+                        fallback: defaultSurfaceMaterial);
                 }
 
                 if (overrideHitAudioEvent)
@@ -74,7 +70,8 @@ namespace Weapons.Guns
                 }
                 else
                 {
-                    AudioEvent.InstantiateEvent(material.GetAudioEvent(hitType));
+                    SurfaceMaterial.InstantiateAudioEvent(material, hitType, hit.point,
+                        fallback: defaultSurfaceMaterial);
                 }
             }
         }

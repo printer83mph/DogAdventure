@@ -75,7 +75,7 @@ namespace Player.Aesthetics
                 data.FootSideStrengthLambda, Time.deltaTime);
             _yVelShiftLerp = PrintUtil.Damp(_yVelShiftLerp, GetYVelShift(),
                 data.YVelShiftLambda, Time.deltaTime);
-            _lookVelLerp = PrintUtil.Damp(_lookVelLerp, cameraMovement.DeltaAim, data.LookVelShiftLambda, Time.deltaTime);
+            _lookVelLerp = PrintUtil.Damp(_lookVelLerp, cameraMovement.DeltaAim / Time.deltaTime, data.LookVelShiftLambda, Time.deltaTime);
         }
 
         private float GetYVelShift()

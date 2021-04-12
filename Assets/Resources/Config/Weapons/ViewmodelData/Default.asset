@@ -134,4 +134,4 @@ MonoBehaviour:
   yVelShiftLambda: 7
   yVelShiftScale: -0.01
   lookVelShiftLambda: 7
-  lookVelShiftScale: 0.012
+  lookVelShiftScale: 0.0002

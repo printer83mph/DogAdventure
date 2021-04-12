@@ -65,31 +65,44 @@ namespace ScriptableObjects.World
             return (lastWorking);
         }
 
-        public GameObject InstantiateHitPrefab(HitType hitType, SurfaceMaterial fallback = null, Vector3 position = default, Quaternion rotation = default)
+        public static void InstantiateEffects(SurfaceMaterial material, HitType hitType, Vector3 position,
+            Quaternion rotation = default, Transform prefabParent = null, Transform audioParent = null, SurfaceMaterial fallback = null)
+        {
+            InstantiateHitPrefab(material, hitType, position, rotation, prefabParent, fallback);
+            InstantiateAudioEvent(material, hitType, position, audioParent, fallback);
+        }
+        
+        // uses fallback if no surface material defined
+        public static GameObject InstantiateHitPrefab(SurfaceMaterial material, HitType hitType, Vector3 position,
+            Quaternion rotation = default, Transform parent = null, SurfaceMaterial fallback = null)
         {
             GameObject prefab = null;
-            prefab = GetPrefab(hitType);
-            // if still unset and we have fallback
-            if (!prefab && fallback)
+            if (material)
+            {
+                prefab = material.GetPrefab(hitType);
+            }
+            else if (fallback)
             {
                 prefab = fallback.GetPrefab(hitType);
             }
 
-            if (!prefab) return null;
-            return Instantiate(prefab, position, rotation);
+            return prefab
+                ? Instantiate(prefab, position, rotation, parent)
+                : null;
         }
 
-        public AudioSource InstantiateAudioEvent(HitType hitType, SurfaceMaterial fallback = null, Vector3 position = default, Transform parent = null)
+        public static AudioSource InstantiateAudioEvent(SurfaceMaterial material, HitType hitType, Vector3 position,
+            Transform parent = null, SurfaceMaterial fallback = null)
         {
             AudioEvent audioEvent = null;
-            audioEvent = GetAudioEvent(hitType);
-            // if still unset and we have fallback
-            if (!audioEvent && fallback)
+            if (material)
+            {
+                audioEvent = material.GetAudioEvent(hitType);
+            }
+            else if (fallback)
             {
                 audioEvent = fallback.GetAudioEvent(hitType);
             }
-            
-            if (!audioEvent) return null;
             return AudioEvent.InstantiateEvent(audioEvent, position, parent);
         }
 

@@ -27,8 +27,9 @@ public class KatanaDamager : MonoBehaviour
         if (properties)
         {
             var material = properties.SurfaceMaterial;
-            material.InstantiateHitPrefab(HitType.Katana, defaultMaterial, closestPointHit, hitRotation);
-            material.InstantiateAudioEvent(HitType.Katana, defaultMaterial, closestPointHit);
+            SurfaceMaterial.InstantiateHitPrefab(material, HitType.Katana, closestPointHit, hitRotation,
+                fallback: defaultMaterial);
+            SurfaceMaterial.InstantiateAudioEvent(material, HitType.Katana, closestPointHit, fallback: defaultMaterial);
         }
         
         Rigidbody rb = other.GetComponent<Rigidbody>();

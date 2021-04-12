@@ -170,9 +170,9 @@ namespace Player.Inventory
                     if (propMaterial) material = propMaterial;
                 }
 
-                material.InstantiateHitPrefab(HitType.Fists, position: hitStim.Point(),
-                    rotation: Quaternion.FromToRotation(Vector3.forward, hitStim.Normal()));
-                material.InstantiateAudioEvent(HitType.Fists, position: hitStim.Point());
+                SurfaceMaterial.InstantiateEffects(material, HitType.Fists, hitStim.Point(),
+                    Quaternion.FromToRotation(Vector3.forward, hitStim.Normal()),
+                    fallback: defaultSurfaceMaterial);
 
                 return;
             }
