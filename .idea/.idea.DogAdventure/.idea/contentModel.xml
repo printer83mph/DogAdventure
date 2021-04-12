@@ -43,6 +43,7 @@
               <e p="NewPlayerController.cs" t="Include" />
             </e>
             <e p="Inventory" t="Include">
+              <e p="FistsController.cs" t="Include" />
               <e p="PlayerInventory.cs" t="Include" />
               <e p="WeaponInventoryState.cs" t="Include" />
             </e>

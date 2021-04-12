@@ -30,6 +30,7 @@ namespace Player.Controlling
         private PlayerInput _input = null;
         private InputAction m_Move = null;
         private InputAction m_Sprint = null;
+        public PlayerInput PlayerInput => _input;
 
         [SerializeField] private Transform orientation = null;
         public Transform Orientation => orientation;

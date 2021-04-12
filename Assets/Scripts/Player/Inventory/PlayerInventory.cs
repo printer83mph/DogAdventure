@@ -1,4 +1,7 @@
-﻿using Player.Controlling;
+﻿using System;
+using System.Collections;
+using Player.Controlling;
+using ScriptableObjects.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Weapons;
@@ -16,23 +19,92 @@ namespace Player.Inventory
 
         [SerializeField] private NewPlayerController controller = null;
         [SerializeField] private PlayerInput input = null;
+        [SerializeField] private FistsController fists = null;
+
+        private void OnEnable()
+        {
+            // assign input
+            input.actions["Melee"].performed += Swing;
+        }
+
+        private void OnDisable()
+        {
+            input.actions["Melee"].performed -= Swing;
+        }
 
         private void SwitchToWeapon(int index)
         {
-            foreach (Transform child in weaponParent)
-            {
-                Destroy(child);
-            }
+            ClearWeaponObjects();
             
             _currentWeapon = index;
-            GameObject newWep = Instantiate(weapons[index].WeaponData.Prefab, weaponParent);
+            
+            AddWeaponObject(weapons[index].WeaponData);
+        }
 
-            newWep.GetComponent<Weapon>().Initialize(this, controller, weapons[index], input);
+        private void AddWeaponObject(WeaponData weaponData)
+        {
+            GameObject newWep = Instantiate(weapons[_currentWeapon].WeaponData.Prefab, weaponParent);
+            newWep.GetComponent<Weapon>().Initialize(this, controller, weapons[_currentWeapon], input);
+        }
+
+        private void ClearWeaponObjects()
+        {
+            foreach (Transform child in weaponParent)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        private void SetWeaponParentActive(bool active)
+        {
+            if (weaponParent.gameObject.activeSelf == active) return;
+            weaponParent.gameObject.SetActive(active);
         }
 
         private void Start()
         {
-            SwitchToWeapon(0);
+
+            if (weapons.Length > 0)
+            {
+                SwitchToWeapon(0);
+            }
+            else
+            {
+                BareFists();
+            }
+        }
+
+        // for when we want just fists and nothing else!
+        private void BareFists()
+        {
+            _currentWeapon = -1;
+
+            fists.Enable();
+            fists.Reset();
+        }
+
+        private void Swing(InputAction.CallbackContext ctx)
+        {
+            ClearWeaponObjects();
+            if (!fists.Active) fists.Enable();
+            fists.RequestSwing();
+            StopAllCoroutines();
+            StartCoroutine(SwingCoroutine());
+        }
+
+        private IEnumerator SwingCoroutine()
+        {
+            // wait until fists not swinging
+            while (true)
+            {
+                yield return new WaitUntil(() => !fists.Swinging);
+                yield return new WaitForSeconds(.2f);
+                if (!fists.Swinging) break;
+            }
+
+            fists.Disable();
+            AddWeaponObject(weapons[_currentWeapon].WeaponData);
+
         }
     }
 }

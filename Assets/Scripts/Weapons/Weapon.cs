@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Weapons
 {
+    // utility component to pass references to whatever other scripts
     public class Weapon : MonoBehaviour
     {
         private PlayerInventory _inventory;

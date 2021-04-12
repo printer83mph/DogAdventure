@@ -27,6 +27,7 @@ namespace Weapons.Guns
         private PlayerInput _input;
         private InputAction m_Fire;
 
+        // todo: implement switch time
         // math
         private int _bullets;
         private bool _firing;

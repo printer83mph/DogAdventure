@@ -38,7 +38,7 @@ namespace Player.Controlling
             float newLookHorizontal = _lookHorizontal + mouseAim.x;
             float newLookVertical = Mathf.Clamp(_lookVertical - mouseAim.y, -maxVerticalLook, maxVerticalLook);
 
-            _deltaAim.Set(newLookHorizontal - _lookHorizontal, newLookVertical - _lookVertical);
+            _deltaAim.Set(newLookHorizontal - _lookHorizontal, -(newLookVertical - _lookVertical));
 
             _lookHorizontal = newLookHorizontal % 360;
             _lookVertical = newLookVertical;

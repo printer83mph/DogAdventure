@@ -31,14 +31,14 @@ namespace ScriptableObjects.World
             public AudioEvent AudioEvent => audioEvent;
         }
         
-        [SerializeField] private HitResponse bulletHit;
-        [SerializeField] private HitResponse katanaHit;
-        [SerializeField] private HitResponse woodBig;
-        [SerializeField] private HitResponse woodSmall;
-        [SerializeField] private HitResponse metalBig;
-        [SerializeField] private HitResponse metalSmall;
-        [SerializeField] private HitResponse footstepQuiet;
-        [SerializeField] private HitResponse footstepLoud;
+        [SerializeField] private HitResponse bulletHit = null;
+        [SerializeField] private HitResponse katanaHit = null;
+        [SerializeField] private HitResponse woodBig = null;
+        [SerializeField] private HitResponse woodSmall = null;
+        [SerializeField] private HitResponse metalBig = null;
+        [SerializeField] private HitResponse metalSmall = null;
+        [SerializeField] private HitResponse footstepQuiet = null;
+        [SerializeField] private HitResponse footstepLoud = null;
 
         private HitResponse[] _responses = null;
 

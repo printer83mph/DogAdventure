@@ -4581,26 +4581,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1297433088744512412, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1297433088744512412, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: DopplerLevel
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1297433088744512412, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: MinDistance
-      value: 0.36816692
-      objectReference: {fileID: 0}
-    - target: {fileID: 1297433088744512412, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3404832504129322931, guid: 835390ab7646dfb4a918a4202bd055b9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4656,25 +4636,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3404832504129322933, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: walkSpeed
-      value: 3.7
-      objectReference: {fileID: 0}
     - target: {fileID: 3404832504129322935, guid: 835390ab7646dfb4a918a4202bd055b9,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8002827550547037148, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: stepLength
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8115181347861008003, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: feetOffset
-      value: 0.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835390ab7646dfb4a918a4202bd055b9, type: 3}
