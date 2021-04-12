@@ -1,8 +1,6 @@
-﻿using ScriptableObjects.Audio;
-using UnityEngine;
-using Util;
+﻿using UnityEngine;
 
-namespace ScriptableObjects
+namespace ScriptableObjects.Audio.Events
 {
     [CreateAssetMenu(fileName = "VariedAudioEvent", menuName = "ScriptableObjects/Audio/VariedAudioEvent", order = 0)]
     public class VariedAudioEvent : AudioEvent

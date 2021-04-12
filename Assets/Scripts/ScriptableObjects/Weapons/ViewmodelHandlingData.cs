@@ -21,6 +21,8 @@ namespace ScriptableObjects
         [Header("Sway")]
         [SerializeField] private float yVelShiftLambda = 7;
         [SerializeField] private float yVelShiftScale = -.01f;
+        [SerializeField] private float lookVelShiftLambda = 7;
+        [SerializeField] private float lookVelShiftScale = .1f;
 
         public Vector2 WalkBobScale => walkBobScale;
         public Vector2 SprintBobScale => sprintBobScale;
@@ -35,5 +37,7 @@ namespace ScriptableObjects
         
         public float YVelShiftLambda => yVelShiftLambda;
         public float YVelShiftScale => yVelShiftScale;
+        public float LookVelShiftLambda => lookVelShiftLambda;
+        public float LookVelShiftScale => lookVelShiftScale;
     }
 }

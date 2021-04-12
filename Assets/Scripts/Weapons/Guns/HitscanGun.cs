@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using ScriptableObjects;
 using ScriptableObjects.Audio;
+using ScriptableObjects.Audio.Events;
 using Stims;
 using UnityEngine;
 using UnityEngine.InputSystem;

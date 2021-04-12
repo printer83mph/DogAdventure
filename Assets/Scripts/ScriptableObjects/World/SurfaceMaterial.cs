@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptableObjects.Audio.Events;
 using UnityEngine;
 
 namespace ScriptableObjects.World
@@ -7,6 +8,7 @@ namespace ScriptableObjects.World
     {
         Bullet,
         Katana,
+        Fists,
         WoodBig,
         WoodSmall,
         MetalBig,
@@ -33,6 +35,7 @@ namespace ScriptableObjects.World
         
         [SerializeField] private HitResponse bulletHit = null;
         [SerializeField] private HitResponse katanaHit = null;
+        [SerializeField] private HitResponse fistsHit = null;
         [SerializeField] private HitResponse woodBig = null;
         [SerializeField] private HitResponse woodSmall = null;
         [SerializeField] private HitResponse metalBig = null;
@@ -73,7 +76,7 @@ namespace ScriptableObjects.World
             }
 
             if (!prefab) return null;
-            return GameObject.Instantiate(prefab, position, rotation);
+            return Instantiate(prefab, position, rotation);
         }
 
         public AudioSource InstantiateAudioEvent(HitType hitType, SurfaceMaterial fallback = null, Vector3 position = default, Transform parent = null)
@@ -92,7 +95,7 @@ namespace ScriptableObjects.World
 
         private void OnEnable()
         {
-            _responses = new[] {bulletHit, katanaHit, woodBig, woodSmall, metalBig, metalSmall, footstepQuiet, footstepLoud};
+            _responses = new[] {bulletHit, katanaHit, fistsHit, woodBig, woodSmall, metalBig, metalSmall, footstepQuiet, footstepLoud};
         }
     }
 }

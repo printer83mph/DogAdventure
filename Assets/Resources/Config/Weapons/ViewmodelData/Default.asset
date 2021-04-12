@@ -133,3 +133,5 @@ MonoBehaviour:
   footSideStrengthLambda: 5
   yVelShiftLambda: 7
   yVelShiftScale: -0.01
+  lookVelShiftLambda: 7
+  lookVelShiftScale: 0.012

@@ -13,6 +13,8 @@ namespace Player.Inventory
         [SerializeField] private Transform weaponParent = null;
         
         [SerializeField] private WeaponInventoryState[] weapons = null;
+
+        private bool _usingFists;
         private int _currentWeapon;
         
         // todo: implement ammo data
@@ -25,11 +27,28 @@ namespace Player.Inventory
         {
             // assign input
             input.actions["Melee"].performed += Swing;
+            input.actions["Holster"].performed += Holster;
         }
 
         private void OnDisable()
         {
             input.actions["Melee"].performed -= Swing;
+            input.actions["Holster"].performed -= Holster;
+        }
+
+        private void TrySwitchToWeapon(int index)
+        {
+            Debug.Log("trying index " + index);
+            if (index >= weapons.Length)
+            {
+                // if unsuccessful, switch to fists
+                SwitchToUsingFists();
+                return;
+            }
+            // switch if successful
+            fists.Disable();
+            SwitchToWeapon(index);
+
         }
 
         private void SwitchToWeapon(int index)
@@ -55,12 +74,6 @@ namespace Player.Inventory
             }
         }
 
-        private void SetWeaponParentActive(bool active)
-        {
-            if (weaponParent.gameObject.activeSelf == active) return;
-            weaponParent.gameObject.SetActive(active);
-        }
-
         private void Start()
         {
 
@@ -70,21 +83,32 @@ namespace Player.Inventory
             }
             else
             {
-                BareFists();
+                SwitchToUsingFists();
             }
         }
 
         // for when we want just fists and nothing else!
-        private void BareFists()
+        private void SwitchToUsingFists()
         {
-            _currentWeapon = -1;
+            _usingFists = true;
 
+            ClearWeaponObjects();
+            
+            if (fists.Active) return;
+            
             fists.Enable();
             fists.Reset();
         }
 
+        private void Holster(InputAction.CallbackContext ctx)
+        {
+            // for later: make sure to check if current weapon is switch-offable
+            SwitchToUsingFists();
+        }
+
         private void Swing(InputAction.CallbackContext ctx)
         {
+            // for later: make sure to check if current weapon is switch-offable
             ClearWeaponObjects();
             if (!fists.Active) fists.Enable();
             fists.RequestSwing();
@@ -95,16 +119,17 @@ namespace Player.Inventory
         private IEnumerator SwingCoroutine()
         {
             // wait until fists not swinging
-            while (true)
+            yield return new WaitUntil(() => !fists.Swinging);
+            yield return new WaitForSeconds(.2f);
+            
+            // as long as we haven't been cancelled we're done with fists
+
+            // if we're not using fists try to switch back to current weapon
+            Debug.Log("We made it! put the fists away.");
+            if (!_usingFists)
             {
-                yield return new WaitUntil(() => !fists.Swinging);
-                yield return new WaitForSeconds(.2f);
-                if (!fists.Swinging) break;
+                TrySwitchToWeapon(_currentWeapon);
             }
-
-            fists.Disable();
-            AddWeaponObject(weapons[_currentWeapon].WeaponData);
-
         }
     }
 }

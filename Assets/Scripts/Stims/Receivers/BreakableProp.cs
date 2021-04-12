@@ -19,6 +19,9 @@ public class BreakableProp : MonoBehaviour
         stimReceiver.AddStimListener(OnStim);
     }
     
+    // todo: create class called Health (required by this script) that takes a bunch of stim receivers and damage scale per damage type
+    // that class can also enable or disable collision stims dealing damage
+    
     public void OnStim(Stim stim)
     {
         Debug.Log("Stimmed!");

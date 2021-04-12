@@ -22,6 +22,8 @@ namespace Player.Controlling
         private float _lookVertical = 0;
         
         private Vector2 _deltaAim = default;
+
+        public Transform Orientation => orientation;
         public Vector2 DeltaAim => _deltaAim;
 
         private void Awake()

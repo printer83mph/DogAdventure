@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace ScriptableObjects.Audio
+namespace ScriptableObjects.Audio.Events
 {
     [CreateAssetMenu(fileName = "ContinuousAudioEvent", menuName = "ScriptableObjects/Audio/ContinuousAudioEvent", order = 0)]
     public class ContinuousAudioEvent : AudioEvent

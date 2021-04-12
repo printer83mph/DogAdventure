@@ -1,8 +1,10 @@
 ﻿using Player;
+using ScriptableObjects.Audio.Events;
 using UnityEngine;
 
 namespace ScriptableObjects.Audio
 {
+    // this is just to play audio events from the player!! not an alternative to AudioChannel
     [CreateAssetMenu(fileName = "PlayerAudioChannel", menuName = "ScriptableObjects/Audio/PlayerAudioChannel", order = 0)]
     public class PlayerAudioChannel : ScriptableObject
     {

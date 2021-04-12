@@ -452,6 +452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3069441745639675041}
   - component: {fileID: 9058940383965520681}
+  - component: {fileID: 534325918}
   m_Layer: 8
   m_Name: Fists
   m_TagString: Untagged
@@ -493,6 +494,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &534325918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961325468520759920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c596bded4b437bb7c13a8e58d58883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 3069441745639675041}
+  data: {fileID: 11400000, guid: f7a46147d7fc138489842196b718b80a, type: 2}
+  maxOffset: 0.1
+  controller: {fileID: 3404832504129322933}
+  footstep: {fileID: 8002827550547037148}
+  cameraMovement: {fileID: 3404832504129322928}
 --- !u!1 &4971835484722347978
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,33 +575,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 749bd66d896843c9acdc431de6e656ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swingUp:
-    animTrigger: Up
-    hitscanStart: {fileID: 0}
-    hitscanEnd: {fileID: 0}
-  swingRight:
-    animTrigger: Right
-    hitscanStart: {fileID: 0}
-    hitscanEnd: {fileID: 0}
-  swingDown:
-    animTrigger: Down
-    hitscanStart: {fileID: 0}
-    hitscanEnd: {fileID: 0}
-  swingLeft:
-    animTrigger: Left
-    hitscanStart: {fileID: 0}
-    hitscanEnd: {fileID: 0}
-  swingStraight:
-    animTrigger: Straight
-    hitscanStart: {fileID: 0}
-    hitscanEnd: {fileID: 0}
   cameraMovement: {fileID: 3404832504129322928}
   fistsObject: {fileID: 3961325468520759920}
   animator: {fileID: 9058940383965520681}
+  playerAudioChannel: {fileID: 11400000, guid: 01d2e68f293467c4d849cea7a47db3cd, type: 2}
+  missAudioEvent: {fileID: 11400000, guid: 678fa792046436d4086a22d4a229672a, type: 2}
+  swingUp:
+    animTrigger: Up
+    hitDirection: {x: 0, y: 1, z: 0}
+  swingRight:
+    animTrigger: Right
+    hitDirection: {x: 1, y: 0, z: 0}
+  swingDown:
+    animTrigger: Down
+    hitDirection: {x: 0, y: -1, z: 0}
+  swingLeft:
+    animTrigger: Left
+    hitDirection: {x: -1, y: 0, z: 0}
+  swingStraight:
+    animTrigger: Straight
+    hitDirection: {x: 0, y: 0, z: 1}
+  swingDamage: 15
+  swingForce: 25
+  swingDistance: 1.4
   swingLength: 0.3
   swingDelay: 0.05
+  directionVelocityScale: 0.1
   directionAccumulationPeriod: 0.1
   velThreshold: 0.6
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 513
+  defaultSurfaceMaterial: {fileID: 11400000, guid: 4b59df36979d983498b6c6ccf4052dc6,
+    type: 2}
 --- !u!1 &7161867102986135099
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,6 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioChannels:
   - {fileID: 11400000, guid: bf1069c2578694c4f8e5db5a5493700c, type: 2}
+  - {fileID: 11400000, guid: 01d2e68f293467c4d849cea7a47db3cd, type: 2}
   audioParent: {fileID: 3404832502811802931}
 --- !u!1 &7403781189399947262
 GameObject:

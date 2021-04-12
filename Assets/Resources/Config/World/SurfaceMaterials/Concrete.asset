@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
   bulletHit:
-    prefab: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703,
+    prefab: {fileID: 1796350072629190973, guid: 3ff91ebdcdd582a4c8d2ff29c3c7ea8c,
+      type: 3}
+    audioEvent: {fileID: 11400000, guid: 3e5b033cf07c4224785275348a0862eb, type: 2}
+  katanaHit:
+    prefab: {fileID: 0}
+    audioEvent: {fileID: 0}
+  fistsHit:
+    prefab: {fileID: 1796350072629190973, guid: 3ff91ebdcdd582a4c8d2ff29c3c7ea8c,
       type: 3}
     audioEvent: {fileID: 11400000, guid: 3e5b033cf07c4224785275348a0862eb, type: 2}
   woodBig:

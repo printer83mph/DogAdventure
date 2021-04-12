@@ -1,4 +1,5 @@
 ﻿using ScriptableObjects.Audio;
+using ScriptableObjects.Audio.Events;
 using ScriptableObjects.World;
 using UnityEngine;
 using UnityEngine.Serialization;

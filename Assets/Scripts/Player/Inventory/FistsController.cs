@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections;
 using Player.Controlling;
+using ScriptableObjects;
+using ScriptableObjects.Audio;
+using ScriptableObjects.Audio.Events;
+using ScriptableObjects.World;
+using Stims;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using World;
 
 namespace Player.Inventory
 {
@@ -14,28 +20,41 @@ namespace Player.Inventory
         public class SwingConfig
         {
             [SerializeField] private string animTrigger = null;
-            [SerializeField] private Transform hitscanStart = null;
-            [SerializeField] private Transform hitscanEnd = null;
+            [SerializeField] private Vector3 hitDirection;
 
             public string AnimTrigger => animTrigger;
-            public Transform HitscanStart => hitscanStart;
-            public Transform HitscanEnd => hitscanEnd;
+            public Vector3 HitDirection => hitDirection;
         }
 
-        [SerializeField] private SwingConfig swingUp;
-        [SerializeField] private SwingConfig swingRight;
-        [SerializeField] private SwingConfig swingDown;
-        [SerializeField] private SwingConfig swingLeft;
-        [SerializeField] private SwingConfig swingStraight;
+        [Header("References")]
+        [SerializeField] private CameraMovement cameraMovement = null;
+        [SerializeField] private GameObject fistsObject = null;
+        [SerializeField] private Animator animator = null;
+        [SerializeField] private PlayerAudioChannel playerAudioChannel = null;
+        [SerializeField] private AudioEvent missAudioEvent = null;
+        
+        [Header("Swing Data")]
+        [SerializeField] private SwingConfig swingUp = null;
+        [SerializeField] private SwingConfig swingRight = null;
+        [SerializeField] private SwingConfig swingDown = null;
+        [SerializeField] private SwingConfig swingLeft = null;
+        [SerializeField] private SwingConfig swingStraight = null;
 
-        [SerializeField] private CameraMovement cameraMovement;
-        [SerializeField] private GameObject fistsObject;
-        [SerializeField] private Animator animator;
-
-        [SerializeField] private float swingLength = .4f;
+        [Header("Impact")]
+        [SerializeField] private float swingDamage = 15;
+        [SerializeField] private float swingForce = 25;
+        [SerializeField] private float swingDistance = 1.4f;
+        
+        [Header("Swing Control")]
+        [SerializeField] private float swingLength = .3f;
         [SerializeField] private float swingDelay = .1f;
-        [SerializeField] private float directionAccumulationPeriod = .2f;
-        [SerializeField] private float velThreshold = 50;
+        [SerializeField] private float directionVelocityScale = .1f;
+        [SerializeField] private float directionAccumulationPeriod = .1f;
+        [SerializeField] private float velThreshold = .6f;
+
+        [Header("Hitscan")]
+        [SerializeField] private LayerMask layerMask = default;
+        [SerializeField] private SurfaceMaterial defaultSurfaceMaterial = null;
 
         private Vector2 _lookVelLerp = default;
         private bool _swinging = false;
@@ -59,8 +78,9 @@ namespace Player.Inventory
 
         private void Update()
         {
-            _lookVelLerp = Vector2.MoveTowards(_lookVelLerp, cameraMovement.DeltaAim, 
-                Time.deltaTime / directionAccumulationPeriod);
+            _lookVelLerp = Vector2.MoveTowards(_lookVelLerp, cameraMovement.DeltaAim,
+                Time.deltaTime / directionAccumulationPeriod *
+                (1 + cameraMovement.DeltaAim.sqrMagnitude / Time.deltaTime * directionVelocityScale));
         }
 
         public void RequestSwing()
@@ -117,8 +137,48 @@ namespace Player.Inventory
         
         private void RunPunch(SwingConfig config)
         {
+            
+            Debug.Log("Running config " + config.AnimTrigger);
+            
             animator.SetTrigger(config.AnimTrigger);
-            // do raycast logic
+
+            Ray ray = new Ray(cameraMovement.Orientation.position, cameraMovement.Orientation.forward);
+            if (Physics.Raycast(ray, out RaycastHit hit, swingDistance, layerMask))
+            {
+                Debug.Log("Hit something");
+                PunchDamageStim hitStim = new PunchDamageStim(ray, hit, cameraMovement.Orientation.TransformDirection(config.HitDirection), swingDamage, swingForce);
+                
+                // we hit something?
+                if (hit.rigidbody)
+                {
+                    hit.rigidbody.AddForceAtPosition(hitStim.Force(), hit.point, ForceMode.Impulse);
+                }
+
+                // stim receiver
+                StimReceiver receiver = hit.transform.GetComponent<StimReceiver>();
+                if (receiver)
+                {
+                    receiver.Stim(hitStim);
+                }
+                
+                // do world fx
+                var material = defaultSurfaceMaterial;
+                WorldProperties properties = hit.transform.GetComponent<WorldProperties>();
+                if (properties)
+                {
+                    var propMaterial = properties.SurfaceMaterial;
+                    if (propMaterial) material = propMaterial;
+                }
+
+                material.InstantiateHitPrefab(HitType.Fists, position: hitStim.Point(),
+                    rotation: Quaternion.FromToRotation(Vector3.forward, hitStim.Normal()));
+                material.InstantiateAudioEvent(HitType.Fists, position: hitStim.Point());
+
+                return;
+            }
+            
+            // if we didn't hit anything:
+            playerAudioChannel.PlayEvent(missAudioEvent);
         }
     }
 }

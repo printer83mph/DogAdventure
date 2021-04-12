@@ -7,7 +7,7 @@ namespace Stims
     {
         Slice,
         Bullet,
-        BluntForce,
+        Fists,
         ExplosionForce
     }
     

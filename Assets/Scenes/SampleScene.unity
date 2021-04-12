@@ -4165,6 +4165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useRefreshRate: 1
   frameRate: 10
+  timeScale: 1
 --- !u!4 &2024031282
 Transform:
   m_ObjectHideFlags: 0
