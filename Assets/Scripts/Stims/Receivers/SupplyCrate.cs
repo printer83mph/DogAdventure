@@ -5,11 +5,11 @@ public class SupplyCrate : MonoBehaviour
 {
 
     public CrateConfig crateConfig;
-    private PlayerHealth _health;
+    // private PlayerHealth _health;
 
     private void Awake()
     {
-        _health = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+        // _health = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
     private void OnEnable()
@@ -20,36 +20,7 @@ public class SupplyCrate : MonoBehaviour
     private void OnBreak()
     {
 
-        if (_health.health < crateConfig.forceHealthThreshold) {
-            SpawnHealth();
-            return;
-        }
-
-        float total = 0;
-
-        float healthProb = (_health.maxHealth - _health.health) / _health.maxHealth * crateConfig.healthMultiplier;
-        total += healthProb;
-
-        // TODO: probably ask for 
-        float ammoProb = 0;
-        total += ammoProb;
-
-        float rand = UnityEngine.Random.Range(0f, total);
-
-        if (rand < healthProb)
-        {
-            SpawnHealth();
-            return;
-        }
-        total -= healthProb;
-
-        if (rand < ammoProb) {
-            SpawnAmmo();
-            return;
-        }
-
-        // otherwise
-        SpawnRandomWeapon();
+        
 
     }
 

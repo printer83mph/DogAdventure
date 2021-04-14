@@ -3,11 +3,12 @@ using ScriptableObjects.Audio.Events;
 using ScriptableObjects.World;
 using Stims;
 using UnityEngine;
+using UnityEngine.Serialization;
 using World;
 
 namespace Weapons.Guns
 {
-    public class HitscanShooter : MonoBehaviour
+    public class HitscanEffector : MonoBehaviour
     {
 
         [SerializeField] private HitType hitType = HitType.Bullet;

@@ -23,7 +23,7 @@ namespace Weapons.Guns
 
         // auto-assigned
         private Weapon _weapon;
-        private HitscanShooter _hitscanShooter;
+        private HitscanEffector _hitscanEffector;
         // private CameraKickController _kickController;
         private PlayerInput _input;
         private InputAction m_Fire;
@@ -38,7 +38,7 @@ namespace Weapons.Guns
 
         private void Awake() {
             _weapon = GetComponent<Weapon>();
-            _hitscanShooter = GetComponent<HitscanShooter>();
+            _hitscanEffector = GetComponent<HitscanEffector>();
         }
 
         private void Start()
@@ -106,7 +106,7 @@ namespace Weapons.Guns
             // audio event
             gunData.AudioChannel.PlayEvent(gunData.AudioEvent);
             // run hitscan shooter guy here
-            _hitscanShooter.Shoot(gunData.BaseDamage, gunData.BaseForce,
+            _hitscanEffector.Shoot(gunData.BaseDamage, gunData.BaseForce,
                 new FalloffEffect.LimitedExponential(gunData.FalloffExponent, gunData.MaxRange),
                 StimSource.Generic.Player,
                 // raycast data

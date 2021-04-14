@@ -8,6 +8,9 @@ namespace Player.Controlling
     public class NewPlayerController : MonoBehaviour
     {
 
+        private static NewPlayerController _main = null;
+        public static NewPlayerController Main => _main;
+        
         public delegate void ActionEvent();
         public ActionEvent onJump = delegate {  };
         
@@ -44,6 +47,8 @@ namespace Player.Controlling
 
         private void Awake()
         {
+            _main = this;
+            
             _rb = GetComponent<Rigidbody>();
             _groundCheck = GetComponentInChildren<GroundCheck>();
             _cameraMovement = GetComponent<CameraMovement>();

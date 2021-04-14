@@ -5,24 +5,17 @@ namespace Stims
 {
     public class StimReceiver : MonoBehaviour
     {
-
-        public delegate void OnStimEvent(Stim stim);
-
-        private OnStimEvent onStim = delegate { };
-
-        public void AddStimListener(OnStimEvent stimEvent)
-        {
-            onStim += stimEvent;
-        }
-
-        public void RemoveStimListener(OnStimEvent stimEvent)
-        {
-            onStim -= stimEvent;
-        }
         
+        private Action<Stim> _onStim;
+
+        public void SetStimListener(Action<Stim> stimEvent)
+        {
+            _onStim = stimEvent;
+        }
+
         public void Stim(Stim stim)
         {
-            onStim(stim);
+            _onStim(stim);
         }
 
         private void OnCollisionEnter(Collision other)

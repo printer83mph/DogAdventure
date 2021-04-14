@@ -29,22 +29,6 @@ namespace Stims
             public override string GetDisplayName() => "the Player";
         }
 
-        public class Enemy : StimSource
-        {
-            private readonly EnemyBehaviour _behaviour;
-            private readonly string _name;
-
-            public override Faction GetFaction() => Faction.Chadist;
-            public override string GetDisplayName() => _name;
-            public EnemyBehaviour Behaviour => _behaviour;
-
-            public Enemy(EnemyBehaviour behaviour, string name)
-            {
-                _behaviour = behaviour;
-                _name = name;
-            }
-        }
-        
         public static class Generic
         {
             public static readonly Player Player = new Player();

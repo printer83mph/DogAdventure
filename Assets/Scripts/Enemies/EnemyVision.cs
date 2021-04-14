@@ -1,3 +1,4 @@
+using Player.Controlling;
 using ScriptableObjects.Enemies;
 using Stims;
 using UnityEngine;
@@ -23,30 +24,14 @@ public class EnemyVision : MonoBehaviour {
     public bool CanCapsulePlayer => _canCapsulePlayer;
 
     // auto-assigned
-    private PlayerController _player;
     private CapsuleCollider _collider;
-    private EnemyHealth _health;
     private Transform _playerCam;
     private Vector3 _vecToPlayer;
-    private Squad _squad;
 
     private void Awake()
     {
         _collider = GetComponent<CapsuleCollider>();
-        _health = GetComponent<EnemyHealth>();
-        
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _playerCam = _player.GetComponentInChildren<Camera>().transform;
-    }
-
-    private void OnEnable()
-    {
-        if (_health) _health.onDeath += OnDeath;
-    }
-    
-    private void OnDisable()
-    {
-        if (_health) _health.onDeath -= OnDeath;
+        // make ourselves disable on death
     }
 
     private void OnDeath(Stim stim)

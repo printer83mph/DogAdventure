@@ -20,14 +20,9 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="Enemies" t="Include">
-            <e p="ChargingEnemy.cs" t="Include" />
-            <e p="EnemyBehaviour.cs" t="Include" />
-            <e p="EnemyHealth.cs" t="Include" />
+            <e p="EnemyMovement.cs" t="Include" />
             <e p="EnemyRagdoll.cs" t="Include" />
             <e p="EnemyVision.cs" t="Include" />
-            <e p="SecurityEnemy.cs" t="Include" />
-            <e p="SecurityEnemyIKController.cs" t="Include" />
-            <e p="Squad.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
             <e p="Aesthetics" t="Include">
@@ -47,11 +42,7 @@
               <e p="PlayerInventory.cs" t="Include" />
               <e p="WeaponInventoryState.cs" t="Include" />
             </e>
-            <e p="OldPlayerInventory.cs" t="Include" />
             <e p="PlayerAudioManager.cs" t="Include" />
-            <e p="PlayerController.cs" t="Include" />
-            <e p="PlayerHealth.cs" t="Include" />
-            <e p="ViewmodelBob.cs" t="Include" />
           </e>
           <e p="ScriptableObjects" t="Include">
             <e p="Audio" t="Include">
@@ -62,6 +53,7 @@
                 <e p="VariedAudioEvent.cs" t="Include" />
               </e>
               <e p="PlayerAudioChannel.cs" t="Include" />
+              <e p="SoundType.cs" t="Include" />
             </e>
             <e p="CrateConfig.cs" t="Include" />
             <e p="Enemies" t="Include">
@@ -84,7 +76,7 @@
           <e p="Stims" t="Include">
             <e p="Affectors" t="Include">
               <e p="FalloffEffect.cs" t="Include" />
-              <e p="HitscanShooter.cs" t="Include" />
+              <e p="HitscanEffector.cs" t="Include" />
             </e>
             <e p="ForceStims.cs" t="Include" />
             <e p="HitscanStims.cs" t="Include" />
@@ -97,9 +89,7 @@
             <e p="StimInterfaces.cs" t="Include" />
             <e p="StimSource.cs" t="Include" />
           </e>
-          <e p="Useable.cs" t="Include" />
           <e p="Util" t="Include">
-            <e p="ChadistAI.cs" t="Include" />
             <e p="CustomFramerate.cs" t="Include" />
             <e p="CustomPhysicsTick.cs" t="Include" />
             <e p="Despawner.cs" t="Include" />
@@ -114,9 +104,7 @@
               <e p="HitscanGun.cs" t="Include" />
             </e>
             <e p="KatanaDamager.cs" t="Include" />
-            <e p="OldWeapon.cs" t="Include" />
             <e p="Weapon.cs" t="Include" />
-            <e p="WeaponPickup.cs" t="Include" />
           </e>
           <e p="World" t="Include">
             <e p="WorldProperties.cs" t="Include" />

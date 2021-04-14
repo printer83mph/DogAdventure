@@ -16,26 +16,15 @@ public class EnemyRagdoll : MonoBehaviour {
     private Collider[] _cols;
     private Animator _animator;
     private Collider _mainCollider;
-    private EnemyHealth _health;
+    // private EnemyHealth _health;
 
     private void Awake() {
         _rbs = GetComponentsInChildren<Rigidbody>();
         _cols = GetComponentsInChildren<Collider>();
         _animator = GetComponent<Animator>();
         _mainCollider = GetComponent<Collider>();
-        _health = GetComponent<EnemyHealth>();
-    }
-
-    private void OnEnable() {
-        if (_health) {
-            _health.onDeath += OnDeath;
-        }
-    }
-
-    private void OnDisable() {
-        if (_health) {
-            _health.onDeath -= OnDeath;
-        }
+        // _health = GetComponent<EnemyHealth>();
+        // make ourselves disable on death
     }
 
     private void Start() {

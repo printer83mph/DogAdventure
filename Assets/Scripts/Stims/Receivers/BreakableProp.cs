@@ -16,7 +16,7 @@ public class BreakableProp : MonoBehaviour
 
     void Awake()
     {
-        stimReceiver.AddStimListener(OnStim);
+        stimReceiver.SetStimListener(OnStim);
     }
     
     // todo: create class called Health (required by this script) that takes a bunch of stim receivers and damage scale per damage type
