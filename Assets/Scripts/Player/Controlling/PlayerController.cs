@@ -117,7 +117,7 @@ namespace Player.Controlling
                 // add gravity component in ground direction
                 _rb.AddForce(
                     _groundCheck.GroundRotation *
-                    Vector3.Project(Physics.gravity, _groundCheck.GroundRotation * Vector3.down),
+                    Physics.gravity,
                     ForceMode.Acceleration);
 
                 // add movement force
