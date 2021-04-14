@@ -85,6 +85,7 @@ namespace Enemies
         {
             
             if (!_grounded) return;
+            if (_atTarget) return;
             if ((Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0)
             {
                 CalculatePath();
@@ -116,7 +117,7 @@ namespace Enemies
             }
 
             // here we're not at our target
-            GetNextPos();
+            if (AtNextPos()) GetNextPos();
             AddForceToGoTo(_nextPos);
             
         }
@@ -142,9 +143,16 @@ namespace Enemies
             rb.AddForce(velToAdd * rb.mass, ForceMode.Impulse);
         }
 
+        // if we're at our actual target
         private void CheckIfAtTarget()
         {
             _atTarget = Vector3.SqrMagnitude(feetTransform.position - _partialTargetPosition) < Mathf.Pow(targetDistance, 2);
+        }
+
+        // if we're at the next queued position
+        private bool AtNextPos()
+        {
+            return Vector3.SqrMagnitude(feetTransform.position - _nextPos) < Mathf.Pow(targetDistance, 2);
         }
 
         private void GetGrounded()
@@ -196,6 +204,7 @@ namespace Enemies
                     _partialTargetPosition = (_path.status == NavMeshPathStatus.PathPartial
                         ? _path.corners[_path.corners.Length - 2] : _path.corners[_path.corners.Length - 1]);
                     _cantPath = false;
+                    _nextPos = _path.corners[1];
                 }
             }
         }
@@ -212,23 +221,20 @@ namespace Enemies
             }
             if (_path.corners.Length == 1)
             {
+                Debug.Log("Only one corner?");
                 _nextPos = _path.corners[0];
                 return;
             }
 
-            // set next pos to the first corner first
-            var firstCorner = _path.corners[1];
-            
-            // check if we're at the first corner already
-            if (Vector3.SqrMagnitude(feetTransform.position - firstCorner) < Mathf.Pow(MaxCornerDistance, 2))
+            for (var i = _path.corners.Length - 1; i > 0; i--)
             {
-                // if so we use the second corner
-                _nextPos = _path.corners[2];
-                return;
+                if (Vector3.SqrMagnitude(feetTransform.position - _path.corners[i]) < Mathf.Pow(MaxCornerDistance, 2))
+                {
+                    _nextPos = _path.corners[i + 1];
+                    return;
+                }
             }
-            
-            // if we're not then set the first corner to be the next one
-            _nextPos = firstCorner;
+
         }
 
         private void UpdateAnimatorVelocity()
