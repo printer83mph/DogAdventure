@@ -28,7 +28,7 @@ namespace Stims
     public class HitscanDamageStim : HitscanStim, IStimDamage
     {
             
-        private readonly float _damage;
+        private float _damage;
         private readonly DamageType _damageType;
             
         public HitscanDamageStim(float damage, DamageType damageType, Ray ray, RaycastHit hit, float force, StimSource source) : base(ray, hit, force, source)
@@ -38,6 +38,10 @@ namespace Stims
         }
 
         public float Damage() => _damage;
+        public void SetDamage(float damage)
+        {
+            _damage = damage;
+        }
 
         public DamageType DamageType() => _damageType;
     }
@@ -48,7 +52,7 @@ namespace Stims
         private readonly Ray _punchCheckRay;
         private readonly RaycastHit _hit;
         private readonly Vector3 _punchDirection;
-        private readonly float _damage;
+        private float _damage;
         private readonly float _force;
         
         public PunchDamageStim(Ray punchCheckRay, RaycastHit hit, Vector3 punchDirection, float damage, float force) : base(StimSource.Generic.Player)
@@ -67,6 +71,11 @@ namespace Stims
         public Vector3 Normal() => _hit.normal;
         public RaycastHit Hit() => _hit;
         public float Damage() => _damage;
+        public void SetDamage(float damage)
+        {
+            _damage = damage;
+        }
+
         public DamageType DamageType() => Stims.DamageType.Fists;
     }
     

@@ -1,7 +1,9 @@
 ﻿using System;
+using Stims;
 using UnityEngine;
+using World.StimListeners;
 
-namespace Stims.Receivers
+namespace World.Misc
 {
     public class BreakableProp : MonoBehaviour
     {

@@ -78,17 +78,15 @@
             <e p="Effectors" t="Include">
               <e p="FalloffEffect.cs" t="Include" />
               <e p="HitscanEffector.cs" t="Include" />
+              <e p="PhysicsStimmer.cs" t="Include" />
             </e>
             <e p="ForceStims.cs" t="Include" />
             <e p="HitscanStims.cs" t="Include" />
             <e p="Receivers" t="Include">
-              <e p="BreakableProp.cs" t="Include" />
-              <e p="Health.cs" t="Include" />
-              <e p="PhysicsStimmer.cs" t="Include" />
+              <e p="DamageTransformer.cs" t="Include" />
               <e p="SingleStimReceiver.cs" t="Include" />
               <e p="StimReceiver.cs" t="Include" />
               <e p="StimSpreader.cs" t="Include" />
-              <e p="SupplyCrate.cs" t="Include" />
             </e>
             <e p="Stim.cs" t="Include" />
             <e p="StimInterfaces.cs" t="Include" />
@@ -112,6 +110,13 @@
             <e p="Weapon.cs" t="Include" />
           </e>
           <e p="World" t="Include">
+            <e p="Misc" t="Include">
+              <e p="BreakableProp.cs" t="Include" />
+              <e p="SupplyCrate.cs" t="Include" />
+            </e>
+            <e p="StimListeners" t="Include">
+              <e p="Health.cs" t="Include" />
+            </e>
             <e p="WorldProperties.cs" t="Include" />
           </e>
         </e>

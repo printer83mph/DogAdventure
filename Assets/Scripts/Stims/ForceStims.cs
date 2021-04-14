@@ -44,7 +44,7 @@ namespace Stims
 
     public class CollisionDamageStim : CollisionStim, IStimDamage
     {
-        private readonly float _damage;
+        private float _damage;
         
         public CollisionDamageStim(Collision col, float damage) : base(col)
         {
@@ -52,6 +52,10 @@ namespace Stims
         }
 
         public float Damage() => _damage;
+        public void SetDamage(float damage)
+        {
+            _damage = damage;
+        }
 
         public DamageType DamageType() => Stims.DamageType.Collision;
     }

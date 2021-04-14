@@ -5,21 +5,21 @@ namespace Stims.Receivers
     public class SingleStimReceiver : StimReceiver
     {
         
-        public Action<Stim> onStim = delegate { };
+        private Action<Stim> _onStim = delegate { };
 
         public override void SetOnStim(Action<Stim> onStim)
         {
-            this.onStim = onStim;
+            _onStim = onStim;
         }
 
         public override void ClearOnStim()
         {
-            onStim = delegate {  };
+            _onStim = delegate {  };
         }
         
         public override void Stim(Stim stim)
         {
-            onStim?.Invoke(stim);
+            _onStim?.Invoke(stim);
         }
     }
 }

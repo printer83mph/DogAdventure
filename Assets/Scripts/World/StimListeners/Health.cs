@@ -1,30 +1,18 @@
 ﻿using System;
+using Stims;
 using Stims.Receivers;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace Stims
+namespace World.StimListeners
 {
 
     public class Health : MonoBehaviour
     {
 
-        [Serializable]
-        private class DamageTypeScaler
-        {
-            [SerializeField] private DamageType type;
-            [SerializeField] private float scale;
-
-            public DamageType Type => type;
-            public float Scale => scale;
-        }
-        
         public Action<float> onDamage = delegate {  };
         public Action<IStimDamage> onDeath = delegate {  };
 
-        [SerializeField] private StimReceiver receiver;
-
-        [SerializeField] private DamageTypeScaler[] damageScalers = null;
+        [SerializeField] private StimReceiver[] receivers;
 
         [SerializeField] private float maxHealth;
         [SerializeField] private float health;
@@ -48,12 +36,18 @@ namespace Stims
 
         private void OnEnable()
         {
-            receiver.SetOnStim(OnStim);
+            foreach (var receiver in receivers)
+            {
+                receiver.SetOnStim(OnStim);
+            }
         }
 
         private void OnDisable()
         {
-            receiver.ClearOnStim();
+            foreach (var receiver in receivers)
+            {
+                receiver.ClearOnStim();
+            }
         }
 
         private void OnStim(Stim stim)
@@ -64,18 +58,8 @@ namespace Stims
             {
                 
                 Debug.Log("Doing damage: " + damageStim.Damage());
-                
-                float scale = 1;
-                foreach (var scaler in damageScalers)
-                {
-                    if (scaler.Type == damageStim.DamageType())
-                    {
-                        scale = scaler.Scale;
-                        break;
-                    }
-                }
 
-                health -= damageStim.Damage() * scale;
+                health -= damageStim.Damage();
                 if (health <= 0)
                 {
                     // we died

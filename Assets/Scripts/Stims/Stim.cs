@@ -20,7 +20,7 @@ namespace Stims
         public class MysteryDamage : Stim, IStimDamage
         {
 
-            private readonly float _damage;
+            private float _damage;
 
             public MysteryDamage(float damage)
             {
@@ -28,6 +28,11 @@ namespace Stims
             }
 
             public float Damage() => _damage;
+            public void SetDamage(float damage)
+            {
+                _damage = damage;
+            }
+
             public DamageType DamageType() => Stims.DamageType.Mystery;
         }
 
@@ -68,6 +73,11 @@ namespace Stims
 
             public Vector3 Point() => _contactPoint;
             public float Damage()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void SetDamage(float damage)
             {
                 throw new System.NotImplementedException();
             }

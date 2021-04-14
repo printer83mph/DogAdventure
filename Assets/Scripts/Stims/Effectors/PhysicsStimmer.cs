@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Stims.Receivers;
 using UnityEngine;
 
-namespace Stims.Receivers
+namespace Stims.Effectors
 {
     public class PhysicsStimmer : MonoBehaviour
     {
