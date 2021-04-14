@@ -1,12 +1,9 @@
-﻿using ScriptableObjects;
-using ScriptableObjects.Audio.Events;
+﻿using ScriptableObjects.Audio.Events;
 using ScriptableObjects.World;
-using Stims;
 using UnityEngine;
-using UnityEngine.Serialization;
 using World;
 
-namespace Weapons.Guns
+namespace Stims.Effectors
 {
     public class HitscanEffector : MonoBehaviour
     {

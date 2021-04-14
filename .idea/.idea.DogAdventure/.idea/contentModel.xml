@@ -35,7 +35,7 @@
               <e p="CameraMovement.cs" t="Include" />
               <e p="FootstepManager.cs" t="Include" />
               <e p="GroundCheck.cs" t="Include" />
-              <e p="NewPlayerController.cs" t="Include" />
+              <e p="PlayerController.cs" t="Include" />
             </e>
             <e p="Inventory" t="Include">
               <e p="FistsController.cs" t="Include" />
@@ -74,7 +74,7 @@
             </e>
           </e>
           <e p="Stims" t="Include">
-            <e p="Affectors" t="Include">
+            <e p="Effectors" t="Include">
               <e p="FalloffEffect.cs" t="Include" />
               <e p="HitscanEffector.cs" t="Include" />
             </e>

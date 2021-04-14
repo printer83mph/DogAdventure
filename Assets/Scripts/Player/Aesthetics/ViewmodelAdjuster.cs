@@ -19,7 +19,7 @@ namespace Player.Aesthetics
         private Weapon _weapon;
         
         [Header("Overrides")]
-        [SerializeField] private NewPlayerController controller;
+        [SerializeField] private PlayerController controller;
         [SerializeField] private FootstepManager footstep;
         [SerializeField] private CameraMovement cameraMovement;
 

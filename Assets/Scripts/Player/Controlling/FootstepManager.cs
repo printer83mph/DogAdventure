@@ -8,7 +8,7 @@ namespace Player.Controlling
         public delegate void FootstepEvent(int newFoot, bool loud);
         public FootstepEvent onFootstep = delegate {  };
         
-        [SerializeField] private NewPlayerController controller = null;
+        [SerializeField] private PlayerController controller = null;
 
         [Header("Base Movement")]
         [SerializeField] private float stepLength = 2.5f;

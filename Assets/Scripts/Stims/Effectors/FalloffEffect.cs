@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Weapons.Guns
+namespace Stims.Effectors
 {
     public abstract class FalloffEffect
     {

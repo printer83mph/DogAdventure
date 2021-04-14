@@ -19,7 +19,7 @@ namespace Player.Inventory
         
         // todo: implement ammo data
 
-        [SerializeField] private NewPlayerController controller = null;
+        [SerializeField] private PlayerController controller = null;
         [SerializeField] private PlayerInput input = null;
         [SerializeField] private FistsController fists = null;
 

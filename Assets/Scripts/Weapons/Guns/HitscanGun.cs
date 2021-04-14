@@ -3,6 +3,7 @@ using ScriptableObjects;
 using ScriptableObjects.Audio;
 using ScriptableObjects.Audio.Events;
 using Stims;
+using Stims.Effectors;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,7 +29,6 @@ namespace Weapons.Guns
         private PlayerInput _input;
         private InputAction m_Fire;
 
-        // todo: implement switch time
         // math
         private int _bullets;
         private bool _firing;
@@ -36,7 +36,8 @@ namespace Weapons.Guns
         private bool _reloading;
         
 
-        private void Awake() {
+        private void Awake()
+        {
             _weapon = GetComponent<Weapon>();
             _hitscanEffector = GetComponent<HitscanEffector>();
         }
@@ -53,6 +54,7 @@ namespace Weapons.Guns
         private void OnDestroy() {
             // remove callbacks
             if (_input) _input.actions["Reload"].performed -= ReloadInput;
+            StopAllCoroutines();
         }
 
         public void ReloadInput(InputAction.CallbackContext ctx) {
@@ -93,10 +95,7 @@ namespace Weapons.Guns
             }
         }
 
-        // private bool CanFire() => _weapon.CanFire() && Time.time - _lastShot > fireDelay && !_reloading;
-        // todo: make equiphandler component
-
-        private bool CanFire() => Time.time - _lastShot > fireDelay && !_reloading;
+        private bool CanFire() => Time.time - _lastShot > fireDelay && !_reloading && !_weapon.Equipping;
 
         private float fireDelay => 1.0f / gunData.FireRate;
 

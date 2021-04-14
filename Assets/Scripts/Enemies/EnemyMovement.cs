@@ -125,7 +125,7 @@ namespace Enemies
             Debug.DrawRay(feetTransform.position, velToAdd);
             velToAdd = _groundRotation * velToAdd;
 
-            rb.AddForce(velToAdd * rb.mass, ForceMode.Acceleration);
+            rb.AddForce(velToAdd * rb.mass, ForceMode.Impulse);
         }
 
         private void CheckIfAtTarget()

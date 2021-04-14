@@ -11,7 +11,7 @@ namespace Player.Aesthetics
     {
         [SerializeField] private AudioSource source = null;
         [SerializeField] private FootstepManager manager = null;
-        [SerializeField] private NewPlayerController controller = null;
+        [SerializeField] private PlayerController controller = null;
         [SerializeField] private GroundCheck groundCheck = null;
 
         [SerializeField] private float feetOffset = .1f;

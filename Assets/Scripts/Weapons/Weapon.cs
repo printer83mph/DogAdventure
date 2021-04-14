@@ -1,4 +1,6 @@
-﻿using Player.Controlling;
+﻿using System;
+using System.Collections;
+using Player.Controlling;
 using Player.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,21 +11,42 @@ namespace Weapons
     public class Weapon : MonoBehaviour
     {
         private PlayerInventory _inventory;
-        private NewPlayerController _controller;
+        private PlayerController _controller;
         private WeaponInventoryState _inventoryState;
         private PlayerInput _input;
+        private bool _equipping;
+
+        [SerializeField] private float equipTime = .3f;
         
         public PlayerInventory Inventory => _inventory;
-        public NewPlayerController Controller => _controller;
+        public PlayerController Controller => _controller;
         public WeaponInventoryState InventoryState => _inventoryState;
         public PlayerInput Input => _input;
+        public bool Equipping => _equipping;
 
-        public void Initialize(PlayerInventory inventory, NewPlayerController controller, WeaponInventoryState inventoryState, PlayerInput input)
+        private void Start()
+        {
+            StartCoroutine(EquipCoroutine());
+        }
+
+        private void OnDestroy()
+        {
+            StopAllCoroutines();
+        }
+
+        public void Initialize(PlayerInventory inventory, PlayerController controller, WeaponInventoryState inventoryState, PlayerInput input)
         {
             _inventory = inventory;
             _controller = controller;
             _inventoryState = inventoryState;
             _input = input;
+        }
+        
+        private IEnumerator EquipCoroutine()
+        {
+            _equipping = true;
+            yield return new WaitForSeconds(equipTime);
+            _equipping = false;
         }
     }
 }
