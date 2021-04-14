@@ -1,26 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Stims
+namespace Stims.Receivers
 {
-    public class StimReceiver : MonoBehaviour
+    public abstract class StimReceiver : MonoBehaviour
     {
-        
-        private Action<Stim> _onStim;
-
-        public void SetStimListener(Action<Stim> stimEvent)
-        {
-            _onStim = stimEvent;
-        }
-
-        public void Stim(Stim stim)
-        {
-            _onStim(stim);
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            Stim(new CollisionStim(other));
-        }
+        // we can receive stims.
+        public abstract void Stim(Stim stim);
+        public abstract void SetOnStim(Action<Stim> onStim);
+        public abstract void ClearOnStim();
     }
 }

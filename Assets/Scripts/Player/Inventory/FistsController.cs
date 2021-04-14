@@ -6,6 +6,7 @@ using ScriptableObjects.Audio;
 using ScriptableObjects.Audio.Events;
 using ScriptableObjects.World;
 using Stims;
+using Stims.Receivers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -160,7 +161,7 @@ namespace Player.Inventory
                 {
                     receiver.Stim(hitStim);
                 }
-                
+
                 // do world fx
                 var material = defaultSurfaceMaterial;
                 WorldProperties properties = hit.transform.GetComponent<WorldProperties>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ScriptableObjects;
 using ScriptableObjects.World;
 using Stims;
+using Stims.Receivers;
 using UnityEngine;
 using World;
 
@@ -19,10 +20,11 @@ public class KatanaDamager : MonoBehaviour
         var hitRotation = Quaternion.Euler(0, 180, 0) * transform.rotation;
         
         StimReceiver stimReceiver = other.GetComponent<StimReceiver>();
-        if (stimReceiver) {
+        if (stimReceiver)
+        {
             stimReceiver.Stim(new Stim.Katana(damage, transform.forward * -hitForce, closestPointHit, this));
         }
-        
+
         WorldProperties properties = other.GetComponent<WorldProperties>();
         if (properties)
         {

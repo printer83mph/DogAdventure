@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Stims.Receivers;
+using UnityEngine;
 
 [RequireComponent(typeof(BreakableProp))]
 public class SupplyCrate : MonoBehaviour

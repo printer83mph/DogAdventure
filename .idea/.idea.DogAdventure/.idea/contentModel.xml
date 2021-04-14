@@ -23,6 +23,7 @@
             <e p="EnemyMovement.cs" t="Include" />
             <e p="EnemyRagdoll.cs" t="Include" />
             <e p="EnemyVision.cs" t="Include" />
+            <e p="HumanEnemyBehaviour.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
             <e p="Aesthetics" t="Include">
@@ -82,7 +83,11 @@
             <e p="HitscanStims.cs" t="Include" />
             <e p="Receivers" t="Include">
               <e p="BreakableProp.cs" t="Include" />
+              <e p="Health.cs" t="Include" />
+              <e p="PhysicsStimmer.cs" t="Include" />
+              <e p="SingleStimReceiver.cs" t="Include" />
               <e p="StimReceiver.cs" t="Include" />
+              <e p="StimSpreader.cs" t="Include" />
               <e p="SupplyCrate.cs" t="Include" />
             </e>
             <e p="Stim.cs" t="Include" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,12 +12,13 @@ namespace Enemies
 
         private static List<EnemyMovement> enabledMovements = new List<EnemyMovement>();
         
-        private const float LogicInterval = .1f;
         private const float MaxCornerDistance = .25f;
         private const float NavmeshSampleDistance = 2f;
 
         [Header("References")]
-        [SerializeField] private Rigidbody rb;
+        [SerializeField] private Rigidbody rb = null;
+        [SerializeField] private Transform modelOrientationTransform = null;
+        [SerializeField] private Animator animator = null;
         
         [Header("Ground Detection")]
         [SerializeField] private Transform feetTransform = null;
@@ -44,7 +46,8 @@ namespace Enemies
         private int _layerId;
 
         public Vector3 Velocity => rb.velocity;
-        public Vector2 GroundVelocity => _groundRotation * Velocity;
+        public Vector3 GroundVelocity => _groundRotation * rb.velocity;
+        public Vector3 FeetPos => feetTransform.position;
 
         public Vector3 Target
         {
@@ -77,10 +80,21 @@ namespace Enemies
             rb.useGravity = false;
             _layerId = NavMesh.AllAreas;
         }
+
+        void Update()
+        {
+            
+            if (!_grounded) return;
+            if ((Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0)
+            {
+                CalculatePath();
+            }
+        }
         
         void FixedUpdate()
         {
             
+            UpdateAnimatorVelocity();
             GetGrounded();
 
             if (_grounded) MovementLogic();
@@ -154,24 +168,13 @@ namespace Enemies
         private void OnTouchGround()
         {
             Debug.Log("We touched the ground");
-            StopAllCoroutines();
-            StartCoroutine(PathfindingCoroutine());
+            animator.SetBool("Grounded", true);
         }
         
         private void OnLeaveGround()
         {
             Debug.Log("We left the ground");
-            StopAllCoroutines();
-        }
-        
-        // update path consistently
-        private IEnumerator PathfindingCoroutine()
-        {
-            while (true)
-            {
-                CalculatePath();
-                yield return new WaitUntil(() => (Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0);
-            }
+            animator.SetBool("Grounded", false);
         }
 
         private void CalculatePath()
@@ -182,11 +185,18 @@ namespace Enemies
             {
                 NavMesh.CalculatePath(hit.position, _target, _layerId, _path);
                 // set our partial target position based
-                _partialTargetPosition = (_path.status == NavMeshPathStatus.PathPartial
-                    ? _path.corners[_path.corners.Length - 2] : _path.corners[_path.corners.Length - 1]);
-                // let people know if we can or cant path
-                _cantPath = _path.status == NavMeshPathStatus.PathInvalid;
-                
+                if (_path.status == NavMeshPathStatus.PathInvalid)
+                {
+                    
+                    // let people know if we can or cant path
+                    _cantPath = true;
+                }
+                else
+                {
+                    _partialTargetPosition = (_path.status == NavMeshPathStatus.PathPartial
+                        ? _path.corners[_path.corners.Length - 2] : _path.corners[_path.corners.Length - 1]);
+                    _cantPath = false;
+                }
             }
         }
 
@@ -205,9 +215,7 @@ namespace Enemies
                 _nextPos = _path.corners[0];
                 return;
             }
-            
-            Debug.Log(_path.corners.Length);
-            
+
             // set next pos to the first corner first
             var firstCorner = _path.corners[1];
             
@@ -221,6 +229,14 @@ namespace Enemies
             
             // if we're not then set the first corner to be the next one
             _nextPos = firstCorner;
+        }
+
+        private void UpdateAnimatorVelocity()
+        {
+            Debug.Log(GroundVelocity);
+            Vector3 relativeGroundVel = Quaternion.Inverse(modelOrientationTransform.rotation) * GroundVelocity;
+            animator.SetFloat("Right", relativeGroundVel.x / moveSpeed);
+            animator.SetFloat("Forward", relativeGroundVel.z / moveSpeed);
         }
     }
 }

@@ -8,12 +8,28 @@ namespace Stims
         Slice,
         Bullet,
         Fists,
-        ExplosionForce
+        ExplosionForce,
+        Collision,
+        Mystery
     }
     
-    public abstract class Stim
+    public class Stim
     {
-        private Stim() {}
+        public Stim() {}
+
+        public class MysteryDamage : Stim, IStimDamage
+        {
+
+            private readonly float _damage;
+
+            public MysteryDamage(float damage)
+            {
+                _damage = damage;
+            }
+
+            public float Damage() => _damage;
+            public DamageType DamageType() => Stims.DamageType.Mystery;
+        }
 
         // generic sourced stim
         public class Sourced : Stim, IStimSource

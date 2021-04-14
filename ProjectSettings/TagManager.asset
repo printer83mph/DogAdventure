@@ -14,9 +14,9 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - CharCapsules
   - Player
-  - Enemies
+  - EnemyHitbox
   - RagdollsNDebris
   - PostProcess
   - 

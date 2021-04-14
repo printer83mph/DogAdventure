@@ -92,7 +92,6 @@ namespace Player.Controlling
             RunMovement(_movementInput);
         }
 
-        // todo: figure out why we slide up slopes???
         private void RunMovement(Vector2 desiredMovement)
         {
             // desired movement direction (without ground angle)

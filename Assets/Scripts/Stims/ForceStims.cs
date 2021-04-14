@@ -41,4 +41,18 @@ namespace Stims
 
         public Collision Collision() => _collision;
     }
+
+    public class CollisionDamageStim : CollisionStim, IStimDamage
+    {
+        private readonly float _damage;
+        
+        public CollisionDamageStim(Collision col, float damage) : base(col)
+        {
+            _damage = damage;
+        }
+
+        public float Damage() => _damage;
+
+        public DamageType DamageType() => Stims.DamageType.Collision;
+    }
 }
