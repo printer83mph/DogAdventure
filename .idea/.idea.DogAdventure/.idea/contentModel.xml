@@ -114,6 +114,7 @@
               <e p="BreakableProp.cs" t="Include" />
               <e p="SupplyCrate.cs" t="Include" />
             </e>
+            <e p="RagdollController.cs" t="Include" />
             <e p="StimListeners" t="Include">
               <e p="Health.cs" t="Include" />
             </e>

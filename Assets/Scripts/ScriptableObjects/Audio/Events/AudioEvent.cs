@@ -8,6 +8,7 @@ namespace ScriptableObjects.Audio.Events
 
         public static AudioSource InstantiateEvent(AudioEvent audioEvent, Vector3 position = default, Transform parent = null, float delay = 10f, float spatialBlend = 1f)
         {
+            if (!audioEvent) return null;
             AudioSource source = new GameObject().AddComponent<AudioSource>();
             source.transform.position = position;
             if (parent) source.transform.parent = parent;

@@ -156,7 +156,7 @@ namespace Player.Inventory
                 }
 
                 // stim receiver
-                StimReceiver receiver = hit.transform.GetComponent<StimReceiver>();
+                StimReceiver receiver = hit.collider.GetComponent<StimReceiver>();
                 if (receiver)
                 {
                     receiver.Stim(hitStim);
@@ -164,7 +164,7 @@ namespace Player.Inventory
 
                 // do world fx
                 var material = defaultSurfaceMaterial;
-                WorldProperties properties = hit.transform.GetComponent<WorldProperties>();
+                WorldProperties properties = hit.collider.GetComponent<WorldProperties>();
                 if (properties)
                 {
                     var propMaterial = properties.SurfaceMaterial;

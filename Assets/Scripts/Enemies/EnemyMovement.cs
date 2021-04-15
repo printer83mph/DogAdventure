@@ -17,6 +17,7 @@ namespace Enemies
 
         [Header("References")]
         [SerializeField] private Rigidbody rb = null;
+        [SerializeField] private Collider collider = null;
         [SerializeField] private Transform modelOrientationTransform = null;
         [SerializeField] private Animator animator = null;
         
@@ -67,11 +68,15 @@ namespace Enemies
         private void OnEnable()
         {
             enabledMovements.Add(this);
+            rb.isKinematic = false;
+            collider.enabled = true;
         }
 
         private void OnDisable()
         {
             enabledMovements.Remove(this);
+            rb.isKinematic = true;
+            collider.enabled = false;
         }
 
         void Start()
@@ -239,7 +244,6 @@ namespace Enemies
 
         private void UpdateAnimatorVelocity()
         {
-            Debug.Log(GroundVelocity);
             Vector3 relativeGroundVel = Quaternion.Inverse(modelOrientationTransform.rotation) * GroundVelocity;
             animator.SetFloat("Right", relativeGroundVel.x / moveSpeed);
             animator.SetFloat("Forward", relativeGroundVel.z / moveSpeed);

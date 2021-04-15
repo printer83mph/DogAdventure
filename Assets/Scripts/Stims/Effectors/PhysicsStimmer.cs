@@ -19,8 +19,6 @@ namespace Stims.Effectors
                 return;
             }
 
-            Debug.Log("Layer: " + other.collider.gameObject.layer);
-            
             if (!doPlayerDamage && other.collider.gameObject.layer == 8) return;
             
             float newDamage = other.impulse.magnitude - forceDamageThreshold;

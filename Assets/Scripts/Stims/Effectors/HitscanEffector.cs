@@ -29,17 +29,16 @@ namespace Stims.Effectors
             if (Physics.Raycast(shotRay, out RaycastHit hit, maxRange, layerMaskConfig.Mask))
             {
                 // we hit something???
-                Transform hitObject = hit.transform;
                 float force = effect.Evaluate(baseForce, hit.distance);
                 // check for rigidbody on hit thing
-                Rigidbody hitRB = hitObject.GetComponent<Rigidbody>();
+                Rigidbody hitRB = hit.rigidbody;
                 if (hitRB)
                 {
                     hitRB.AddForceAtPosition(shotRay.direction * force, hit.point, ForceMode.Impulse);
                 }
                 
                 // check for damageable on hit thing
-                StimReceiver stimReceiver = hitObject.GetComponent<StimReceiver>();
+                StimReceiver stimReceiver = hit.collider.GetComponent<StimReceiver>();
                 if (stimReceiver)
                 {
                     stimReceiver.Stim(new HitscanDamageStim(effect.Evaluate(baseDamage, hit.distance),
@@ -47,7 +46,7 @@ namespace Stims.Effectors
                 }
 
                 SurfaceMaterial material = null;
-                WorldProperties properties = hitObject.GetComponent<WorldProperties>();
+                WorldProperties properties = hit.collider.GetComponent<WorldProperties>();
                 if (properties) material = properties.SurfaceMaterial;
                 
                 if (overrideHitPrefab)
