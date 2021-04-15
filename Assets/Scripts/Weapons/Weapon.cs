@@ -12,7 +12,7 @@ namespace Weapons
     {
         private PlayerInventory _inventory;
         private PlayerController _controller;
-        private WeaponInventoryState _inventoryState;
+        private WeaponState _state;
         private PlayerInput _input;
         private bool _equipping;
 
@@ -20,7 +20,7 @@ namespace Weapons
         
         public PlayerInventory Inventory => _inventory;
         public PlayerController Controller => _controller;
-        public WeaponInventoryState InventoryState => _inventoryState;
+        public WeaponState State => _state;
         public PlayerInput Input => _input;
         public bool Equipping => _equipping;
 
@@ -34,12 +34,14 @@ namespace Weapons
             StopAllCoroutines();
         }
 
-        public void Initialize(PlayerInventory inventory, PlayerController controller, WeaponInventoryState inventoryState, PlayerInput input)
+        public void Initialize(PlayerInventory inventory, PlayerController controller, WeaponState state, PlayerInput input)
         {
             _inventory = inventory;
             _controller = controller;
-            _inventoryState = inventoryState;
+            _state = state;
             _input = input;
+            
+            state.Initialize();
         }
         
         private IEnumerator EquipCoroutine()

@@ -18,7 +18,7 @@ namespace Enemies
     public class HumanEnemyBehaviour : MonoBehaviour
     {
 
-        private static List<HumanEnemyBehaviour> _enabledBehaviours = new List<HumanEnemyBehaviour>();
+        private static readonly List<HumanEnemyBehaviour> EnabledBehaviours = new List<HumanEnemyBehaviour>();
         
         [SerializeField] private EnemyMovement movement;
         [SerializeField] private EnemyVision vision;
@@ -47,12 +47,12 @@ namespace Enemies
         
         private void OnEnable()
         {
-            _enabledBehaviours.Add(this);
+            EnabledBehaviours.Add(this);
         }
 
         private void OnDisable()
         {
-            _enabledBehaviours.Remove(this);
+            EnabledBehaviours.Remove(this);
         }
 
         private void Update()
@@ -82,9 +82,9 @@ namespace Enemies
         
         private bool IsMyTurnToRunLogic()
         {
-            var index = _enabledBehaviours.IndexOf(this);
+            var index = EnabledBehaviours.IndexOf(this);
             if (index == -1) return false;
-            return (Time.frameCount + index) % _enabledBehaviours.Count == 0;
+            return (Time.frameCount + index) % EnabledBehaviours.Count == 0;
         }
 
         private void StateTransitionTo(EnemyState newState, EnemyState oldState)

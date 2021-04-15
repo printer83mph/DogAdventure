@@ -13,15 +13,10 @@ namespace World.Misc
             // _health = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         }
 
-        private void OnEnable()
-        {
-            GetComponent<BreakableProp>().onBreak += OnBreak;
-        }
-
-        private void OnBreak()
+        private void Start()
         {
 
-        
+            // this will literally just spawn something and destroy itself
 
         }
 

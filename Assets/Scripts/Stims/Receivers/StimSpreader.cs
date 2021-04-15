@@ -8,7 +8,7 @@ namespace Stims.Receivers
     {
         private Action<Stim> onStim = delegate {  };
         
-        [SerializeField] private List<StimReceiver> receivers;
+        [SerializeField] private StimReceiver[] receivers;
 
         public override void SetOnStim(Action<Stim> onStim)
         {

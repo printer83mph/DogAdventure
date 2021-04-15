@@ -5,7 +5,7 @@ namespace Stims
     public interface IStimDamage
     {
         float Damage();
-        void SetDamage(float damage);
+        void SetDamage(float scale);
         DamageType DamageType();
     }
     public interface IStimSource

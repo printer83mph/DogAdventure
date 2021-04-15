@@ -12,7 +12,7 @@ namespace Player.Inventory
     {
         [SerializeField] private Transform weaponParent = null;
         
-        [SerializeField] private WeaponInventoryState[] weapons = null;
+        [SerializeField] private WeaponState[] weapons = null;
 
         private bool _usingFists;
         private int _currentWeapon;

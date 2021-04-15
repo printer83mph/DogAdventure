@@ -2,17 +2,19 @@
 using Stims;
 using Stims.Receivers;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace World.StimListeners
 {
 
     public class Health : MonoBehaviour
     {
+        public event Action<Stim> onStim = delegate { };
+        
+        public UnityEvent<IStimDamage> OnDeath;
 
-        public Action<float> onDamage = delegate {  };
-        public Action<IStimDamage> onDeath = delegate {  };
-
-        [SerializeField] private StimReceiver[] receivers;
+        [SerializeField] private StimReceiver[] receivers = null;
+        [SerializeField] private DamageTransformer.Transformer damageTransformer = null;
 
         [SerializeField] private float maxHealth;
         [SerializeField] private float health;
@@ -24,13 +26,15 @@ namespace World.StimListeners
 
         private void Start()
         {
+            if (OnDeath == null) OnDeath = new UnityEvent<IStimDamage>();
+            
             _dead = health <= 0;
 
             if (_dead)
             {
                 var stim = new Stim.MysteryDamage(maxHealth);
                 _dead = true;
-                onDeath.Invoke(stim);
+                OnDeath.Invoke(stim);
             }
         }
 
@@ -56,7 +60,8 @@ namespace World.StimListeners
             
             if (stim is IStimDamage damageStim)
             {
-                
+
+                damageStim.SetDamage(damageTransformer.Evaluate(damageStim));
                 Debug.Log("Doing damage: " + damageStim.Damage());
 
                 health -= damageStim.Damage();
@@ -64,7 +69,7 @@ namespace World.StimListeners
                 {
                     // we died
                     _dead = true;
-                    onDeath.Invoke(damageStim);
+                    OnDeath.Invoke(damageStim);
                 }
             }
         }

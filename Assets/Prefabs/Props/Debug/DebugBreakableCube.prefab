@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 7190067433202128133}
   - component: {fileID: 7190067433202128378}
   - component: {fileID: 7190067433202128379}
-  - component: {fileID: 3099560145729686760}
   - component: {fileID: 1964818746063253879}
   - component: {fileID: 2720198916969426981}
   - component: {fileID: 7190067433202128129}
+  - component: {fileID: 6379622344182915428}
   m_Layer: 0
   m_Name: DebugBreakableCube
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7190067433202128376}
-  m_LocalRotation: {x: -0, y: -0.25171027, z: -0, w: 0.9678027}
+  m_LocalRotation: {x: 0, y: -0.2517146, z: 0, w: 0.9678016}
   m_LocalPosition: {x: 3.58, y: 0.64, z: 9.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -116,22 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3099560145729686760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7190067433202128376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fc1c10cd0b461ebab5367201979b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseScale: 1
-  scalers:
-  - type: 1
-    scale: 3
 --- !u!114 &1964818746063253879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78000624d39b4ffd840767d120f1013a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  receiver: {fileID: 3099560145729686760}
+  receiver: {fileID: 6379622344182915428}
   doDamage: 1
   doPlayerDamage: 0
   forceDamageThreshold: 50
@@ -161,8 +145,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4763c38e3742dc8bfe08a5ec912dfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
   receivers:
-  - {fileID: 3099560145729686760}
+  - {fileID: 6379622344182915428}
+  damageTransformer:
+    baseScale: 1
+    scalers:
+    - type: 1
+      scale: 2
   maxHealth: 75
   health: 75
   stimAfterDeath: 0
@@ -178,8 +170,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5a604314e897e4ea6c5af985304967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  propRigidbody: {fileID: 7190067433202128379}
+  health: {fileID: 2720198916969426981}
   breakPrefab: {fileID: 5703388834469305184, guid: a004d07200a69d9448c17cd0d47551e7,
     type: 3}
-  health: {fileID: 2720198916969426981}
-  transferVel: 1
-  forceFromOrigin: 35
+  applyStimForce: 1
+  forceFromOrigin: 5
+--- !u!114 &6379622344182915428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7190067433202128376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01c077909d542de8e2b5e4f848f869b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

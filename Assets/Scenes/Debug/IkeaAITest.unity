@@ -1847,6 +1847,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4112943446120680347, guid: 835390ab7646dfb4a918a4202bd055b9,
+        type: 3}
+      propertyPath: weapons.Array.data[0].weaponData
+      value: 
+      objectReference: {fileID: 11400000, guid: bc1bd8650a615d8468e101608c51517a,
+        type: 2}
+    - target: {fileID: 4112943446120680347, guid: 835390ab7646dfb4a918a4202bd055b9,
+        type: 3}
+      propertyPath: weapons.Array.data[0].ints.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835390ab7646dfb4a918a4202bd055b9, type: 3}
 --- !u!1001 &857791449

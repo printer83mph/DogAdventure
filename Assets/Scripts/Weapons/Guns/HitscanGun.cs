@@ -66,8 +66,7 @@ namespace Weapons.Guns
 
         void Update()
         {
-            _bullets = _weapon.InventoryState.GetInt((int)StateInts.Bullets);
-            // todo: convert to coroutines so audio doesnt get fucked
+            _bullets = _weapon.State.GetInt((int)StateInts.Bullets);
             if (Time.time - _lastShot > fireDelay + .03f)
             {
                 if (gunData.AudioEvent is ContinuousAudioEvent)
@@ -114,7 +113,7 @@ namespace Weapons.Guns
                 overrideHitPrefab: gunData.HitPrefab, overrideHitAudioEvent: gunData.HitAudioEvent);
             _lastShot = Time.time;
             animator.SetTrigger("fire");
-            _weapon.InventoryState.SetInt((int)StateInts.Bullets, _bullets - 1);
+            _weapon.State.SetInt((int)StateInts.Bullets, _bullets - 1);
         }
         
         void Reload()
@@ -130,7 +129,7 @@ namespace Weapons.Guns
             _reloading = true;
             yield return new WaitForSeconds(gunData.ReloadTime);
             _reloading = false;
-            _weapon.InventoryState.SetInt((int)StateInts.Bullets, gunData.ClipSize);
+            _weapon.State.SetInt((int)StateInts.Bullets, gunData.ClipSize);
         }
 
     }

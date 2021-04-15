@@ -6,8 +6,10 @@ namespace Stims.Receivers
     public class DamageTransformer : StimReceiver
     {
 
+        private Action<Stim> _onStim = delegate {  };
+        
         [Serializable]
-        private class DamageTypeScaler
+        private class DamageScaler
         {
             [SerializeField] private DamageType type = default;
             [SerializeField] private float scale = 1;
@@ -16,40 +18,54 @@ namespace Stims.Receivers
             public float Scale => scale;
         }
 
-        [SerializeField] private float baseScale;
-        [SerializeField] private DamageTypeScaler[] scalers;
-        
-        private Action<Stim> _callBack = delegate {  };
-        
-        public override void Stim(Stim stim)
+        [Serializable]
+        public class Transformer
         {
-            if (stim is IStimDamage damageStim)
+            [SerializeField] private float baseScale = 1;
+            [SerializeField] private DamageScaler[] scalers = null;
+
+            public float Evaluate(IStimDamage stim)
             {
                 float scale = baseScale;
                 foreach (var scaler in scalers)
                 {
-                    if (scaler.Type == damageStim.DamageType())
+                    if (scaler.Type == stim.DamageType())
                     {
                         scale *= scaler.Scale;
                     }
                 }
-                damageStim.SetDamage(damageStim.Damage() * scale);
-                _callBack.Invoke((Stim) damageStim);
-                return;
-            }
 
-            _callBack.Invoke(stim);
+                return stim.Damage() * scale;
+            }
         }
 
-        // health is probably asking
+        [SerializeField] private Transformer damageTransformer = null;
+        
+        private Action<Stim> _callBack = delegate {  };
+
+        public override void Stim(Stim stim)
+        {
+            if (stim is IStimDamage damageStim)
+            {
+                
+                damageStim.SetDamage(damageTransformer.Evaluate(damageStim));
+                _onStim.Invoke((Stim) damageStim);
+                return;
+
+            }
+            
+            _onStim.Invoke(stim);
+
+        }
+
         public override void SetOnStim(Action<Stim> onStim)
         {
-            _callBack = onStim;
+            _onStim = onStim;
         }
 
         public override void ClearOnStim()
         {
-            _callBack = delegate {  };
+            _onStim = delegate {  };
         }
     }
 }

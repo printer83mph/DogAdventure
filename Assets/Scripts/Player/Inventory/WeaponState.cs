@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Player.Inventory
 {
     [Serializable]
-    public class WeaponInventoryState
+    public class WeaponState
     {
         [SerializeField] private WeaponData weaponData = null;
         [SerializeField] private int[] ints = null;
@@ -15,7 +15,7 @@ namespace Player.Inventory
 
         public void Initialize()
         {
-            ints = weaponData.DefaultInts;
+            if (ints.Length == 0) ints = weaponData.DefaultInts;
         }
 
         public int GetInt(int index) => ints[index];
