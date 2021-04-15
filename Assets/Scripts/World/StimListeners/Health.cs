@@ -7,11 +7,14 @@ using UnityEngine.Events;
 namespace World.StimListeners
 {
 
+    [Serializable]
+    public class DeathEvent : UnityEvent<IStimDamage> { }
+    
     public class Health : MonoBehaviour
     {
         public event Action<Stim> onStim = delegate { };
         
-        public UnityEvent<IStimDamage> OnDeath;
+        public DeathEvent OnDeath;
 
         [SerializeField] private StimReceiver[] receivers = null;
         [SerializeField] private DamageTransformer.Transformer damageTransformer = null;
@@ -20,13 +23,13 @@ namespace World.StimListeners
         [SerializeField] private float health;
         [SerializeField] private bool stimAfterDeath;
 
-        private bool _dead = true;
+        private bool _dead = false;
 
         public bool Dead => _dead;
 
         private void Start()
         {
-            if (OnDeath == null) OnDeath = new UnityEvent<IStimDamage>();
+            OnDeath ??= new DeathEvent();
             
             _dead = health <= 0;
 

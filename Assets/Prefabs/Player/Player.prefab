@@ -577,7 +577,7 @@ MonoBehaviour:
   weaponParent: {fileID: 4806805442188151051}
   weapons:
   - weaponData: {fileID: 11400000, guid: 1c1e31456828a0f489c0728fabd2ff40, type: 2}
-    ints: 07000000
+    ints: 
   controller: {fileID: 3404832504129322933}
   input: {fileID: 3404832504129322932}
   fists: {fileID: 5713867820478138906}

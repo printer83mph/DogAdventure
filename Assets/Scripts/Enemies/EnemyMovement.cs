@@ -31,6 +31,10 @@ namespace Enemies
         [SerializeField] private float acceleration = 2f;
         [SerializeField] private float targetDistance = 1f;
         [SerializeField] private string layerName = "Walkable";
+        
+        [Header("Movement")]
+        public bool turnTowardsMoveDirection;
+        [SerializeField] private float turnSpeed;
 
         private bool _grounded;
         private Quaternion _groundRotation;
@@ -46,6 +50,7 @@ namespace Enemies
 
         private int _layerId;
 
+        // for other scripts
         public Vector3 Velocity => rb.velocity;
         public Vector3 GroundVelocity => _groundRotation * rb.velocity;
         public Vector3 FeetPos => feetTransform.position;
@@ -59,7 +64,7 @@ namespace Enemies
                 if (_grounded) CalculatePath();
             }
         }
-        
+
         private void Awake()
         {
             Target = feetTransform.position;
@@ -77,6 +82,9 @@ namespace Enemies
             enabledMovements.Remove(this);
             rb.isKinematic = true;
             collider.enabled = false;
+            
+            animator.SetFloat("Forward", 0);
+            animator.SetFloat("Right", 0);
         }
 
         void Start()
@@ -95,8 +103,17 @@ namespace Enemies
             {
                 CalculatePath();
             }
+
+            if (turnTowardsMoveDirection)
+            {
+                Vector3 vecToTarget = _nextPos - feetTransform.position;
+                vecToTarget.y = 0;
+                modelOrientationTransform.rotation = Quaternion.RotateTowards(modelOrientationTransform.rotation,
+                    Quaternion.FromToRotation(Vector3.forward, vecToTarget),
+                    Time.deltaTime * turnSpeed);
+            }
         }
-        
+
         void FixedUpdate()
         {
             

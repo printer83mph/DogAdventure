@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Stims;
 using UnityEngine;
+using UnityEngine.Events;
+using World;
+using World.StimListeners;
 using Random = UnityEngine.Random;
 
 namespace Enemies
@@ -11,6 +15,7 @@ namespace Enemies
     {
         Idle,
         Chasing,
+        Suspicious,
         Attacking,
         Searching,
     }
@@ -21,7 +26,10 @@ namespace Enemies
         private static readonly List<HumanEnemyBehaviour> EnabledBehaviours = new List<HumanEnemyBehaviour>();
         
         [SerializeField] private EnemyMovement movement;
+        [SerializeField] private Health health;
         [SerializeField] private EnemyVision vision;
+        [SerializeField] private Animator animator;
+        [SerializeField] private RagdollController ragdoll;
         
         [SerializeField] private EnemyState state = EnemyState.Idle;
         
@@ -30,86 +38,65 @@ namespace Enemies
         [SerializeField] private float idleDelayMax = 2f;
 
         private Vector3 _idlePosition;
-        private EnemyState _queuedState;
 
-        private void Start()
+        private void OnEnable()
         {
-            _queuedState = state;
-            
             // set idle position if we're walking
             if (state == EnemyState.Idle)
             {
                 _idlePosition = movement.FeetPos;
             }
             
-            StateTransitionTo(EnemyState.Idle, EnemyState.Idle);
-        }
-        
-        private void OnEnable()
-        {
+            // todo: will we ever actually use enabled behaviours...?
+            StartCoroutine(LogicCoroutine());
             EnabledBehaviours.Add(this);
+            health.OnDeath.AddListener(OnDeath);
         }
 
         private void OnDisable()
         {
+            StopAllCoroutines();
             EnabledBehaviours.Remove(this);
         }
 
-        private void Update()
+        private void OnDeath(IStimDamage deathStim)
         {
-            if (!IsMyTurnToRunLogic()) return;
-
-            // on state change
-            if (_queuedState != state)
-            {
-                StateTransitionTo(_queuedState, state);
-                state = _queuedState;
-            }
-            
-            // logic for every tick
-            switch (state)
-            {
-                case EnemyState.Idle:
-                    break;
-                case EnemyState.Chasing:
-                    break;
-                case EnemyState.Attacking:
-                    break;
-                case EnemyState.Searching:
-                    break;
-            }
-        }
-        
-        private bool IsMyTurnToRunLogic()
-        {
-            var index = EnabledBehaviours.IndexOf(this);
-            if (index == -1) return false;
-            return (Time.frameCount + index) % EnabledBehaviours.Count == 0;
+            // todo: ragdoll death oomph
+            ragdoll.transform.parent = null;
+            animator.enabled = false;
+            ragdoll.RagdollEnabled = true;
+            Destroy(gameObject);
         }
 
-        private void StateTransitionTo(EnemyState newState, EnemyState oldState)
+        private IEnumerator LogicCoroutine()
         {
-            switch (newState)
+            while (true)
             {
-                case EnemyState.Idle:
-                    StartCoroutine(IdleCoroutine());
-                    // check when to switch
-                    break;
-                case EnemyState.Chasing:
-                    break;
-                case EnemyState.Attacking:
-                    break;
-                case EnemyState.Searching:
-                    break;
-            }
-        }
-
-        private IEnumerator IdleCoroutine()
-        {
-            while (_queuedState == EnemyState.Idle)
-            {
-                movement.Target = _idlePosition + Quaternion.Euler(0, Random.value * 360, 0) * Vector3.forward * idleRadius;
-                yield return new WaitForSeconds(Random.value * (idleDelayMax - idleDelayMin) + idleDelayMin);
+                Debug.Log("Ok we made it guys");
+                // if we're back here, we just switched to this state
+                switch (state)
+                {
+                    case EnemyState.Idle:
+                        animator.Play("Idle");
+                        movement.turnTowardsMoveDirection = true;
+                        while (true)
+                        {
+                            movement.Target = _idlePosition + Quaternion.Euler(0, Random.value * 360, 0) * Vector3.forward * idleRadius;
+                            yield return new WaitForSeconds(Random.value * (idleDelayMax - idleDelayMin) + idleDelayMin);
+                        }
+                        break;
+                    case EnemyState.Suspicious:
+                        break;
+                    case EnemyState.Chasing:
+                        Debug.Log("Chasing");
+                        break;
+                    case EnemyState.Attacking:
+                        break;
+                    case EnemyState.Searching:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
