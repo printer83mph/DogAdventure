@@ -10,9 +10,19 @@ namespace Player.Inventory
 {
     public class PlayerInventory : MonoBehaviour
     {
+
+        public PlayerInventory Main {get; private set; }
+        
+        [Serializable]
+        private class WeaponInventorySlot
+        {
+            public WeaponData data;
+            public WeaponState state;
+        }
+
         [SerializeField] private Transform weaponParent = null;
         
-        [SerializeField] private WeaponState[] weapons = null;
+        [SerializeField] private WeaponInventorySlot[] weapons = null;
 
         private bool _usingFists;
         private int _currentWeapon;
@@ -23,6 +33,23 @@ namespace Player.Inventory
         [SerializeField] private PlayerInput input = null;
         [SerializeField] private FistsController fists = null;
 
+        private WeaponInventorySlot CurrentWeapon()
+        {
+            try
+            {
+                return weapons[_currentWeapon];
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return null;
+            }
+        }
+
+        private void Awake()
+        {
+            Main = this;
+        }
+        
         private void OnEnable()
         {
             // assign input
@@ -57,13 +84,14 @@ namespace Player.Inventory
             
             _currentWeapon = index;
             
-            AddWeaponObject(weapons[index].WeaponData);
+            AddWeaponObject(weapons[index].data);
         }
 
         private void AddWeaponObject(WeaponData weaponData)
         {
-            GameObject newWep = Instantiate(weapons[_currentWeapon].WeaponData.Prefab, weaponParent);
-            newWep.GetComponent<Weapon>().Initialize(this, controller, weapons[_currentWeapon], input);
+            var weaponSlot = CurrentWeapon();
+            GameObject newWep = Instantiate(weaponSlot.data.PlayerPrefab, weaponParent);
+            newWep.GetComponent<PlayerInventoryWeapon>().Initialize(weaponSlot.data, weaponSlot.state);
         }
 
         private void ClearWeaponObjects()

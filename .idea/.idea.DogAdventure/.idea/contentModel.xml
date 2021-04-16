@@ -6,12 +6,12 @@
     <e p="C:\Users\print\Documents\Programming\DogAdventure" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="Resources" t="Include">
-          <e p="Config" t="Include">
-            <e p="Controls" t="Include">
-              <e p="InputMaster.cs" t="Include" />
-            </e>
+        <e p="Config" t="Include">
+          <e p="Controls" t="Include">
+            <e p="InputMaster.cs" t="Include" />
           </e>
+        </e>
+        <e p="Resources" t="Include">
           <e p="Shaders" t="Include">
             <e p="DepthNormalsFeature.cs" t="Include" />
             <e p="Outline.hlsl" t="Include" />
@@ -41,7 +41,6 @@
             <e p="Inventory" t="Include">
               <e p="FistsController.cs" t="Include" />
               <e p="PlayerInventory.cs" t="Include" />
-              <e p="WeaponState.cs" t="Include" />
             </e>
             <e p="PlayerAudioManager.cs" t="Include" />
           </e>
@@ -59,13 +58,13 @@
             <e p="CrateConfig.cs" t="Include" />
             <e p="Enemies" t="Include">
               <e p="ChadistConfig.cs" t="Include" />
-              <e p="EnemyBehaviourConfig.cs" t="Include" />
               <e p="EnemyVisionConfig.cs" t="Include" />
+              <e p="HumanEnemyBehaviourConfig.cs" t="Include" />
             </e>
             <e p="Weapons" t="Include">
               <e p="AmmoData.cs" t="Include" />
               <e p="GunKickData.cs" t="Include" />
-              <e p="HitscanGunData.cs" t="Include" />
+              <e p="PlayerHitscanGunData.cs" t="Include" />
               <e p="ViewmodelHandlingData.cs" t="Include" />
               <e p="WeaponData.cs" t="Include" />
             </e>
@@ -103,11 +102,12 @@
             <e p="RangedFloat.cs" t="Include" />
           </e>
           <e p="Weapons" t="Include">
-            <e p="Guns" t="Include">
+            <e p="KatanaDamager.cs" t="Include" />
+            <e p="Player" t="Include">
               <e p="HitscanGun.cs" t="Include" />
             </e>
-            <e p="KatanaDamager.cs" t="Include" />
-            <e p="Weapon.cs" t="Include" />
+            <e p="PlayerInventoryWeapon.cs" t="Include" />
+            <e p="WeaponState.cs" t="Include" />
           </e>
           <e p="World" t="Include">
             <e p="Misc" t="Include">

@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b84c38563f341ff96b225ee72268655, type: 3}
-  m_Name: Charger
+  m_Script: {fileID: 11500000, guid: 10145451c4134cc78ea98cc1dcc13f11, type: 3}
+  m_Name: Pistol
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 513
-  maxDistance: 25
-  maxAngle: 85
-  losRadius: 0.7
+  displayName: Epic Pistol
+  playerPrefab: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3,
+    type: 3}
+  enemyPrefab: {fileID: 0}

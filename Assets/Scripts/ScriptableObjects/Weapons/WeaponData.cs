@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
+using Weapons;
 
 namespace ScriptableObjects.Weapons
 {
@@ -7,10 +9,10 @@ namespace ScriptableObjects.Weapons
     {
         [SerializeField] private string displayName = null;
         // whatever other weapon data stuff we need
-        [SerializeField] private GameObject prefab = null;
-        public GameObject Prefab => prefab;
-        
-        [SerializeField] private int[] defaultInts = null;
-        public int[] DefaultInts => defaultInts;
+        [FormerlySerializedAs("prefab")] [SerializeField] private GameObject playerPrefab = null;
+        public GameObject PlayerPrefab => playerPrefab;
+
+        [SerializeField] private GameObject enemyPrefab = null;
+        public GameObject EnemyPrefab => enemyPrefab;
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System.Collections;
+using Player.Controlling;
+using Player.Inventory;
 using ScriptableObjects;
 using ScriptableObjects.Audio;
 using ScriptableObjects.Audio.Events;
+using ScriptableObjects.Weapons;
 using Stims;
 using Stims.Effectors;
 using UnityEngine;
@@ -12,21 +15,17 @@ namespace Weapons.Guns
 
     public class HitscanGun : MonoBehaviour
     {
-        private enum StateInts
-        {
-            Bullets
-        }
         
         [SerializeField] private Animator animator = null;
     
-        [Header("Gun Mechanics")] [SerializeField]
-        private HitscanGunData gunData = null;
+        [Header("Gun Mechanics")]
+        [SerializeField] private PlayerHitscanGunData gunData = null;
 
         // auto-assigned
-        private Weapon _weapon;
+        private PlayerInventoryWeapon _weapon;
+        private GunWeaponState _gunState;
         private HitscanEffector _hitscanEffector;
         // private CameraKickController _kickController;
-        private PlayerInput _input;
         private InputAction m_Fire;
 
         // math
@@ -38,26 +37,29 @@ namespace Weapons.Guns
 
         private void Awake()
         {
-            _weapon = GetComponent<Weapon>();
+            _weapon = GetComponent<PlayerInventoryWeapon>();
             _hitscanEffector = GetComponent<HitscanEffector>();
+            m_Fire = PlayerController.Input.actions["Fire1"];
+        }
+
+        private void OnEnable()
+        {
+            PlayerController.Input.actions["Reload"].performed += ReloadInput;
+        }
+
+        private void OnDisable()
+        {
+            PlayerController.Input.actions["Reload"].performed -= ReloadInput;
+            StopAllCoroutines();
         }
 
         private void Start()
         {
-            // _kickController = _weapon.Controller.kickController;
-            // setup callbacks
-            _input = _weapon.Input;
-            m_Fire = _input.actions["Fire1"];
-            _input.actions["Reload"].performed += ReloadInput;
+            _weapon.State ??= new GunWeaponState(gunData.ClipSize);
+            _gunState = (GunWeaponState) _weapon.State;
         }
 
-        private void OnDestroy() {
-            // remove callbacks
-            if (_input) _input.actions["Reload"].performed -= ReloadInput;
-            StopAllCoroutines();
-        }
-
-        public void ReloadInput(InputAction.CallbackContext ctx) {
+        private void ReloadInput(InputAction.CallbackContext ctx) {
             if (!CanFire()) return;
             if (_bullets < gunData.ClipSize) {
                 Reload();
@@ -66,7 +68,7 @@ namespace Weapons.Guns
 
         void Update()
         {
-            _bullets = _weapon.State.GetInt((int)StateInts.Bullets);
+            _bullets = _gunState.bullets;
             if (Time.time - _lastShot > fireDelay + .03f)
             {
                 if (gunData.AudioEvent is ContinuousAudioEvent)
@@ -108,12 +110,12 @@ namespace Weapons.Guns
                 new FalloffEffect.LimitedExponential(gunData.FalloffExponent, gunData.MaxRange),
                 StimSource.Generic.Player,
                 // raycast data
-                maxRange: gunData.MaxRange, shotTransform: _weapon.Controller.Orientation,
+                maxRange: gunData.MaxRange, shotTransform: PlayerController.Main.Orientation,
                 // overrides
                 overrideHitPrefab: gunData.HitPrefab, overrideHitAudioEvent: gunData.HitAudioEvent);
             _lastShot = Time.time;
             animator.SetTrigger("fire");
-            _weapon.State.SetInt((int)StateInts.Bullets, _bullets - 1);
+            _gunState.bullets = _bullets - 1;
         }
         
         void Reload()
@@ -129,7 +131,7 @@ namespace Weapons.Guns
             _reloading = true;
             yield return new WaitForSeconds(gunData.ReloadTime);
             _reloading = false;
-            _weapon.State.SetInt((int)StateInts.Bullets, gunData.ClipSize);
+            _gunState.bullets = gunData.ClipSize;
         }
 
     }

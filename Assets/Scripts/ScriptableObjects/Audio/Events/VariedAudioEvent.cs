@@ -48,6 +48,12 @@ namespace ScriptableObjects.Audio.Events
             return actuallyRandom ? GetActualRandomClip() : GetRandomClip();
         }
 
+        public override void Play(AudioSource source)
+        {
+            PlayAudio(source);
+            TriggerChannels(source.transform.position);            
+        }
+        
         public void PlayAudio(AudioSource source)
         {
             source.loop = false;
@@ -62,13 +68,8 @@ namespace ScriptableObjects.Audio.Events
             foreach (AudioChannel channel in channels)
             {
                 channel.playAudio(position, soundType, radius);
+                Debug.Log("Played audio");
             }
-        }
-
-        public override void Play(AudioSource source)
-        {
-            PlayAudio(source);
-            TriggerChannels(source.transform.position);            
         }
     }
 }

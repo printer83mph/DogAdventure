@@ -38,13 +38,13 @@ namespace Enemies
 
         private bool _grounded;
         private Quaternion _groundRotation;
-        
-        private bool _locked;
+
+        public bool locked;
         private Vector3 _target;
 
         private NavMeshPath _path;
         private Vector3 _partialTargetPosition;
-        private bool _atTarget;
+        public bool AtTarget { get; private set; }
         private Vector3 _nextPos;
         private bool _cantPath;
 
@@ -98,7 +98,7 @@ namespace Enemies
         {
             
             if (!_grounded) return;
-            if (_atTarget) return;
+            if (AtTarget) return;
             if ((Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0)
             {
                 CalculatePath();
@@ -132,7 +132,7 @@ namespace Enemies
             CheckIfAtTarget();
 
             // if we're already there we don't care
-            if (_atTarget || _cantPath || _locked)
+            if (AtTarget || _cantPath || locked)
             {
                 AddForceToGoTo(feetTransform.position);
                 return;
@@ -168,7 +168,7 @@ namespace Enemies
         // if we're at our actual target
         private void CheckIfAtTarget()
         {
-            _atTarget = Vector3.SqrMagnitude(feetTransform.position - _partialTargetPosition) < Mathf.Pow(targetDistance, 2);
+            AtTarget = Vector3.SqrMagnitude(feetTransform.position - _partialTargetPosition) < Mathf.Pow(targetDistance, 2);
         }
 
         // if we're at the next queued position
@@ -214,7 +214,6 @@ namespace Enemies
             if (NavMesh.SamplePosition(feetTransform.position, out NavMeshHit hit, NavmeshSampleDistance, _layerId))
             {
                 NavMesh.CalculatePath(hit.position, _target, _layerId, _path);
-                // set our partial target position based
                 if (_path.status == NavMeshPathStatus.PathInvalid)
                 {
                     
@@ -223,9 +222,17 @@ namespace Enemies
                 }
                 else
                 {
+                    _cantPath = false;
+                    
+                    // set our partial target position based
+                    if (_path.corners.Length == 1)
+                    {
+                        _partialTargetPosition = _path.corners[0];
+                        _nextPos = _path.corners[0];
+                        return;
+                    }
                     _partialTargetPosition = (_path.status == NavMeshPathStatus.PathPartial
                         ? _path.corners[_path.corners.Length - 2] : _path.corners[_path.corners.Length - 1]);
-                    _cantPath = false;
                     _nextPos = _path.corners[1];
                 }
             }

@@ -10,6 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6382c782c9644c56a454db947c481a4b, type: 3}
-  m_Name: Chadist
+  m_Name: DefaultHumanEnemy
   m_EditorClassIdentifier: 
   audioChannel: {fileID: 11400000, guid: b7f182d9c2e1f6f4c849af0f4c450c05, type: 2}
+  idleRadius: 0.8
+  idleDelayMin: 2
+  idleDelayMax: 4
+  susDispelSpeed: 0.3
+  susGainSpeed: 3

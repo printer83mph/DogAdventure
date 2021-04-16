@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10145451c4134cc78ea98cc1dcc13f11, type: 3}
-  m_Name: TOAG
+  m_Script: {fileID: 11500000, guid: 4b84c38563f341ff96b225ee72268655, type: 3}
+  m_Name: EasyShooterGoon
   m_EditorClassIdentifier: 
-  displayName: TOAG
-  prefab: {fileID: 3666688176723412532, guid: 8af5894c42b1dfa45ae521332538541f, type: 3}
-  defaultInts: fa000000
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 513
+  maxDistance: 25
+  maxAngle: 40

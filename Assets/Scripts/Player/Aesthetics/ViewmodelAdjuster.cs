@@ -16,10 +16,9 @@ namespace Player.Aesthetics
 
         [SerializeField] private float maxOffset = .1f;
         
-        private Weapon _weapon;
+        private PlayerInventoryWeapon _weapon;
         
         [Header("Overrides")]
-        [SerializeField] private PlayerController controller;
         [SerializeField] private FootstepManager footstep;
         [SerializeField] private CameraMovement cameraMovement;
 
@@ -32,15 +31,14 @@ namespace Player.Aesthetics
 
         private void Awake()
         {
-            _weapon = GetComponent<Weapon>();
+            _weapon = GetComponent<PlayerInventoryWeapon>();
         }
 
         private void Start()
         {
             if (!_weapon) return;
-            controller = _weapon.Controller;
-            cameraMovement = controller.CameraMovement;
-            footstep = controller.FootstepManager;
+            cameraMovement = PlayerController.Main.CameraMovement;
+            footstep = PlayerController.Main.FootstepManager;
         }
 
         private void Update()
@@ -70,7 +68,7 @@ namespace Player.Aesthetics
         {
             _sprintLerp = PrintUtil.Damp(_sprintLerp, (footstep.Sprinting ? 1 : 0), data.SprintLerpLambda,
                 Time.deltaTime);
-            _airLerp = PrintUtil.Damp(_airLerp, (controller.Grounded ? 0 : 1), data.AirLerpLambda, Time.deltaTime);
+            _airLerp = PrintUtil.Damp(_airLerp, (PlayerController.Main.Grounded ? 0 : 1), data.AirLerpLambda, Time.deltaTime);
             _footSideStrengthLerp = PrintUtil.Damp(_footSideStrengthLerp, Mathf.Abs(footstep.CurrentFoot),
                 data.FootSideStrengthLambda, Time.deltaTime);
             _yVelShiftLerp = PrintUtil.Damp(_yVelShiftLerp, GetYVelShift(),
@@ -80,7 +78,7 @@ namespace Player.Aesthetics
 
         private float GetYVelShift()
         {
-            return Mathf.Clamp(controller.RelativeGroundVel.y * data.YVelShiftScale, -maxOffset, maxOffset);
+            return Mathf.Clamp(PlayerController.Main.RelativeGroundVel.y * data.YVelShiftScale, -maxOffset, maxOffset);
         }
 
         private Vector3 GetBob()

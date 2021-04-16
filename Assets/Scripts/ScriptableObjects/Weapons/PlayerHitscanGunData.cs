@@ -1,13 +1,12 @@
 ﻿using ScriptableObjects.Audio;
 using ScriptableObjects.Audio.Events;
-using ScriptableObjects.World;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace ScriptableObjects
+namespace ScriptableObjects.Weapons
 {
     [CreateAssetMenu(fileName = "HitscanGunData", menuName = "ScriptableObjects/Weapons/HitscanGunData", order = 0)]
-    public class HitscanGunData : ScriptableObject
+    public class PlayerHitscanGunData : ScriptableObject
     {
         [Header("Handling")]
         [SerializeField] private float fireRate = 2.5f;

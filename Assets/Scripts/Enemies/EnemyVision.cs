@@ -1,79 +1,38 @@
-using System;
-using Player.Controlling;
 using ScriptableObjects.Enemies;
-using Stims;
 using UnityEngine;
 
-public class EnemyVision : MonoBehaviour {
+namespace Enemies
+{
+    public class EnemyVision : MonoBehaviour {
 
-    // inspector vars
+        // inspector vars
 
-    [SerializeField] private EnemyVisionConfig visionConfig = null;
-    [SerializeField] private CapsuleCollider enemyCollider = null;
+        [SerializeField] private EnemyVisionConfig visionConfig = null;
 
-    // math stuff
-    private float _playerDistance;
-    private bool _canSeePlayer;
-    private bool _canCapsulePlayer;
-    public float PlayerDistance => _playerDistance;
-    public bool CanSeePlayer => _canSeePlayer;
-    public bool CanCapsulePlayer => _canCapsulePlayer;
-
-    // auto-assigned
-    private Transform _playerCam;
-    private Vector3 _vecToPlayer;
-
-    private void Awake()
-    {
-        // make ourselves disable on death
-    }
-
-    private void Start()
-    {
-        _playerCam = PlayerController.Main.Orientation;
-    }
-
-    private void OnDeath(Stim stim)
-    {
-        enabled = false;
-    }
-
-    private void Update()
-    {
-        _vecToPlayer = _playerCam.transform.position - transform.position;
-        _playerDistance = _vecToPlayer.magnitude;
-        
-        UpdateVision();
-        
-    }
-    
-    private void UpdateVision()
-    {
-        _canSeePlayer = false;
-        _canCapsulePlayer = false;
-        if (Vector3.Angle(_vecToPlayer, transform.forward) > visionConfig.MaxAngle || _playerDistance > visionConfig.MaxDistance)
+        public bool InVisionCone(Vector3 position)
         {
-            // player not even in cone of vision
+            var relativePos = transform.InverseTransformPoint(position);
+            return !(Vector3.Angle(relativePos, Vector3.forward) > visionConfig.MaxAngle ||
+                     relativePos.magnitude > visionConfig.MaxDistance);
         }
-        else
+
+        public bool CanSee(Vector3 position, float pullbackDistance = 0)
         {
-            // player is in cone of vision
-            // Debug.DrawRay(eyeTransform.position, _vecToPlayer);
-            _canSeePlayer = (!Physics.Raycast(transform.position, _vecToPlayer, out RaycastHit hit, _playerDistance,
-                visionConfig.LayerMask));
-            if (visionConfig.LosRadius == 0)
-            {
-                _canCapsulePlayer = _canSeePlayer;
-            }
-            else
-            {
-                Vector3 start = Vector3.MoveTowards(transform.position, _playerCam.transform.position, visionConfig.LosRadius);
-                Vector3 end = Vector3.MoveTowards(_playerCam.transform.position, transform.position, visionConfig.LosRadius);
-                // Debug.DrawRay(start, end - start);
-                enemyCollider.enabled = false;
-                _canCapsulePlayer = (!Physics.CheckCapsule(start, end, visionConfig.LosRadius, visionConfig.LayerMask));
-                enemyCollider.enabled = true;
-            }
+            if (!InVisionCone(position)) return false;
+
+            Vector3 vecToPos = position - transform.position;
+            // return if the raycast didnt hit anything
+            return (!Physics.Raycast(transform.position, vecToPos, vecToPos.magnitude - pullbackDistance, visionConfig.LayerMask));
+        }
+
+        public bool CanCapsule(Vector3 position, float radius)
+        {
+            if (!InVisionCone(position)) return false;
+        
+            Vector3 start = Vector3.MoveTowards(transform.position, position, radius);
+            Vector3 end = Vector3.MoveTowards(position, transform.position, radius);
+            // may have to disable our own collider for this
+            return (!Physics.CheckCapsule(start, end, radius, visionConfig.LayerMask));
         }
     }
 }

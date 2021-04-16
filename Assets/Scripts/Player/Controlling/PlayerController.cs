@@ -7,10 +7,9 @@ namespace Player.Controlling
 {
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Main { get; private set; } = null;
+        public static PlayerInput Input { get; private set; } = null;
 
-        private static PlayerController _main = null;
-        public static PlayerController Main => _main;
-        
         public delegate void ActionEvent();
         public ActionEvent onJump = delegate {  };
         
@@ -30,10 +29,8 @@ namespace Player.Controlling
         public Vector3 RelativeGroundVel => _groundCheck.GetRelativeToGroundVelocity(_rb.velocity);
         public Vector2 DeltaAim => _cameraMovement.DeltaAim;
 
-        private PlayerInput _input = null;
         private InputAction m_Move = null;
         private InputAction m_Sprint = null;
-        public PlayerInput PlayerInput => _input;
         private Vector2 _movementInput;
 
         [SerializeField] private Transform orientation = null;
@@ -48,22 +45,22 @@ namespace Player.Controlling
 
         private void Awake()
         {
-            _main = this;
-            
             _rb = GetComponent<Rigidbody>();
             _groundCheck = GetComponentInChildren<GroundCheck>();
             _cameraMovement = GetComponent<CameraMovement>();
             _inventory = GetComponentInChildren<PlayerInventory>();
             _footstep = GetComponentInChildren<FootstepManager>();
-            _input = GetComponent<PlayerInput>();
             
-            m_Move = _input.actions["Move"];
-            m_Sprint = _input.actions["Sprint"];
+            Main = this;
+            Input = GetComponent<PlayerInput>();
+
+            m_Move = Input.actions["Move"];
+            m_Sprint = Input.actions["Sprint"];
         }
 
         private void OnEnable()
         {
-            _input.actions["Jump"].performed += JumpAction;
+            Input.actions["Jump"].performed += JumpAction;
         }
 
         private void JumpAction(InputAction.CallbackContext ctx)
@@ -73,7 +70,7 @@ namespace Player.Controlling
         
         private void OnDisable()
         {
-            _input.actions["Jump"].performed -= JumpAction;
+            Input.actions["Jump"].performed -= JumpAction;
         }
 
         private void Start()
