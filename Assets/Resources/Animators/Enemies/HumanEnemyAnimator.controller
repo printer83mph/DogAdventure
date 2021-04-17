@@ -251,16 +251,16 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -5104572970930858103, guid: 1928ffd6683b3974986a03ef3d0b8e77,
+    m_Motion: {fileID: -7463194393509142156, guid: 9c1539847bbc5af4a8403bdd9e011285,
       type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 0.04
     m_CycleOffset: 0
     m_DirectBlendParameter: Forward
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -8509604957287463728, guid: 1928ffd6683b3974986a03ef3d0b8e77,
+    m_Motion: {fileID: -6111855017713640138, guid: 9c1539847bbc5af4a8403bdd9e011285,
       type: 3}
     m_Threshold: 0.25
     m_Position: {x: 1, y: 0}
@@ -269,7 +269,7 @@ BlendTree:
     m_DirectBlendParameter: Forward
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -8509604957287463728, guid: 1928ffd6683b3974986a03ef3d0b8e77,
+    m_Motion: {fileID: -6111855017713640138, guid: 9c1539847bbc5af4a8403bdd9e011285,
       type: 3}
     m_Threshold: 0.5
     m_Position: {x: -1, y: 0}
@@ -278,7 +278,7 @@ BlendTree:
     m_DirectBlendParameter: Forward
     m_Mirror: 1
   - serializedVersion: 2
-    m_Motion: {fileID: 3898671758408027237, guid: 9c1539847bbc5af4a8403bdd9e011285,
+    m_Motion: {fileID: 4360961371269437201, guid: 9c1539847bbc5af4a8403bdd9e011285,
       type: 3}
     m_Threshold: 0.75
     m_Position: {x: 0, y: 1}
@@ -287,7 +287,7 @@ BlendTree:
     m_DirectBlendParameter: Forward
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -6063290377662573818, guid: 9c1539847bbc5af4a8403bdd9e011285,
+    m_Motion: {fileID: -957618811225906925, guid: 9c1539847bbc5af4a8403bdd9e011285,
       type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: -1}
@@ -323,7 +323,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1033449757890308371, guid: 1928ffd6683b3974986a03ef3d0b8e77,
+  m_Motion: {fileID: -8777955961532845179, guid: 9c1539847bbc5af4a8403bdd9e011285,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 

@@ -21,6 +21,21 @@ ModelImporter:
   - first:
       74: -6063290377662573818
     second: RunBack
+  - first:
+      74: -7463194393509142156
+    second: HumanIdle
+  - first:
+      74: 4360961371269437201
+    second: HumanRunForward
+  - first:
+      74: -957618811225906925
+    second: HumanRunBack
+  - first:
+      74: -8777955961532845179
+    second: HumanFall
+  - first:
+      74: -6111855017713640138
+    second: HumanRunRight
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -41,22 +56,18 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'RunForward' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'DEF-spine.004' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'DEF-neck' has scale
-      animation that will be discarded.\n\t'DEF-upper_arm.L' has translation animation
-      that will be discarded.\n\t'DEF-upper_arm.R' has translation animation that
-      will be discarded.\n\t'DEF-thigh.L' has scale animation that will be discarded.\n\t'DEF-shin.L'
-      has scale animation that will be discarded.\n\t'DEF-foot.L' has scale animation
-      that will be discarded.\n\t'DEF-thigh.R' has scale animation that will be discarded.\n\t'DEF-shin.R'
-      has scale animation that will be discarded.\n\t'DEF-foot.R' has scale animation
-      that will be discarded.\n\nClip 'RunBack' has import animation warnings that
+    animationImportWarnings: "\nClip 'HumanFall' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'DEF-spine.002' has scale animation that
-      will be discarded.\n\t'DEF-spine.003' has scale animation that will be discarded.\n\t'DEF-spine.004'
-      has scale animation that will be discarded.\n\t'DEF-neck' has scale animation
-      that will be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
+      will be discarded.\n\t'DEF-spine.003' has scale animation that will be discarded.\n\t'DEF-neck'
+      has scale animation that will be discarded.\n\nClip 'HumanRunBack' has import
+      animation warnings that might lower retargeting quality:\nNote: Activate translation
+      DOF on avatar to improve retargeting quality.\n\t'DEF-spine.002' has scale
+      animation that will be discarded.\n\t'DEF-spine.003' has scale animation that
+      will be discarded.\n\t'DEF-spine.004' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\t'DEF-spine.004' has scale
+      animation that will be discarded.\n\t'DEF-neck' has scale animation that will
+      be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
       has scale animation that will be discarded.\n\t'DEF-forearm.L' has scale animation
       that will be discarded.\n\t'DEF-hand.L' has scale animation that will be discarded.\n\t'DEF-upper_arm.R'
       has scale animation that will be discarded.\n\t'DEF-forearm.R' has scale animation
@@ -64,7 +75,28 @@ ModelImporter:
       has scale animation that will be discarded.\n\t'DEF-shin.L' has scale animation
       that will be discarded.\n\t'DEF-foot.L' has scale animation that will be discarded.\n\t'DEF-thigh.R'
       has scale animation that will be discarded.\n\t'DEF-shin.R' has scale animation
-      that will be discarded.\n\t'DEF-foot.R' has scale animation that will be discarded.\n"
+      that will be discarded.\n\t'DEF-foot.R' has scale animation that will be discarded.\n\nClip
+      'HumanRunForward' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'DEF-spine.004'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'DEF-neck'
+      has scale animation that will be discarded.\n\t'DEF-upper_arm.L' has translation
+      animation that will be discarded.\n\t'DEF-upper_arm.R' has translation animation
+      that will be discarded.\n\t'DEF-thigh.L' has scale animation that will be discarded.\n\t'DEF-shin.L'
+      has scale animation that will be discarded.\n\t'DEF-foot.L' has scale animation
+      that will be discarded.\n\t'DEF-thigh.R' has scale animation that will be discarded.\n\t'DEF-shin.R'
+      has scale animation that will be discarded.\n\t'DEF-foot.R' has scale animation
+      that will be discarded.\n\nClip 'HumanRunRight' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'DEF-spine.004' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'DEF-spine.004' has scale
+      animation that will be discarded.\n\t'DEF-neck' has scale animation that will
+      be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
+      has translation animation that will be discarded.\n\t'DEF-upper_arm.R' has
+      translation animation that will be discarded.\n\t'DEF-thigh.L' has scale animation
+      that will be discarded.\n\t'DEF-shin.L' has scale animation that will be discarded.\n\t'DEF-foot.L'
+      has scale animation that will be discarded.\n\t'DEF-thigh.R' has scale animation
+      that will be discarded.\n\t'DEF-shin.R' has scale animation that will be discarded.\n\t'DEF-foot.R'
+      has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -78,8 +110,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
-      takeName: Idle
+      name: HumanIdle
+      takeName: HumanIdle
       internalID: 0
       firstFrame: 0
       lastFrame: 1
@@ -107,8 +139,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: RunForward
-      takeName: RunForward
+      name: HumanRunForward
+      takeName: HumanRunForward
       internalID: 0
       firstFrame: 0
       lastFrame: 21
@@ -136,11 +168,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: RunBack
-      takeName: RunBack
+      name: HumanRunBack
+      takeName: HumanRunBack
       internalID: 0
       firstFrame: 0
       lastFrame: 21
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HumanFall
+      takeName: HumanFall
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: HumanRunRight
+      takeName: HumanRunRight
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -387,18 +477,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: human3(Clone)
+    - name: human(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: HumanModel
-      parentName: human3(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
     - name: rig
-      parentName: human3(Clone)
+      parentName: human(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
@@ -522,6 +607,11 @@ ModelImporter:
       position: {x: 4.866706e-11, y: 0.0010836783, z: 4.6566126e-11}
       rotation: {x: 0.00016139574, y: 0.96124834, z: -0.27568325, w: 0.0005627057}
       scale: {x: 1.0000004, y: 1.0002521, z: 0.99974823}
+    - name: HumanModel
+      parentName: human(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
