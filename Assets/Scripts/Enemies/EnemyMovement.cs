@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 
 namespace Enemies
 {
@@ -17,9 +18,8 @@ namespace Enemies
 
         [Header("References")]
         [SerializeField] private Rigidbody rb;
-        [SerializeField] private Collider collider;
         [SerializeField] private Transform modelOrientationTransform;
-        [SerializeField] private Transform headTarget;
+        [SerializeField] private Collider collider;
         [SerializeField] private Animator animator;
         
         [Header("Ground Detection")]
@@ -34,15 +34,22 @@ namespace Enemies
         [SerializeField] private string layerName = "Walkable";
         
         [Header("Movement")]
+        public bool locked;
         public bool turnTowardsMoveDirection;
         [SerializeField] private float turnSpeed;
+        
+        [Header("Head")]
+        [SerializeField] private MultiAimConstraint headConstraint;
+        [SerializeField] private Transform headTarget;
+        public bool lockHeadTargetWorldSpace;
 
+        // ground logic
         private bool _grounded;
         private Quaternion _groundRotation;
 
-        public bool locked;
+        // pathfinding
         private Vector3 _target;
-
+        private Vector3 _headTargetWorldPos;
         private NavMeshPath _path;
         private Vector3 _partialTargetPosition;
         public bool AtTarget { get; private set; }
@@ -55,6 +62,7 @@ namespace Enemies
         public Vector3 Velocity => rb.velocity;
         public Vector3 GroundVelocity => _groundRotation * rb.velocity;
         public Vector3 FeetPos => feetTransform.position;
+        public MultiAimConstraint HeadConstraint => headConstraint;
 
         public Vector3 Target
         {
@@ -66,15 +74,10 @@ namespace Enemies
             }
         }
 
-        public Vector3 HeadTarget
-        {
-            get => headTarget.position;
-            set => headTarget.position = value;
-        }
-
         private void Awake()
         {
             Target = feetTransform.position;
+            _layerId = NavMesh.AllAreas;
         }
 
         private void OnEnable()
@@ -98,12 +101,17 @@ namespace Enemies
         {
             _path = new NavMeshPath();
             rb.useGravity = false;
-            _layerId = NavMesh.AllAreas;
+            headTarget.position =
+                headConstraint.data.constrainedObject.position + transform.TransformVector(0, 0, 1);
         }
 
         void Update()
         {
             
+            // do head logic
+            // if (lockHeadTargetWorldSpace) headTarget.position = _headTargetWorldPos;
+            // else _headTargetWorldPos = headTarget.position;
+
             if (!_grounded) return;
             if (AtTarget) return;
             if ((Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0)
