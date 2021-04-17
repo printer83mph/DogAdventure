@@ -10,29 +10,20 @@ namespace Weapons
         [SerializeField] private float equipTime = .3f;
         public WeaponData WeaponData { get; private set; }
         public WeaponState State { get; set; }
-        public bool Equipping { get; private set; }
+
+        private float _readyTime;
+        public bool Equipping => Time.time < _readyTime;
 
         private void Start()
         {
-            StartCoroutine(EquipCoroutine());
+            _readyTime = Time.time + equipTime;
         }
-
-        private void OnDestroy()
-        {
-            StopAllCoroutines();
-        }
-
+        
         public void Initialize(WeaponData data, WeaponState state)
         {
             WeaponData = data;
             State = state;
         }
         
-        private IEnumerator EquipCoroutine()
-        {
-            Equipping = true;
-            yield return new WaitForSeconds(equipTime);
-            Equipping = false;
-        }
     }
 }

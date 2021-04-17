@@ -102,11 +102,15 @@
             <e p="RangedFloat.cs" t="Include" />
           </e>
           <e p="Weapons" t="Include">
+            <e p="Enemy" t="Include">
+              <e p="EnemyWeapon.cs" t="Include" />
+              <e p="EnemyWeaponManager.cs" t="Include" />
+            </e>
             <e p="KatanaDamager.cs" t="Include" />
             <e p="Player" t="Include">
               <e p="HitscanGun.cs" t="Include" />
+              <e p="PlayerInventoryWeapon.cs" t="Include" />
             </e>
-            <e p="PlayerInventoryWeapon.cs" t="Include" />
             <e p="WeaponState.cs" t="Include" />
           </e>
           <e p="World" t="Include">

@@ -14,5 +14,8 @@ namespace ScriptableObjects.Weapons
 
         [SerializeField] private GameObject enemyPrefab = null;
         public GameObject EnemyPrefab => enemyPrefab;
+
+        [SerializeField] private GameObject enemyBackPrefab = null;
+        public GameObject EnemyBackPrefab => enemyBackPrefab;
     }
 }

@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using Player.Controlling;
 using ScriptableObjects.Audio;
 using ScriptableObjects.Enemies;
+using ScriptableObjects.Weapons;
 using Stims;
 using UnityEngine;
 using UnityEngine.Events;
+using Weapons.Enemy;
 using World;
 using World.StimListeners;
 using Random = UnityEngine.Random;
@@ -26,23 +28,23 @@ namespace Enemies
     public class HumanEnemyBehaviour : MonoBehaviour
     {
 
-        private static readonly List<HumanEnemyBehaviour> EnabledBehaviours = new List<HumanEnemyBehaviour>();
-        
         [SerializeField] private EnemyMovement movement;
         [SerializeField] private Health health;
         [SerializeField] private EnemyVision vision;
         [SerializeField] private Animator animator;
+        [SerializeField] private EnemyWeaponManager weaponManager;
         [SerializeField] private RagdollController ragdoll;
         [SerializeField] private AudioChannel audioChannel;
 
         [SerializeField] private HumanEnemyBehaviourConfig config;
         [SerializeField] private EnemyState state = EnemyState.Idle;
+        [SerializeField] private WeaponData currentWeapon;
 
         private Vector3 _idlePosition;
         private Vector3 _suspicionPosition;
         private Vector3 _lastKnownPosition;
-        private bool _hasWeapon;
-        private bool _weaponDrawn;
+        private bool _hasWeapon = false;
+        private bool _weaponDrawn = false;
 
         private void OnEnable()
         {
@@ -51,10 +53,16 @@ namespace Enemies
             {
                 _idlePosition = movement.FeetPos;
             }
+
+            // set up our current weapon prefab if 
+            if (currentWeapon != null)
+            {
+                _hasWeapon = true;
+                weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab);
+                Debug.Log("Set up the weapon");
+            }
             
-            // todo: will we ever actually use enabled behaviours...?
             StartCoroutine(LogicCoroutine());
-            EnabledBehaviours.Add(this);
             health.OnDeath.AddListener(OnDeath);
             audioChannel.playAudio += OnHearSound;
         }
@@ -62,7 +70,6 @@ namespace Enemies
         private void OnDisable()
         {
             StopAllCoroutines();
-            EnabledBehaviours.Remove(this);
             health.OnDeath.RemoveListener(OnDeath);
             audioChannel.playAudio -= OnHearSound;
         }

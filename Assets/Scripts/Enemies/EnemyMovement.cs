@@ -16,10 +16,11 @@ namespace Enemies
         private const float NavmeshSampleDistance = 2f;
 
         [Header("References")]
-        [SerializeField] private Rigidbody rb = null;
-        [SerializeField] private Collider collider = null;
-        [SerializeField] private Transform modelOrientationTransform = null;
-        [SerializeField] private Animator animator = null;
+        [SerializeField] private Rigidbody rb;
+        [SerializeField] private Collider collider;
+        [SerializeField] private Transform modelOrientationTransform;
+        [SerializeField] private Transform headTarget;
+        [SerializeField] private Animator animator;
         
         [Header("Ground Detection")]
         [SerializeField] private Transform feetTransform = null;
@@ -63,6 +64,12 @@ namespace Enemies
                 _target = value;
                 if (_grounded) CalculatePath();
             }
+        }
+
+        public Vector3 HeadTarget
+        {
+            get => headTarget.position;
+            set => headTarget.position = value;
         }
 
         private void Awake()
