@@ -15,4 +15,7 @@ MonoBehaviour:
   displayName: Epic Pistol
   playerPrefab: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3,
     type: 3}
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 7450357165940998176, guid: 728a20b42579bcb4385c5b001ef7e650,
+    type: 3}
+  enemyBackPrefab: {fileID: 3156907571666886730, guid: f2db59252bb82fd4ba87956c4db5c481,
+    type: 3}
