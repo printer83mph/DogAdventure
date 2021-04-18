@@ -6,6 +6,7 @@ using ScriptableObjects.Enemies;
 using ScriptableObjects.Weapons;
 using Stims;
 using UnityEngine;
+using Weapons;
 using Weapons.Enemy;
 using World;
 using World.StimListeners;
@@ -42,9 +43,19 @@ namespace Enemies
         [SerializeField] private bool startFighting;
         
         #endregion
+        
+        #region ExposedFields
+
+        public EnemyMovement Movement => movement;
+        public EnemyVision Vision => vision;
+        public Animator Animator => animator;
+        public Vector3 LastKnownPosition => _lastKnownPosition;
+
+        #endregion
 
         #region StateVariables
-        
+
+        private WeaponState _currentWeaponState;
         private EnemyState _state = EnemyState.Idle;
         private Vector3 _idlePosition;
         private float _suspicion = 1;
@@ -73,7 +84,7 @@ namespace Enemies
             if (currentWeapon != null)
             {
                 _hasWeapon = true;
-                weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab);
+                weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab, currentWeapon, null);
                 Debug.Log("Set up the weapon");
             }
             
@@ -92,11 +103,33 @@ namespace Enemies
         
         private void OnDeath(IStimDamage deathStim)
         {
+            // todo: drop weapon
+            weaponManager.ClearWeaponPrefab();
+
+            if (_hasWeapon) DeathDropWeapon(deathStim);
+
             // todo: ragdoll death oomph
             ragdoll.RagdollEnabled = true;
             animator.enabled = false;
             ragdoll.transform.parent = null;
             Destroy(gameObject);
+        }
+
+        private void DeathDropWeapon(IStimDamage deathStim)
+        {
+            Vector3 weaponDropForce;
+            if (deathStim is PunchDamageStim punchStim)
+            {
+                weaponDropForce = punchStim.Force();
+            }
+            else
+            {
+                weaponDropForce = transform.forward * 20f;
+            }
+
+            float weaponGrip = .2f;
+            Instantiate(currentWeapon.DropPrefab, transform.position + transform.forward * .6f, transform.rotation)
+                .GetComponentInChildren<Rigidbody>().AddForce(weaponDropForce * (1 - weaponGrip), ForceMode.Impulse);
         }
 
         #endregion
@@ -111,7 +144,7 @@ namespace Enemies
                 // we don't know the player is around or anything.
                 case EnemyState.Idle:
 
-                    if (PutAwayWeaponIfDrawn()) yield break;
+                    PutAwayWeaponIfDrawn();
                     
                     Debug.Log("Starting idle logic");
                     // on initially switching to this state
@@ -157,7 +190,7 @@ namespace Enemies
                 // we know something is up.. look for suspicious/alarming sounds
                 case EnemyState.Suspicious:
                     
-                    if (DrawWeaponIfNotDrawn()) yield break;
+                    DrawWeaponIfNotDrawn();
                     
                     Debug.Log("Starting suspicious logic");
                     while (_state == EnemyState.Suspicious)
@@ -175,7 +208,6 @@ namespace Enemies
                         
                         if (vision.CanSee(_suspicionPosition, .2f))
                         {
-                            Debug.Log("Can see it");
                             // we can't see player but we can see pos
                             if (!canSeePlayer)
                             {
@@ -187,7 +219,6 @@ namespace Enemies
                         }
                         else
                         {
-                            Debug.Log("Cant see it.. should be moving");
                             // we can't see the suspicious target, so walk until we can
                             movement.Target = _suspicionPosition;
                             if (Vector3.SqrMagnitude(transform.position - _suspicionPosition) < 1)
@@ -214,23 +245,26 @@ namespace Enemies
                 // we're in combat with the player.
                 case EnemyState.Fighting:
 
-                    if (DrawWeaponIfNotDrawn()) yield break;
+                    DrawWeaponIfNotDrawn();
                     
                     Debug.Log("Starting fighting logic");
-                    
-                    // if weapon already drawn, set attack mode to true
-                    if (_weaponDrawn) weaponManager.WeaponComponent.attackMode = true;
-                    
                     while (_state == EnemyState.Fighting)
                     {
-                        Debug.Log("Fighting");
                         
                         GrabWeaponIfNearby();
                         TrackPlayer();
 
-                        movement.locked = weaponManager.WeaponComponent.shouldMove;
-                        movement.Target = _lastKnownPosition;
-                        
+                        if (weaponManager.WeaponComponent)
+                        {
+                            weaponManager.WeaponComponent.attackMode = _weaponDrawn;
+                        }
+                        else
+                        {
+                            Debug.Log("no weapon manager assigned, just going towards player");
+                            movement.locked = false;
+                            movement.Target = _lastKnownPosition;
+                        }
+
                         yield return new WaitForEndOfFrame();
                     }
                     break;
@@ -308,28 +342,36 @@ namespace Enemies
             StartCoroutine(LogicCoroutine());
         }
         
+        private bool _drawingWeapon;
         private IEnumerator TakeOutWeaponCoroutine()
         {
             Debug.Log("Taking out weapon");
+            _drawingWeapon = true;
+            _puttingAwayWeapon = false;
             animator.Play("TakeOutWeapon");
+            
             yield return new WaitForSeconds(.5f);
-            weaponManager.SetWeaponPrefab(currentWeapon.EnemyPrefab);
+            weaponManager.SetWeaponPrefab(currentWeapon.EnemyPrefab, currentWeapon, _currentWeaponState);
+            
             yield return new WaitForSeconds(.3f);
             _weaponDrawn = true;
-            Debug.Log("Restarting logic coroutine");
-            StartCoroutine(LogicCoroutine());
+            _drawingWeapon = false;
         }
         
+        private bool _puttingAwayWeapon;
         private IEnumerator PutAwayWeaponCoroutine()
         {
             Debug.Log("Putting Away Weapon");
+            _puttingAwayWeapon = true;
+            _drawingWeapon = false;
             animator.Play("PutAwayWeapon");
+            
             yield return new WaitForSeconds(.5f);
-            weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab);
+            weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab, currentWeapon, _currentWeaponState);
+            
             yield return new WaitForSeconds(.3f);
             _weaponDrawn = false;
-            Debug.Log("Restarting logic coroutine");
-            StartCoroutine(LogicCoroutine());
+            _puttingAwayWeapon = false;
         }
         
         private IEnumerator DropWeaponCoroutine()
@@ -368,22 +410,22 @@ namespace Enemies
                 StartCoroutine(PickUpWeaponCoroutine(new Vector3()));
             }
         }
-
+        
         // these guys return true if we are pulling shit out or whatever
-        private bool DrawWeaponIfNotDrawn()
+        private void DrawWeaponIfNotDrawn()
         {
-            if (!_hasWeapon || _weaponDrawn) return false;
-            StopAllCoroutines();
+            StopCoroutine(PutAwayWeaponCoroutine());
+            if (_drawingWeapon) return;
+            if (!_hasWeapon || _weaponDrawn) return;
             StartCoroutine(TakeOutWeaponCoroutine());
-            return true;
         }
         
-        private bool PutAwayWeaponIfDrawn()
+        private void PutAwayWeaponIfDrawn()
         {
-            if (!_hasWeapon || !_weaponDrawn) return false;
-            StopAllCoroutines();
+            StopCoroutine(TakeOutWeaponCoroutine());
+            if (_puttingAwayWeapon) return;
+            if (!_hasWeapon || !_weaponDrawn) return;
             StartCoroutine(PutAwayWeaponCoroutine());
-            return true;
 
         }
         

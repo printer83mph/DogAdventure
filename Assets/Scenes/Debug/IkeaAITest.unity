@@ -1497,7 +1497,7 @@ PrefabInstance:
     - target: {fileID: 1933990974, guid: 1039a5962fcc83146ba3b5e55bcf7bae, type: 3}
       propertyPath: currentWeapon
       value: 
-      objectReference: {fileID: 11400000, guid: 1c1e31456828a0f489c0728fabd2ff40,
+      objectReference: {fileID: 11400000, guid: 638c769e4b228834dab97478cdc0c88b,
         type: 2}
     - target: {fileID: 1415302379063463728, guid: 1039a5962fcc83146ba3b5e55bcf7bae,
         type: 3}
@@ -1868,7 +1868,7 @@ PrefabInstance:
         type: 3}
       propertyPath: weapons.Array.data[0].data
       value: 
-      objectReference: {fileID: 11400000, guid: 1c1e31456828a0f489c0728fabd2ff40,
+      objectReference: {fileID: 11400000, guid: 638c769e4b228834dab97478cdc0c88b,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835390ab7646dfb4a918a4202bd055b9, type: 3}
