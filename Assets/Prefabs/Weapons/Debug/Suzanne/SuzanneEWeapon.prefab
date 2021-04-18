@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7261343192767590639}
   - component: {fileID: 6927945901968647818}
+  - component: {fileID: 8684464168262918084}
   m_Layer: 0
   m_Name: SuzanneEWeapon
   m_TagString: Untagged
@@ -107,3 +108,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.006109723, y: 0.00022850651, z: 0.009627305}
     m_Extent: {x: 0.0029172124, y: 0.003089795, z: 0.0027437294}
   m_DirtyAABB: 0
+--- !u!114 &8684464168262918084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7450357165940998176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8102f66ac64d4d10868526d13a6da86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipTime: 0.8
+  attackMode: 0
+  shouldMove: 0

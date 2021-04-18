@@ -9,6 +9,11 @@ namespace Weapons.Enemy
         [SerializeField] private float equipTime = .8f;
         public WeaponData Data { get; private set; }
         public WeaponState State { get; private set; }
+        
+        [HideInInspector]
+        public bool attackMode;
+        [HideInInspector]
+        public bool shouldMove;
 
         private float _readyTime;
         public bool Equipping => _readyTime < Time.time;
