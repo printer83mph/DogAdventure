@@ -103,6 +103,7 @@
           </e>
           <e p="Weapons" t="Include">
             <e p="Enemy" t="Include">
+              <e p="EnemyMeleeWeapon.cs" t="Include" />
               <e p="EnemyWeapon.cs" t="Include" />
               <e p="EnemyWeaponManager.cs" t="Include" />
             </e>

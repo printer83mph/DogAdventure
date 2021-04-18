@@ -141,9 +141,12 @@ namespace Enemies
             // if we're already there we don't care
             if (AtTarget || _cantPath || locked)
             {
+                Debug.Log("Were locked baby.");
                 AddForceToGoTo(feetTransform.position);
                 return;
             }
+            
+            Debug.Log("Were not locked baby?");
 
             // here we're not at our target
             if (AtNextPos()) GetNextPos();
@@ -223,7 +226,7 @@ namespace Enemies
                 NavMesh.CalculatePath(hit.position, _target, _layerId, _path);
                 if (_path.status == NavMeshPathStatus.PathInvalid)
                 {
-                    
+                    Debug.Log("Can't path to location");
                     // let people know if we can or cant path
                     _cantPath = true;
                 }

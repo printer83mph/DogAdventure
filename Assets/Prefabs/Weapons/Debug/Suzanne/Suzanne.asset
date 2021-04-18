@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10145451c4134cc78ea98cc1dcc13f11, type: 3}
-  m_Name: Pistol
+  m_Name: Suzanne
   m_EditorClassIdentifier: 
-  displayName: Epic Pistol
-  playerPrefab: {fileID: 1232669308918914924, guid: c5432b5e4ce67b44fa0eccab7b5e14e3,
+  displayName: Suzanne
+  playerPrefab: {fileID: 2565493813507105338, guid: 54c81567e3d249a458e185172077487a,
     type: 3}
   enemyPrefab: {fileID: 7450357165940998176, guid: 728a20b42579bcb4385c5b001ef7e650,
     type: 3}
   enemyBackPrefab: {fileID: 3156907571666886730, guid: f2db59252bb82fd4ba87956c4db5c481,
     type: 3}
-  dropPrefab: {fileID: 8149045559239869448, guid: 72ec448c1d14c714cb6add678205622c,
+  dropPrefab: {fileID: 4073330073578297427, guid: dc421a4924702344883c62e4dc5ea6e9,
     type: 3}

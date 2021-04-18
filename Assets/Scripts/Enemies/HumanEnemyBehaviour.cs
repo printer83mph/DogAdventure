@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Player.Controlling;
 using ScriptableObjects.Audio;
 using ScriptableObjects.Enemies;
 using ScriptableObjects.Weapons;
 using Stims;
 using UnityEngine;
-using UnityEngine.Events;
+using Weapons;
 using Weapons.Enemy;
 using World;
 using World.StimListeners;
@@ -19,15 +18,17 @@ namespace Enemies
     public enum EnemyState
     {
         Idle,
-        Chasing,
         Suspicious,
-        Attacking,
+        Fighting,
         Searching,
     }
 
     public class HumanEnemyBehaviour : MonoBehaviour
     {
 
+        #region InspectorVariables
+        
+        [Header("References")]
         [SerializeField] private EnemyMovement movement;
         [SerializeField] private Health health;
         [SerializeField] private EnemyVision vision;
@@ -35,21 +36,46 @@ namespace Enemies
         [SerializeField] private EnemyWeaponManager weaponManager;
         [SerializeField] private RagdollController ragdoll;
         [SerializeField] private AudioChannel audioChannel;
-
+        
+        [Header("Enemy Config")]
         [SerializeField] private HumanEnemyBehaviourConfig config;
-        [SerializeField] private EnemyState state = EnemyState.Idle;
         [SerializeField] private WeaponData currentWeapon;
+        [SerializeField] private bool startFighting;
+        
+        #endregion
+        
+        #region ExposedFields
 
+        public EnemyMovement Movement => movement;
+        public EnemyVision Vision => vision;
+        public Animator Animator => animator;
+        public Vector3 LastKnownPosition => _lastKnownPosition;
+
+        #endregion
+
+        #region StateVariables
+
+        private WeaponState _currentWeaponState;
+        private EnemyState _state = EnemyState.Idle;
         private Vector3 _idlePosition;
+        private float _suspicion = 1;
         private Vector3 _suspicionPosition;
         private Vector3 _lastKnownPosition;
         private bool _hasWeapon = false;
         private bool _weaponDrawn = false;
+        
+        #endregion
+
+        #region Initialization
 
         private void OnEnable()
         {
             // set idle position if we're walking
-            if (state == EnemyState.Idle)
+            if (startFighting)
+            {
+                _state = EnemyState.Fighting;
+            }
+            else
             {
                 _idlePosition = movement.FeetPos;
             }
@@ -58,13 +84,14 @@ namespace Enemies
             if (currentWeapon != null)
             {
                 _hasWeapon = true;
-                weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab);
+                weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab, currentWeapon, null);
                 Debug.Log("Set up the weapon");
             }
             
-            StartCoroutine(LogicCoroutine());
             health.OnDeath.AddListener(OnDeath);
             audioChannel.playAudio += OnHearSound;
+            
+            StartCoroutine(LogicCoroutine());
         }
 
         private void OnDisable()
@@ -73,9 +100,14 @@ namespace Enemies
             health.OnDeath.RemoveListener(OnDeath);
             audioChannel.playAudio -= OnHearSound;
         }
-
+        
         private void OnDeath(IStimDamage deathStim)
         {
+            // todo: drop weapon
+            weaponManager.ClearWeaponPrefab();
+
+            if (_hasWeapon) DeathDropWeapon(deathStim);
+
             // todo: ragdoll death oomph
             ragdoll.RagdollEnabled = true;
             animator.enabled = false;
@@ -83,130 +115,172 @@ namespace Enemies
             Destroy(gameObject);
         }
 
+        private void DeathDropWeapon(IStimDamage deathStim)
+        {
+            Vector3 weaponDropForce;
+            if (deathStim is PunchDamageStim punchStim)
+            {
+                weaponDropForce = punchStim.Force();
+            }
+            else
+            {
+                weaponDropForce = transform.forward * 20f;
+            }
+
+            float weaponGrip = .2f;
+            Instantiate(currentWeapon.DropPrefab, transform.position + transform.forward * .6f, transform.rotation)
+                .GetComponentInChildren<Rigidbody>().AddForce(weaponDropForce * (1 - weaponGrip), ForceMode.Impulse);
+        }
+
+        #endregion
+
+        #region AILogic
+
         private IEnumerator LogicCoroutine()
         {
-            while (true)
+            // if we're back here, we just switched to this state
+            switch (_state)
             {
-                Debug.Log("Ok we made it guys");
-                // if we're back here, we just switched to this state
-                switch (state)
-                {
-                    case EnemyState.Idle:
-                        animator.Play("Idle");
-                        movement.turnTowardsMoveDirection = true;
-                        while (state == EnemyState.Idle)
+                // we don't know the player is around or anything.
+                case EnemyState.Idle:
+
+                    PutAwayWeaponIfDrawn();
+                    
+                    Debug.Log("Starting idle logic");
+                    // on initially switching to this state
+                    animator.Play("Idle");
+                    movement.turnTowardsMoveDirection = true;
+                    float switchTime = Time.time;
+
+                    bool canSwitch = false;
+                    // "update" loop - break if state switched by sound receiver/other coroutines
+                    while (_state == EnemyState.Idle)
+                    {
+                        
+                        if (Time.time >= switchTime)
                         {
+                            // loop to move around
                             movement.Target = _idlePosition + Quaternion.Euler(0, Random.value * 360, 0) *
                                 Vector3.forward * config.IdleRadius;
-                            
-                            float switchTime = Random.value * (config.IdleDelayMax - config.IdleDelayMin) +
-                                            config.IdleDelayMin + Time.time;
-                            yield return new WaitUntil(() => Time.time > switchTime || state != EnemyState.Idle);
+                            switchTime = Random.value * (config.IdleDelayMax - config.IdleDelayMin) +
+                                               config.IdleDelayMin + Time.time;
                         }
-                        // todo: let enemy see player here lol
-                        break;
-                    case EnemyState.Suspicious:
-                        float suspicion = 1;
-                        while (state == EnemyState.Suspicious)
+                        
+                        // crank up suspicion if we can see player
+                        if (vision.CanSeePlayer())
                         {
-                            bool canSeePlayer = vision.CanSee(PlayerController.Main.transform.position);
-                            
-                            // if we can see player, add to suspicion
-                            if (canSeePlayer)
-                            {
-                                suspicion += config.SusGainSpeed * Time.deltaTime /
-                                             Vector3.Magnitude(PlayerController.Main.transform.position -
-                                                               vision.transform.position);
-                            }
-                            
-                            if (vision.CanSee(_suspicionPosition, .2f))
-                            {
-                                // we can't see player but we can see pos
-                                if (!canSeePlayer)
-                                {
-                                    suspicion -= config.SusDispelSpeed * Time.deltaTime;
-                                }
-                                
-                                // stay still
-                                movement.Target = movement.FeetPos;
-                            }
-                            else
-                            {
-                                // we can't see the suspicious target, so walk until we can
-                                movement.Target = _suspicionPosition;
-                                if (Vector3.SqrMagnitude(transform.position - _suspicionPosition) < 1)
-                                {
-                                    suspicion -= .5f * Time.deltaTime;
-                                }
-                            }
+                            _suspicion += Time.deltaTime * config.SusGainSpeed;
+                        }
+                        else
+                        {
+                            // otherwise bring it back to 1
+                            _suspicion = Mathf.MoveTowards(_suspicion, 1,
+                                Time.deltaTime * config.SusDispelSpeed);
+                        }
+                        
+                        // if we spotted player switch to fighting
+                        if (_suspicion > 2)
+                        {
+                            _state = EnemyState.Fighting;
+                        }
 
-                            Debug.Log("Suspicion: " + suspicion);
-                            if (suspicion <= 0)
-                            {
-                                Debug.Log("Switching to idle");
-                                state = EnemyState.Idle;
-                                break;
-                            }
-                            if (suspicion >= 2)
-                            {
-                                // we saw the player: pull out weapon and set state
-                                
-                            }
-                            yield return new WaitForEndOfFrame();
-                        }
-                        break;
-                    case EnemyState.Chasing:
-                        // grab a weapon if there's one nearby, chase the player until we can attack them
-                        while (true)
+                        yield return new WaitForEndOfFrame();
+                    }
+                    break;
+                // we know something is up.. look for suspicious/alarming sounds
+                case EnemyState.Suspicious:
+                    
+                    DrawWeaponIfNotDrawn();
+                    
+                    Debug.Log("Starting suspicious logic");
+                    while (_state == EnemyState.Suspicious)
+                    {
+
+                        bool canSeePlayer = vision.CanSeePlayer();
+                        
+                        // if we can see player, add to suspicion
+                        if (canSeePlayer)
                         {
-                            GrabWeaponIfNearby();
-                            TrackPlayer();
-                            movement.Target = _lastKnownPosition;
-                            yield return new WaitForEndOfFrame();
+                            _suspicion += config.SusGainSpeed * Time.deltaTime /
+                                         Vector3.Magnitude(PlayerController.Main.Orientation.transform.position -
+                                                           vision.transform.position);
                         }
-                        break;
-                    case EnemyState.Attacking:
-                        // grab a weapon if there's one nearby, and attack the player.
+                        
+                        if (vision.CanSee(_suspicionPosition, .2f))
+                        {
+                            // we can't see player but we can see pos
+                            if (!canSeePlayer)
+                            {
+                                _suspicion -= config.SusDispelSpeed * Time.deltaTime;
+                            }
+                            
+                            // stay still
+                            movement.Target = movement.FeetPos;
+                        }
+                        else
+                        {
+                            // we can't see the suspicious target, so walk until we can
+                            movement.Target = _suspicionPosition;
+                            if (Vector3.SqrMagnitude(transform.position - _suspicionPosition) < 1)
+                            {
+                                _suspicion -= .5f * Time.deltaTime;
+                            }
+                        }
+
+                        if (_suspicion <= 0)
+                        {
+                            Debug.Log("Switching to idle");
+                            _state = EnemyState.Idle;
+                        }
+                        else if (_suspicion >= 2)
+                        {
+                            Debug.Log("Switching to fighting");
+                            // we saw the player: pull out weapon and set state
+                            _state = EnemyState.Fighting;
+                        }
+                        
+                        yield return new WaitForEndOfFrame();
+                    }
+                    break;
+                // we're in combat with the player.
+                case EnemyState.Fighting:
+
+                    DrawWeaponIfNotDrawn();
+                    
+                    Debug.Log("Starting fighting logic");
+                    while (_state == EnemyState.Fighting)
+                    {
+                        
                         GrabWeaponIfNearby();
                         TrackPlayer();
-                        // todo: attack player, if we can't see player for a bit we start searching, if we're too far away switch to chasing
-                        break;
-                    case EnemyState.Searching:
-                        // grab a weapon if there's one nearby, look around the map for the player, if we see them switch to attacking
-                        // todo: search for player, if we don't find them in time switch to idle
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
 
-        private void TrackPlayer()
-        {
-            if (vision.CanSee(PlayerController.Main.transform.position))
-            {
-                _lastKnownPosition = PlayerController.Main.transform.position;
+                        if (weaponManager.WeaponComponent)
+                        {
+                            weaponManager.WeaponComponent.attackMode = _weaponDrawn;
+                        }
+                        else
+                        {
+                            Debug.Log("no weapon manager assigned, just going towards player");
+                            movement.locked = false;
+                            movement.Target = _lastKnownPosition;
+                        }
+
+                        yield return new WaitForEndOfFrame();
+                    }
+                    break;
+                // we've lost contact with the player.
+                case EnemyState.Searching:
+                    // grab a weapon if there's one nearby, look around the map for the player, if we see them switch to attacking
+                    // todo: search for player, if we don't find them in time switch to idle
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
+            // if we just got to the end.. just restart the Logic
+            StartCoroutine(LogicCoroutine());
         }
         
-        // todo: this
-        private void GrabWeaponIfNearby()
-        {
-            // loop through our dudes
-            if (false)
-            {
-                StartCoroutine(PickUpWeaponCoroutine(new Vector3()));
-            }
-        }
-
-        private void TryTakeOutWeapon()
-        {
-            if (_hasWeapon && _weaponDrawn)
-            {
-                StartCoroutine(TakeOutWeaponCoroutine());
-            }
-        }
-
         private void OnHearSound(Vector3 position, SoundType soundType, float radius)
         {
             // dont give a shit if unimportant
@@ -224,21 +298,18 @@ namespace Enemies
             {
                 case SoundType.Suspicious:
                     // if we're idle, switch to suspicious
-                    if (state < EnemyState.Suspicious) state = EnemyState.Suspicious;
+                    if (_state < EnemyState.Suspicious) _state = EnemyState.Suspicious;
 
                     // if we have a weapon and it's not drawn, take it out
-                    TryTakeOutWeapon();
+                    DrawWeaponIfNotDrawn();
 
                     break;
                 case SoundType.Alarming:
-                    if (state < EnemyState.Suspicious)
+                    if (_state < EnemyState.Suspicious)
                     {
-                        state = EnemyState.Suspicious;
+                        _state = EnemyState.Suspicious;
                         Debug.Log("Switching to suspicious");
                     }
-
-                    // alarming sounds make us draw weapon
-                    TryTakeOutWeapon();
                     break;
                 case SoundType.Stunning:
                     // stunning sounds make us drop weapon
@@ -252,37 +323,59 @@ namespace Enemies
                     }
 
                     // if we're not already chasing, chase
-                    if (state < EnemyState.Suspicious) state = EnemyState.Suspicious;
+                    if (_state < EnemyState.Suspicious) _state = EnemyState.Suspicious;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(soundType), soundType, null);
             }
         }
 
+        #endregion
+
+        #region AICoroutines
+
         private IEnumerator PickUpWeaponCoroutine(Vector3 position)
         {
-            StopAllCoroutines();
             movement.Target = position;
             yield return new WaitUntil(() => movement.AtTarget);
             animator.Play("PickupWeapon");
             StartCoroutine(LogicCoroutine());
         }
         
-        // animator coroutines
+        private bool _drawingWeapon;
         private IEnumerator TakeOutWeaponCoroutine()
         {
-            StopAllCoroutines();
-            _hasWeapon = true;
+            Debug.Log("Taking out weapon");
+            _drawingWeapon = true;
+            _puttingAwayWeapon = false;
             animator.Play("TakeOutWeapon");
-            yield return new WaitForSeconds(.8f);
+            
+            yield return new WaitForSeconds(.5f);
+            weaponManager.SetWeaponPrefab(currentWeapon.EnemyPrefab, currentWeapon, _currentWeaponState);
+            
+            yield return new WaitForSeconds(.3f);
             _weaponDrawn = true;
-            StartCoroutine(LogicCoroutine());
+            _drawingWeapon = false;
         }
         
-        // animator coroutines
+        private bool _puttingAwayWeapon;
+        private IEnumerator PutAwayWeaponCoroutine()
+        {
+            Debug.Log("Putting Away Weapon");
+            _puttingAwayWeapon = true;
+            _drawingWeapon = false;
+            animator.Play("PutAwayWeapon");
+            
+            yield return new WaitForSeconds(.5f);
+            weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab, currentWeapon, _currentWeaponState);
+            
+            yield return new WaitForSeconds(.3f);
+            _weaponDrawn = false;
+            _puttingAwayWeapon = false;
+        }
+        
         private IEnumerator DropWeaponCoroutine()
         {
-            StopAllCoroutines();
             movement.locked = true;
             animator.Play("DropWeapon");
             _hasWeapon = false;
@@ -293,6 +386,50 @@ namespace Enemies
             movement.locked = false;
             StartCoroutine(LogicCoroutine());
         }
+
+        #endregion
+        
+        #region AIFuncs
+        
+        private void TrackPlayer()
+        {
+            if (vision.CanSeePlayer())
+            {
+                _lastKnownPosition = PlayerController.Main.transform.position;
+            }
+        }
+        
+        // todo: this
+        private void GrabWeaponIfNearby()
+        {
+            if (_hasWeapon) return;
+            // loop through our dudes
+            if (false)
+            {
+                StopAllCoroutines();
+                StartCoroutine(PickUpWeaponCoroutine(new Vector3()));
+            }
+        }
+        
+        // these guys return true if we are pulling shit out or whatever
+        private void DrawWeaponIfNotDrawn()
+        {
+            StopCoroutine(PutAwayWeaponCoroutine());
+            if (_drawingWeapon) return;
+            if (!_hasWeapon || _weaponDrawn) return;
+            StartCoroutine(TakeOutWeaponCoroutine());
+        }
+        
+        private void PutAwayWeaponIfDrawn()
+        {
+            StopCoroutine(TakeOutWeaponCoroutine());
+            if (_puttingAwayWeapon) return;
+            if (!_hasWeapon || !_weaponDrawn) return;
+            StartCoroutine(PutAwayWeaponCoroutine());
+
+        }
+        
+        #endregion
 
     }
 }

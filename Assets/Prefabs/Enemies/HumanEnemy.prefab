@@ -280,6 +280,7 @@ MonoBehaviour:
   rb: {fileID: 1415302379063463731}
   collider: {fileID: 1415302377974386997}
   modelOrientationTransform: {fileID: 479360850}
+  headTarget: {fileID: 0}
   animator: {fileID: 336491596}
   feetTransform: {fileID: 1415302378950598433}
   maxGroundAngle: 45
@@ -394,8 +395,8 @@ MonoBehaviour:
   ragdoll: {fileID: 4593988320636548824}
   audioChannel: {fileID: 11400000, guid: b7f182d9c2e1f6f4c849af0f4c450c05, type: 2}
   config: {fileID: 11400000, guid: 0ec285630b909c142a9b54bf6e63a9fa, type: 2}
-  state: 0
   currentWeapon: {fileID: 0}
+  startFighting: 0
 --- !u!114 &5262845415665329274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa8028602e542128fafb20f0078702c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviour: {fileID: 1933990974}
   originalRenderer: {fileID: 14131720150058953}
 --- !u!1 &2528100209055736335
 GameObject:
@@ -1150,6 +1152,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 479360850}
     m_Modifications:
+    - target: {fileID: 2049129096, guid: f7be682e0a1946b4db9ad95ebd9ed654, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -2.9108573e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2049129096, guid: f7be682e0a1946b4db9ad95ebd9ed654, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.0044972766
+      objectReference: {fileID: 0}
+    - target: {fileID: 2049129096, guid: f7be682e0a1946b4db9ad95ebd9ed654, type: 3}
+      propertyPath: m_ConnectedAnchor.z
+      value: 3.4930292e-10
+      objectReference: {fileID: 0}
     - target: {fileID: 14131719184213307, guid: f7be682e0a1946b4db9ad95ebd9ed654,
         type: 3}
       propertyPath: m_UpdateWhenOffscreen

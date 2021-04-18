@@ -1,3 +1,4 @@
+using Player.Controlling;
 using ScriptableObjects.Enemies;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ namespace Enemies
             // return if the raycast didnt hit anything
             return (!Physics.Raycast(transform.position, vecToPos, vecToPos.magnitude - pullbackDistance, visionConfig.LayerMask));
         }
+
+        public bool CanSeePlayer() => CanSee(PlayerController.Main.Orientation.position);
 
         public bool CanCapsule(Vector3 position, float radius)
         {

@@ -400,7 +400,6 @@ GameObject:
   - component: {fileID: 3404832504213671695}
   - component: {fileID: 3404832504213671693}
   - component: {fileID: 3404832504213671692}
-  - component: {fileID: 652695598}
   m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
@@ -444,22 +443,6 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!208 &652695598
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3404832504213671694}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.5, y: 0.85, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.1
 --- !u!1 &3961325468520759920
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +510,6 @@ MonoBehaviour:
   target: {fileID: 3069441745639675041}
   data: {fileID: 11400000, guid: f7a46147d7fc138489842196b718b80a, type: 2}
   maxOffset: 0.1
-  controller: {fileID: 3404832504129322933}
   footstep: {fileID: 8002827550547037148}
   cameraMovement: {fileID: 3404832504129322928}
 --- !u!1 &4971835484722347978
@@ -576,8 +558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponParent: {fileID: 4806805442188151051}
   weapons:
-  - weaponData: {fileID: 11400000, guid: 1c1e31456828a0f489c0728fabd2ff40, type: 2}
-    ints: 
+  - data: {fileID: 0}
   controller: {fileID: 3404832504129322933}
   input: {fileID: 3404832504129322932}
   fists: {fileID: 5713867820478138906}

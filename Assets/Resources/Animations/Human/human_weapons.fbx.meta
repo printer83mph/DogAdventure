@@ -1,41 +1,11 @@
 fileFormatVersion: 2
-guid: 9c1539847bbc5af4a8403bdd9e011285
+guid: a359e96b05c538644b2303933ed26974
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -7361427651036151181
-    second: rig|Idle
-  - first:
-      74: -3420309072281836697
-    second: rig|Poses
-  - first:
-      74: 5077220605195741545
-    second: rig|RunForward
-  - first:
-      74: 3898671758408027237
-    second: RunForward
-  - first:
-      74: -3100369314251171874
-    second: Idle
-  - first:
-      74: -6063290377662573818
-    second: RunBack
-  - first:
-      74: -7463194393509142156
-    second: HumanIdle
-  - first:
-      74: 4360961371269437201
-    second: HumanRunForward
-  - first:
-      74: -957618811225906925
-    second: HumanRunBack
-  - first:
-      74: -8777955961532845179
-    second: HumanFall
-  - first:
-      74: -6111855017713640138
-    second: HumanRunRight
+      74: -7255605867500492581
+    second: HumanMeleeOut
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -56,47 +26,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'HumanFall' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'DEF-spine.002' has scale animation that
-      will be discarded.\n\t'DEF-spine.003' has scale animation that will be discarded.\n\t'DEF-neck'
-      has scale animation that will be discarded.\n\nClip 'HumanRunBack' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'DEF-spine.002' has scale
-      animation that will be discarded.\n\t'DEF-spine.003' has scale animation that
-      will be discarded.\n\t'DEF-spine.004' is inbetween humanoid transforms and
-      has rotation animation that will be discarded.\n\t'DEF-spine.004' has scale
-      animation that will be discarded.\n\t'DEF-neck' has scale animation that will
-      be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
-      has scale animation that will be discarded.\n\t'DEF-forearm.L' has scale animation
-      that will be discarded.\n\t'DEF-hand.L' has scale animation that will be discarded.\n\t'DEF-upper_arm.R'
-      has scale animation that will be discarded.\n\t'DEF-forearm.R' has scale animation
-      that will be discarded.\n\t'DEF-hand.R' has scale animation that will be discarded.\n\t'DEF-thigh.L'
-      has scale animation that will be discarded.\n\t'DEF-shin.L' has scale animation
-      that will be discarded.\n\t'DEF-foot.L' has scale animation that will be discarded.\n\t'DEF-thigh.R'
-      has scale animation that will be discarded.\n\t'DEF-shin.R' has scale animation
-      that will be discarded.\n\t'DEF-foot.R' has scale animation that will be discarded.\n\nClip
-      'HumanRunForward' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'DEF-spine.004'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'DEF-neck'
-      has scale animation that will be discarded.\n\t'DEF-upper_arm.L' has translation
-      animation that will be discarded.\n\t'DEF-upper_arm.R' has translation animation
-      that will be discarded.\n\t'DEF-thigh.L' has scale animation that will be discarded.\n\t'DEF-shin.L'
-      has scale animation that will be discarded.\n\t'DEF-foot.L' has scale animation
-      that will be discarded.\n\t'DEF-thigh.R' has scale animation that will be discarded.\n\t'DEF-shin.R'
-      has scale animation that will be discarded.\n\t'DEF-foot.R' has scale animation
-      that will be discarded.\n\nClip 'HumanRunRight' has import animation warnings
-      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'DEF-spine.004' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'DEF-spine.004' has scale
-      animation that will be discarded.\n\t'DEF-neck' has scale animation that will
-      be discarded.\n\t'DEF-head' has scale animation that will be discarded.\n\t'DEF-upper_arm.L'
-      has translation animation that will be discarded.\n\t'DEF-upper_arm.R' has
-      translation animation that will be discarded.\n\t'DEF-thigh.L' has scale animation
-      that will be discarded.\n\t'DEF-shin.L' has scale animation that will be discarded.\n\t'DEF-foot.L'
-      has scale animation that will be discarded.\n\t'DEF-thigh.R' has scale animation
-      that will be discarded.\n\t'DEF-shin.R' has scale animation that will be discarded.\n\t'DEF-foot.R'
-      has scale animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -110,8 +40,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HumanIdle
-      takeName: HumanIdle
+      name: HumanMeleeOut
+      takeName: HumanMeleeOut
       internalID: 0
       firstFrame: 0
       lastFrame: 1
@@ -121,124 +51,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: HumanRunForward
-      takeName: HumanRunForward
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 21
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: HumanRunBack
-      takeName: HumanRunBack
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 21
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: HumanFall
-      takeName: HumanFall
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 65
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: HumanRunRight
-      takeName: HumanRunRight
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 22
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
@@ -624,11 +438,12 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 9c1539847bbc5af4a8403bdd9e011285,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 
