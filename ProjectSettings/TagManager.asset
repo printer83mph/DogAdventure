@@ -13,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Pickups
+  - PropsNPickups
   - CharCapsules
   - Player
   - EnemyHitbox

@@ -13,9 +13,7 @@ GameObject:
   - component: {fileID: 3686063483581188681}
   - component: {fileID: 2658833059865436465}
   - component: {fileID: 2658833059865436466}
-  - component: {fileID: 2658833059865436476}
-  - component: {fileID: 2658833059865436467}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: katana_pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,13 +57,14 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 35b7b794143b7a8438075afb80093f24, type: 2}
-  - {fileID: 2100000, guid: 9aa88b757f34c384c9df4f9c991911ac, type: 2}
-  - {fileID: 2100000, guid: bc8894e25a4d9c34b9843c3ab4dc979c, type: 2}
-  - {fileID: 2100000, guid: bc8894e25a4d9c34b9843c3ab4dc979c, type: 2}
+  - {fileID: 2100000, guid: 9de8ce70d35923b49b3202ac6b475782, type: 2}
+  - {fileID: 2100000, guid: 25fcf44a4f420a24f99a38c8caf2cfa9, type: 2}
+  - {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
+  - {fileID: 2100000, guid: 21224bd56501c154a982ee5fcdacfd77, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!54 &2658833059865436465
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -116,34 +116,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7991704601645392608, guid: 26069269d3d88ea4081982b7c71c05fd, type: 3}
---- !u!114 &2658833059865436476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2893416823381486492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f01984dcce6ec14eb2bcbc1109c1b1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _autoPickUp: 0
-  weapon:
-    Weapon: {fileID: 6395860795053478446, guid: ee7b0a2eb002e944d962d53f70fdedb6,
-      type: 3}
-    Data: []
---- !u!114 &2658833059865436467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2893416823381486492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d21ae67957ad77a4dbe685b34f96879b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderers: []
-  highlighted: 0

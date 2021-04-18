@@ -75,6 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109926987450177814}
   - component: {fileID: 6451244161020167020}
+  - component: {fileID: 5684032603810824176}
   m_Layer: 8
   m_Name: katana_viewmodel
   m_TagString: Untagged
@@ -119,6 +120,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5684032603810824176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300773718603727788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6cfd79cddb45f695c904d7bc62a5ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipTime: 0.3
 --- !u!1 &403359639513851488
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,10 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a7c50370be0d94094e1efb4af5f2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFX: {fileID: 2198771929463619118, guid: ffe35612d5b8c2a4dade41a939cde703, type: 3}
   damage: 5
   hitForce: 1200
-  audioEvent: {fileID: 11400000, guid: 15c2f12d588108748afd5801c21c40ef, type: 2}
+  defaultMaterial: {fileID: 0}
 --- !u!1 &1265979357178557549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1075,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1470,6 +1484,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1724,6 +1739,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2042,6 +2058,7 @@ TrailRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
