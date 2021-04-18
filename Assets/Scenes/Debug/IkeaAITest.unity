@@ -3466,6 +3466,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1825185042881274864, guid: ac06b692ff928724289497968a6f9491,
         type: 3}
+      propertyPath: timeScale
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825185042881274864, guid: ac06b692ff928724289497968a6f9491,
+        type: 3}
       propertyPath: useRefreshRate
       value: 0
       objectReference: {fileID: 0}
