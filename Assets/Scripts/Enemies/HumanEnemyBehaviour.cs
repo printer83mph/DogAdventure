@@ -134,7 +134,7 @@ namespace Enemies
                         }
                         
                         // crank up suspicion if we can see player
-                        if (vision.CanSee(PlayerController.Main.Orientation.transform.position))
+                        if (vision.CanSeePlayer())
                         {
                             _suspicion += Time.deltaTime * config.SusGainSpeed;
                         }
@@ -163,7 +163,7 @@ namespace Enemies
                     while (_state == EnemyState.Suspicious)
                     {
 
-                        bool canSeePlayer = vision.CanSee(PlayerController.Main.Orientation.transform.position);
+                        bool canSeePlayer = vision.CanSeePlayer();
                         
                         // if we can see player, add to suspicion
                         if (canSeePlayer)
@@ -351,7 +351,7 @@ namespace Enemies
         
         private void TrackPlayer()
         {
-            if (vision.CanSee(PlayerController.Main.transform.position))
+            if (vision.CanSeePlayer())
             {
                 _lastKnownPosition = PlayerController.Main.transform.position;
             }
