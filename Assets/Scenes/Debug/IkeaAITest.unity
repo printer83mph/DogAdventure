@@ -1421,6 +1421,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1415302379063463741, guid: 1039a5962fcc83146ba3b5e55bcf7bae,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1039a5962fcc83146ba3b5e55bcf7bae, type: 3}
 --- !u!1001 &654513859
@@ -1795,12 +1800,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4112943446120680347, guid: 835390ab7646dfb4a918a4202bd055b9,
-        type: 3}
-      propertyPath: weapons.Array.data[0].data
-      value: 
-      objectReference: {fileID: 11400000, guid: 1c1e31456828a0f489c0728fabd2ff40,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835390ab7646dfb4a918a4202bd055b9, type: 3}
 --- !u!1001 &857791449

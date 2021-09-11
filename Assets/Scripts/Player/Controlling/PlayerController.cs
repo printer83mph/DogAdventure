@@ -1,4 +1,5 @@
 ﻿using System;
+using Player.Aesthetics;
 using Player.Inventory;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,14 +15,17 @@ namespace Player.Controlling
         public ActionEvent onJump = delegate {  };
         
         private Rigidbody _rb = null;
+        private Camera _camera = null;
         private GroundCheck _groundCheck = null;
         private CameraMovement _cameraMovement = null;
         private PlayerInventory _inventory = null;
         private FootstepManager _footstep = null;
+        private CameraAdjuster _camAdjuster = null;
 
         public Rigidbody Rigidbody => _rb;
         public CameraMovement CameraMovement => _cameraMovement;
         public FootstepManager FootstepManager => _footstep;
+        public CameraAdjuster CameraAdjuster => _camAdjuster;
 
         public bool Grounded => _groundCheck.Grounded;
         public Vector3 Velocity => _rb.velocity;
@@ -35,6 +39,7 @@ namespace Player.Controlling
 
         [SerializeField] private Transform orientation = null;
         public Transform Orientation => orientation;
+        public Camera Camera => _camera;
 
         [Header("Movement")]
         [SerializeField] private float walkSpeed = 4f;
@@ -46,10 +51,12 @@ namespace Player.Controlling
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _camera = GetComponentInChildren<Camera>();
             _groundCheck = GetComponentInChildren<GroundCheck>();
             _cameraMovement = GetComponent<CameraMovement>();
             _inventory = GetComponentInChildren<PlayerInventory>();
             _footstep = GetComponentInChildren<FootstepManager>();
+            _camAdjuster = GetComponentInChildren<CameraAdjuster>();
             
             Main = this;
             Input = GetComponent<PlayerInput>();

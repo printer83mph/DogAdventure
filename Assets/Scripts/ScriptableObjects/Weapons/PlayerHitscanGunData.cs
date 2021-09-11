@@ -13,6 +13,7 @@ namespace ScriptableObjects.Weapons
         [SerializeField] private bool automatic = false;
         [SerializeField] private float reloadTime = .8f;
         [SerializeField] private int clipSize = 7;
+        [SerializeField] private GunKickData kickData = null;
         [SerializeField] private AmmoData ammoData = null;
 
         [Header("Damage")]
@@ -34,6 +35,7 @@ namespace ScriptableObjects.Weapons
         public float ReloadTime => reloadTime;
         public int ClipSize => clipSize;
         public AmmoData AmmoData => ammoData;
+        public GunKickData KickData => kickData;
 
         public float MaxRange => maxRange;
         public float BaseDamage => baseDamage;

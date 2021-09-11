@@ -16,6 +16,7 @@ MonoBehaviour:
   automatic: 0
   reloadTime: 1.1
   clipSize: 7
+  kickData: {fileID: 11400000, guid: 8f96b2a3aafdfc546b8833960446e075, type: 2}
   ammoData: {fileID: 0}
   maxRange: 30
   baseDamage: 35

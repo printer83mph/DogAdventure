@@ -103,19 +103,27 @@ namespace Weapons.Guns
         void Fire()
         {
             if (_bullets == 0) return;
+            
             // audio event
             gunData.AudioChannel.PlayEvent(gunData.AudioEvent);
+            
             // run hitscan shooter guy here
             _hitscanEffector.Shoot(gunData.BaseDamage, gunData.BaseForce,
                 new FalloffEffect.LimitedExponential(gunData.FalloffExponent, gunData.MaxRange),
                 StimSource.Generic.Player,
                 // raycast data
-                maxRange: gunData.MaxRange, shotTransform: PlayerController.Main.Orientation,
+                maxRange: gunData.MaxRange, shotTransform: PlayerController.Main.Camera.transform,
                 // overrides
                 overrideHitPrefab: gunData.HitPrefab, overrideHitAudioEvent: gunData.HitAudioEvent);
-            _lastShot = Time.time;
+            
+            // visuals
             animator.SetTrigger("fire");
+            PlayerController.Main.CameraAdjuster.AddKick(gunData.KickData.GetKick(_lastShot));
+                
+            // update state
+            _lastShot = Time.time;
             _gunState.bullets = _bullets - 1;
+            
         }
         
         void Reload()

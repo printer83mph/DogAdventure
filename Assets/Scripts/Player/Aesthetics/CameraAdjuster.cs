@@ -1,43 +1,36 @@
-﻿using UnityEngine;
+﻿using Player.Controlling;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace Player.Aesthetics
 {
+    // manages target's local position and rotation based on shake/kick inputs
     public class CameraAdjuster : MonoBehaviour
     {
         [SerializeField] private Transform target = null;
-        [SerializeField] private float focusSpeed = 0.3f;
-        [SerializeField] private float swingSpeed = 15;
-        
-        private float _focus;
-        private Quaternion _rotVel;
-        private Quaternion _rot;
+        [SerializeField] private float gravity = 1;
+        [SerializeField] private float damping = .9f;
 
-        private void Start()
-        {
-            _focus = 1;
-            _rotVel = Quaternion.identity;
-            _rot = Quaternion.identity;
-        }
-        
+        private Vector2 _rotation = Vector2.zero;
+        private Vector2 _velocity = Vector2.zero;
+
         private void Update()
         {
-            _focus = Mathf.MoveTowards(_focus, 1, Time.deltaTime * focusSpeed);
-            _rotVel *=
-                // rotates towards inverse rotation scaled by focus
-                Quaternion.Slerp(Quaternion.identity, Quaternion.Inverse(_rot), _focus * Time.deltaTime);
-            _rotVel = Quaternion.Slerp(_rotVel, Quaternion.identity, .05f);
-            _rot *= Quaternion.SlerpUnclamped(Quaternion.identity, _rotVel, Time.deltaTime);
-
-            // Debug.Log(_rotVel);
+            // add gravity
+            _velocity += -_rotation * Mathf.Min(gravity * Time.deltaTime, 1);
             
-            target.localRotation = _rot;
+            // add damping
+            _velocity = _velocity * Mathf.Min(Mathf.Pow(damping, Time.deltaTime), 1);
+
+            _rotation += _velocity * Mathf.Min(Time.deltaTime, 1);
+            
+            // visual update
+            target.localRotation = Quaternion.Euler(-_rotation.y, _rotation.x, 0);
         }
 
-        public void AddImpact(Quaternion rotation)
+        public void AddKick(Vector2 rotation)
         {
-            _rotVel *= rotation;
-            Debug.Log(_rotVel);
-            _focus *= 1 - Quaternion.Angle(rotation, Quaternion.identity) / 180;
+            _velocity += rotation;
         }
     }
 }
