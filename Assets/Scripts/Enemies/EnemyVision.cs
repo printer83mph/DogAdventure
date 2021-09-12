@@ -26,7 +26,7 @@ namespace Enemies
             return (!Physics.Raycast(transform.position, vecToPos, vecToPos.magnitude - pullbackDistance, visionConfig.LayerMask));
         }
 
-        public bool CanSeePlayer() => CanSee(PlayerController.Main.Orientation.position);
+        public bool CanSeePlayer() => (PlayerController.Main && CanSee(PlayerController.Main.Orientation.position));
 
         public bool CanCapsule(Vector3 position, float radius)
         {

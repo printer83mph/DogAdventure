@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using Player.Controlling;
-using Player.Inventory;
-using ScriptableObjects;
-using ScriptableObjects.Audio;
 using ScriptableObjects.Audio.Events;
 using ScriptableObjects.Weapons;
 using Stims;
@@ -10,7 +7,7 @@ using Stims.Effectors;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Weapons.Guns
+namespace Weapons.Player
 {
 
     public class HitscanGun : MonoBehaviour

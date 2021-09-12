@@ -59,6 +59,8 @@ namespace Player.Inventory
 
         private void OnDisable()
         {
+            ClearWeaponObjects();
+            fists.Disable();
             input.actions["Melee"].performed -= Swing;
             input.actions["Holster"].performed -= Holster;
         }
