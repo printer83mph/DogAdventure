@@ -21,8 +21,10 @@ namespace Player.Controlling
         public Rigidbody GroundRigidbody => _groundRigidbody;
         public Vector3 FeetPos => _feetPos;
 
+        // velocity in ground rotation space
         public Vector3 GetRelativeToGround(Vector3 vec) => Quaternion.Inverse(GroundRotation) * vec;
 
+        // factors in if the ground is a rigidbody
         public Vector3 GetRelativeToGroundVelocity(Vector3 vec) => GetRelativeToGround(_groundRigidbody
             ? vec - _groundRigidbody.GetPointVelocity(_feetPos)
             : vec

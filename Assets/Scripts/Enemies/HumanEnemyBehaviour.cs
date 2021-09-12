@@ -304,6 +304,7 @@ namespace Enemies
                     DrawWeaponIfNotDrawn();
 
                     break;
+                
                 case SoundType.Alarming:
                     if (_state < EnemyState.Suspicious)
                     {
@@ -311,6 +312,7 @@ namespace Enemies
                         Debug.Log("Switching to suspicious");
                     }
                     break;
+                
                 case SoundType.Stunning:
                     // stunning sounds make us drop weapon
                     if (_hasWeapon)
@@ -325,6 +327,7 @@ namespace Enemies
                     // if we're not already chasing, chase
                     if (_state < EnemyState.Suspicious) _state = EnemyState.Suspicious;
                     break;
+                
                 default:
                     throw new ArgumentOutOfRangeException(nameof(soundType), soundType, null);
             }
@@ -348,7 +351,7 @@ namespace Enemies
             Debug.Log("Taking out weapon");
             _drawingWeapon = true;
             _puttingAwayWeapon = false;
-            animator.Play("TakeOutWeapon");
+            // animator.Play("TakeOutWeapon");
             
             yield return new WaitForSeconds(.5f);
             weaponManager.SetWeaponPrefab(currentWeapon.EnemyPrefab, currentWeapon, _currentWeaponState);
@@ -364,7 +367,7 @@ namespace Enemies
             Debug.Log("Putting Away Weapon");
             _puttingAwayWeapon = true;
             _drawingWeapon = false;
-            animator.Play("PutAwayWeapon");
+            // animator.Play("PutAwayWeapon");
             
             yield return new WaitForSeconds(.5f);
             weaponManager.SetWeaponPrefab(currentWeapon.EnemyBackPrefab, currentWeapon, _currentWeaponState);

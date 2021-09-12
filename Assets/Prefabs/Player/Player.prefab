@@ -280,8 +280,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 5144383348731537837}
-  gravity: 40
-  damping: 0.025
+  gravity: 160
+  damping: 0.001
+  shiftScale: 0.03
+  shiftLambda: 12
+  viewBounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -22.282389
+      outSlope: -22.282389
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.03755097
+    - serializedVersion: 3
+      time: 0.32880518
+      value: -0.5074154
+      inSlope: 0.011442566
+      outSlope: 0.011442566
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.34232023
+      outWeight: 0.22212937
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.00012862493
+      outSlope: 0.010907882
+      tangentMode: 1
+      weightedMode: 1
+      inWeight: 0.5422972
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  viewBounceScale: 0.0013
+  viewBounceSpeedScale: 1.7
 --- !u!1 &3404832504129322935
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +421,7 @@ MonoBehaviour:
   orientation: {fileID: 3404832504043560032}
   walkSpeed: 3.7
   sprintSpeed: 8
-  groundAcceleration: 40
+  groundAcceleration: 27
   airAcceleration: 800
   jumpForce: 340
 --- !u!114 &3404832504129322928

@@ -16,4 +16,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 513
   maxDistance: 25
-  maxAngle: 40
+  maxAngle: 50

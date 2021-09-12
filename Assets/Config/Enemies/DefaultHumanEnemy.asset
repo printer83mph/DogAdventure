@@ -17,4 +17,4 @@ MonoBehaviour:
   idleDelayMin: 2
   idleDelayMax: 4
   susDispelSpeed: 0.3
-  susGainSpeed: 3
+  susGainSpeed: 8

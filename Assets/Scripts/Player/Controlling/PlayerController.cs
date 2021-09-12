@@ -26,7 +26,8 @@ namespace Player.Controlling
         public CameraMovement CameraMovement => _cameraMovement;
         public FootstepManager FootstepManager => _footstep;
         public CameraAdjuster CameraAdjuster => _camAdjuster;
-
+        public GroundCheck GroundCheck => _groundCheck;
+        
         public bool Grounded => _groundCheck.Grounded;
         public Vector3 Velocity => _rb.velocity;
 
@@ -136,6 +137,14 @@ namespace Player.Controlling
                 velocityOnDesired = (1 - velocityOnDesired) / 2;
                 _rb.AddForce(orientedDesiredMovement * (velocityOnDesired * airAcceleration));
             }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!Grounded) return;
+            Debug.Log("We bouncing");
+            Debug.Log(other.impulse);
+            _camAdjuster.AddBounce(- other.impulse.y);
         }
 
         private void Jump()

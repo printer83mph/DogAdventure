@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29219392dccf43878bce7c57fcb0adfc, type: 3}
   m_Name: PistolKickData
   m_EditorClassIdentifier: Assembly-CSharp:ScriptableObjects.Weapons:RandomIndependentGunKickData
-  verticalKickMin: 20
-  verticalKickMax: 20
-  horizontalKickMin: -10
-  horizontalKickMax: 10
+  verticalKickMin: 30
+  verticalKickMax: 30
+  horizontalKickMin: -1
+  horizontalKickMax: 1
