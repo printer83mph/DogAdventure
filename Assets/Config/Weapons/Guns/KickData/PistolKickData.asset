@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:ScriptableObjects.Weapons:RandomIndependentGunKickData
   verticalKickMin: 30
   verticalKickMax: 30
-  horizontalKickMin: -1
-  horizontalKickMax: 1
+  horizontalKickMin: -12
+  horizontalKickMax: 12
