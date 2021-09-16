@@ -6,7 +6,7 @@ namespace Weapons.Enemy
 {
     public class EnemyWeaponManager : MonoBehaviour
     {
-        [SerializeField] private HumanEnemyBehaviour behaviour;
+        [SerializeField] private HumanEnemy enemy;
         [SerializeField] private SkinnedMeshRenderer originalRenderer;
         public GameObject WeaponObject { get; private set; }
         public EnemyWeapon WeaponComponent { get; private set; }
@@ -28,7 +28,7 @@ namespace Weapons.Enemy
             if (!WeaponComponent) return;
             // pass our data and state down to the weapon
             Debug.Log("running initialization thing");
-            WeaponComponent.Initialize(data, state, behaviour);
+            WeaponComponent.Initialize(data, state, enemy);
         }
 
         public void ClearWeaponPrefab()

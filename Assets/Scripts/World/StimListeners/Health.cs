@@ -8,12 +8,10 @@ namespace World.StimListeners
 {
 
     [Serializable]
-    public class DeathEvent : UnityEvent<IStimDamage> { }
+    public class DeathEvent : UnityEvent<Stim> { }
     
     public class Health : MonoBehaviour
     {
-        public event Action<Stim> onStim = delegate { };
-        
         public DeathEvent OnDeath;
 
         [SerializeField] private StimReceiver[] receivers = null;
@@ -72,7 +70,7 @@ namespace World.StimListeners
                 {
                     // we died
                     _dead = true;
-                    OnDeath.Invoke(damageStim);
+                    OnDeath.Invoke(stim);
                 }
             }
         }

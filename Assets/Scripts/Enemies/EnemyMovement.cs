@@ -141,12 +141,12 @@ namespace Enemies
             // if we're already there we don't care
             if (AtTarget || _cantPath || locked)
             {
-                Debug.Log("Were locked baby.");
+                // Debug.Log("Were locked baby.");
                 AddForceToGoTo(feetTransform.position);
                 return;
             }
             
-            Debug.Log("Were not locked baby?");
+            // Debug.Log("Were not locked baby?");
 
             // here we're not at our target
             if (AtNextPos()) GetNextPos();

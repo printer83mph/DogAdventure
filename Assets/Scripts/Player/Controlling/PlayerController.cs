@@ -142,8 +142,8 @@ namespace Player.Controlling
         private void OnCollisionEnter(Collision other)
         {
             if (!Grounded) return;
-            Debug.Log("We bouncing");
-            Debug.Log(other.impulse);
+            // Debug.Log("We bouncing");
+            // Debug.Log(other.impulse);
             _camAdjuster.AddBounce(- other.impulse.y);
         }
 

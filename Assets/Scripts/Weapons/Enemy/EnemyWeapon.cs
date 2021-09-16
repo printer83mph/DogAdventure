@@ -10,7 +10,7 @@ namespace Weapons.Enemy
         [SerializeField] private float equipTime = .8f;
         public WeaponData Data { get; private set; }
         public WeaponState State { get; private set; }
-        public HumanEnemyBehaviour Behaviour { get; private set; }
+        public HumanEnemy Enemy { get; private set; }
         
         // to be modified by our behaviour
         [HideInInspector] public bool attackMode;
@@ -18,11 +18,11 @@ namespace Weapons.Enemy
         private float _readyTime;
         public bool Equipping => _readyTime < Time.time;
 
-        public void Initialize(WeaponData data, WeaponState state, HumanEnemyBehaviour behaviour)
+        public void Initialize(WeaponData data, WeaponState state, HumanEnemy enemy)
         {
             Data = data;
             State = state;
-            Behaviour = behaviour;
+            Enemy = enemy;
             Debug.Log("Initialized enemy weapon");
         }
 

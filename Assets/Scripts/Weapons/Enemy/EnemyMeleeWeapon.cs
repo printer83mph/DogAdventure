@@ -16,21 +16,21 @@ namespace Weapons.Enemy
 
         private void Start()
         {
-            weapon.Behaviour.Movement.locked = false;
+            weapon.Enemy.Movement.locked = false;
         }
         
         private void Update()
         {
             if (!weapon.attackMode) return;
-            weapon.Behaviour.Movement.Target = weapon.Behaviour.LastKnownPosition;
+            weapon.Enemy.Movement.Target = weapon.Enemy.lastKnownPosition;
             if (_currentlyAttacking)
             {
-                weapon.Behaviour.Movement.locked = true;
+                weapon.Enemy.Movement.locked = true;
                 Debug.Log("WE SHOULD BE LOCKED !!");
                 // just keep going if we're still running attack
                 if (Time.time < _nextHit) return;
                 // check if we're still in radius
-                if (Vector3.SqrMagnitude(weapon.Behaviour.Vision.transform.position -
+                if (Vector3.SqrMagnitude(weapon.Enemy.Vision.transform.position -
                                          PlayerController.Main.Orientation.position) > attackRange)
                 {
                     // we missed
@@ -46,10 +46,10 @@ namespace Weapons.Enemy
             }
             else
             {
-                bool withinDistance = Vector3.SqrMagnitude(weapon.Behaviour.Vision.transform.position -
+                bool withinDistance = Vector3.SqrMagnitude(weapon.Enemy.Vision.transform.position -
                                                            PlayerController.Main.Orientation.position) <
                                       Mathf.Pow(attackRange, 2);
-                weapon.Behaviour.Movement.locked = withinDistance;
+                weapon.Enemy.Movement.locked = withinDistance;
                 if (Time.time < _nextAttack) return;
                 if (withinDistance)
                 {
@@ -59,7 +59,7 @@ namespace Weapons.Enemy
                     _currentlyAttacking = true;
                 
                     Debug.Log("Attacking");
-                    weapon.Behaviour.Animator.Play("WeaponAttack");
+                    weapon.Enemy.Animator.Play("WeaponAttack");
                 }
             }
         }

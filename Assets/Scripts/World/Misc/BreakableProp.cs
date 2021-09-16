@@ -1,8 +1,5 @@
-﻿using System;
-using Stims;
-using Stims.Receivers;
+﻿using Stims;
 using UnityEngine;
-using UnityEngine.Serialization;
 using World.StimListeners;
 
 namespace World.Misc
@@ -24,7 +21,7 @@ namespace World.Misc
             health.OnDeath.AddListener(OnBreak);
         }
         
-        private void OnBreak(IStimDamage stim)
+        private void OnBreak(Stim stim)
         {
             
             if (breakPrefab) {
@@ -35,7 +32,7 @@ namespace World.Misc
             Destroy(gameObject);
         }
 
-        private void TransferVelocity(GameObject obj, IStimDamage stim)
+        private void TransferVelocity(GameObject obj, Stim stim)
         {
 
             // check for point force stim

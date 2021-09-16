@@ -68,7 +68,7 @@ namespace ScriptableObjects.Audio.Events
             foreach (AudioChannel channel in channels)
             {
                 channel.playAudio(position, soundType, radius);
-                Debug.Log("Played audio");
+                // Debug.Log("Played audio");
             }
         }
     }
