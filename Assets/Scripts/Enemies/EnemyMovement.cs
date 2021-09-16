@@ -53,7 +53,7 @@ namespace Enemies
 
         // for other scripts
         public Vector3 Velocity => rb.velocity;
-        public Vector3 GroundVelocity => _groundRotation * rb.velocity;
+        public Vector3 GroundVelocity => Quaternion.Inverse(_groundRotation) * rb.velocity;
         public Vector3 FeetPos => feetTransform.position;
 
         public Vector3 Target
