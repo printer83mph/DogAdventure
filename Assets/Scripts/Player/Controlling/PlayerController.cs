@@ -36,7 +36,9 @@ namespace Player.Controlling
 
         private InputAction m_Move = null;
         private InputAction m_Sprint = null;
+        private InputAction m_Crouch = null;
         private Vector2 _movementInput;
+        private bool _crouched;
 
         [SerializeField] private Transform orientation = null;
         public Transform Orientation => orientation;
@@ -64,6 +66,7 @@ namespace Player.Controlling
 
             m_Move = Input.actions["Move"];
             m_Sprint = Input.actions["Sprint"];
+            m_Crouch = Input.actions["Crouch"];
         }
 
         private void OnEnable()
