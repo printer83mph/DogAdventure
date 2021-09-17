@@ -1,5 +1,6 @@
 ﻿using System;
 using ScriptableObjects.Audio;
+using ScriptableObjects.Enemies;
 using Stims;
 using UnityEngine;
 using Weapons.Enemy;
@@ -16,7 +17,6 @@ namespace Enemies
         [SerializeField] private EnemyVision vision;
         [SerializeField] private EnemyWeaponManager weaponManager;
         [SerializeField] private EnemyRagdoll ragdoll;
-        [SerializeField] private AudioChannel audioChannel;
         
         [SerializeField] private Animator animator;
         [SerializeField] private Animator stateAnimator;
@@ -26,18 +26,19 @@ namespace Enemies
         public EnemyVision Vision => vision;
         public EnemyWeaponManager WeaponManager => weaponManager;
         public EnemyRagdoll Ragdoll => ragdoll;
-        public AudioChannel AudioChannel => audioChannel;
         
         public Animator Animator => animator;
         public Animator StateAnimator => stateAnimator;
 
+        public Transform Head => Vision.transform;
+        public Transform Feet => Movement.FeetTransform;
+
         [Header("Specific Enemy Config")]
-        [SerializeField] private float suspicionGainSpeed = 50f;
-        [SerializeField] private float suspicionDispelSpeed = 1f;
-        public float SuspicionGainSpeed => suspicionGainSpeed;
-        public float SuspicionDispelSpeed => suspicionDispelSpeed;
+        [SerializeField] private HumanEnemyBehaviourConfig config;
+        public HumanEnemyBehaviourConfig Config => config;
 
         [HideInInspector] public Vector3 lastKnownPosition;
+        [HideInInspector] public float stunTimeLeft;
 
         private void OnDeath(Stim stim)
         {

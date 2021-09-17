@@ -105,6 +105,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""50618c1b-5a14-4925-b9b3-bff7cb6f2d74"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -437,6 +445,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a09a63dd-3e3d-4d2b-81bf-c16be28dcdc2"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6888e8e-d6c8-4dd6-bafb-6bd684dc7bf3"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -484,6 +514,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Holster = m_Player.FindAction("Holster", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
         m_Player_Melee = m_Player.FindAction("Melee", throwIfNotFound: true);
+        m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -544,6 +575,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Holster;
     private readonly InputAction m_Player_Fire1;
     private readonly InputAction m_Player_Melee;
+    private readonly InputAction m_Player_Crouch;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -559,6 +591,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Holster => m_Wrapper.m_Player_Holster;
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
         public InputAction @Melee => m_Wrapper.m_Player_Melee;
+        public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -601,6 +634,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Melee.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
                 @Melee.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
                 @Melee.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMelee;
+                @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -638,6 +674,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Melee.started += instance.OnMelee;
                 @Melee.performed += instance.OnMelee;
                 @Melee.canceled += instance.OnMelee;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -673,5 +712,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnHolster(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }

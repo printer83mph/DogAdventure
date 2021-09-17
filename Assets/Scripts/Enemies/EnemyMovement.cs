@@ -54,6 +54,7 @@ namespace Enemies
         // for other scripts
         public Vector3 Velocity => rb.velocity;
         public Vector3 GroundVelocity => Quaternion.Inverse(_groundRotation) * rb.velocity;
+        public Transform FeetTransform => feetTransform;
         public Vector3 FeetPos => feetTransform.position;
 
         public Vector3 Target
@@ -116,7 +117,7 @@ namespace Enemies
                 Vector3 vecToTarget = _nextPos - feetTransform.position;
                 vecToTarget.y = 0;
                 modelOrientationTransform.rotation = Quaternion.RotateTowards(modelOrientationTransform.rotation,
-                    Quaternion.FromToRotation(Vector3.forward, vecToTarget),
+                    Quaternion.LookRotation(vecToTarget, Vector3.up),
                     Time.deltaTime * turnSpeed);
             }
         }

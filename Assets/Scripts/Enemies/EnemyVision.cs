@@ -28,7 +28,7 @@ namespace Enemies
             if (Vector3.Angle(vecToTarget, transform.forward) > visionConfig.MaxAngle ||
                 vecToTarget.sqrMagnitude > (visionConfig.MaxDistance * visionConfig.MaxDistance))
                 return false;
-
+            
             // return if the raycast didnt hit anything
             return (!Physics.Raycast(transform.position, vecToTarget,
                 Mathf.Max(vecToTarget.magnitude - pullbackDistance, 0), visionConfig.LayerMask));
