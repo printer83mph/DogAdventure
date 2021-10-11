@@ -15,6 +15,10 @@ namespace ScriptableObjects.Enemies
         [SerializeField] private float susDispelSpeed = .25f;
         [SerializeField] private float susGainSpeed = 3f;
 
+        [SerializeField] private float playerTrackingTime = 5f;
+        [SerializeField] private float combatVisionWeightThreshold = .1f;
+
+
         public AudioChannel AudioChannel => audioChannel;
 
         public float IdleRadius => idleRadius;
@@ -22,5 +26,7 @@ namespace ScriptableObjects.Enemies
         public float IdleDelayMax => idleDelayMax;
         public float SusDispelSpeed => susDispelSpeed;
         public float SusGainSpeed => susGainSpeed;
+        public float PlayerTrackingTime => playerTrackingTime;
+        public float CombatVisionWeightThreshold => combatVisionWeightThreshold;
     }
 }

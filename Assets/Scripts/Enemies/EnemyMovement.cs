@@ -90,9 +90,6 @@ namespace Enemies
             enabledMovements.Remove(this);
             rb.isKinematic = true;
             collider.enabled = false;
-            
-            animator.SetFloat("Forward", 0);
-            animator.SetFloat("Right", 0);
         }
 
         void Start()

@@ -43,6 +43,9 @@ namespace Enemies
         private void OnDeath(Stim stim)
         {
             animator.enabled = false;
+            Movement.enabled = false;
+            WeaponManager.enabled = false;
+            enabled = false;
         }
 
         private void Awake()

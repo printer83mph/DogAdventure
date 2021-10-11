@@ -1,5 +1,4 @@
-﻿using System;
-using ScriptableObjects.Audio;
+﻿using ScriptableObjects.Audio;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -50,7 +49,7 @@ namespace Enemies.HumanStateMachineBehaviours
 
         private void OnAudio(Vector3 pos, SoundType type, float radius)
         {
-            if (!(Vector3.SqrMagnitude(pos - _enemy.Head.position) < radius * radius)) return;
+            if (Vector3.SqrMagnitude(pos - _enemy.Head.position) > radius * radius) return;
             // we heard the sound
             switch (type)
             {
