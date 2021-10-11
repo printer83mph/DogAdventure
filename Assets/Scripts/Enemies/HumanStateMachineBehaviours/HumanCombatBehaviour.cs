@@ -64,7 +64,7 @@ namespace Enemies.HumanStateMachineBehaviours
                 if (visionWeight > _enemy.Config.CombatVisionWeightThreshold)
                 {
                     // we "see" the player
-                    _enemy.lastKnownPosition = PlayerController.Main.transform.position;
+                    _enemy.lastKnownPosition = PlayerController.Main.GroundCheck.FeetPos;
                     _lastSeenPlayer = Time.time;
                 }
                 

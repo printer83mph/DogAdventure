@@ -17,6 +17,6 @@ MonoBehaviour:
   idleDelayMin: 2
   idleDelayMax: 4
   susDispelSpeed: 0.3
-  susGainSpeed: 8
-  playerTrackingTime: 5
+  susGainSpeed: 13
+  playerTrackingTime: 2.5
   combatVisionWeightThreshold: 0.03

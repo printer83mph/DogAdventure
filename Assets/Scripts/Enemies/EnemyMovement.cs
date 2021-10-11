@@ -10,10 +10,10 @@ namespace Enemies
     public class EnemyMovement : MonoBehaviour
     {
 
-        private static List<EnemyMovement> enabledMovements = new List<EnemyMovement>();
+        private static readonly List<EnemyMovement> EnabledMovements = new List<EnemyMovement>();
         
         private const float MaxCornerDistance = .25f;
-        private const float NavmeshSampleDistance = 2f;
+        private const float NavmeshSampleDistance = 5f;
 
         [Header("References")]
         [SerializeField] private Rigidbody rb;
@@ -63,6 +63,8 @@ namespace Enemies
             set
             {
                 _target = value;
+                if (NavMesh.SamplePosition(_target, out NavMeshHit hit, NavmeshSampleDistance, _layerId))
+                    _target = hit.position;
                 if (_grounded) CalculatePath();
             }
         }
@@ -80,14 +82,14 @@ namespace Enemies
 
         private void OnEnable()
         {
-            enabledMovements.Add(this);
+            EnabledMovements.Add(this);
             rb.isKinematic = false;
             collider.enabled = true;
         }
 
         private void OnDisable()
         {
-            enabledMovements.Remove(this);
+            EnabledMovements.Remove(this);
             rb.isKinematic = true;
             collider.enabled = false;
         }
@@ -103,12 +105,8 @@ namespace Enemies
         {
             
             if (!_grounded) return;
-            if (AtTarget) return;
-            if ((Time.frameCount + enabledMovements.IndexOf(this)) % enabledMovements.Count == 0)
-            {
-                CalculatePath();
-            }
-
+            
+            // if we're grounded we look towards the target
             if (turnTowardsMoveDirection)
             {
                 Vector3 vecToTarget = _nextPos - feetTransform.position;
@@ -116,6 +114,14 @@ namespace Enemies
                 modelOrientationTransform.rotation = Quaternion.RotateTowards(modelOrientationTransform.rotation,
                     Quaternion.LookRotation(vecToTarget, Vector3.up),
                     Time.deltaTime * turnSpeed);
+            }
+            
+            if (AtTarget) return;
+            
+            // if we're not at the target then we gotta get there Baby
+            if ((Time.frameCount + EnabledMovements.IndexOf(this)) % EnabledMovements.Count == 0)
+            {
+                CalculatePath();
             }
         }
 
