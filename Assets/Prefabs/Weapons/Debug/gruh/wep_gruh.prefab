@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3936452488072227189}
   - component: {fileID: 8267218136561522900}
   m_Layer: 8
-  m_Name: gruhweapon
+  m_Name: wep_gruh
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

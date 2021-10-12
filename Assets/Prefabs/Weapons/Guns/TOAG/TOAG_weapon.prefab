@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7024379387176285749}
   - component: {fileID: 486538293115720763}
   m_Layer: 8
-  m_Name: TOAG_weapon
+  m_Name: toag_weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
